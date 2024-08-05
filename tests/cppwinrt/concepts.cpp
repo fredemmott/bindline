@@ -10,7 +10,7 @@
 
 using namespace FredEmmott::cppwinrt;
 
-TEST_CASE("cppwinrt::cppwinrt_type<T>") {
+TEST_CASE("cppwinrt_type<T>") {
   STATIC_CHECK(cppwinrt_type<winrt::Windows::Foundation::IInspectable>);
   STATIC_CHECK_FALSE(cppwinrt_type<int>);
   STATIC_CHECK_FALSE(cppwinrt_type<std::shared_ptr<int>>);
@@ -20,18 +20,18 @@ TEST_CASE("cppwinrt::cppwinrt_type<T>") {
                        winrt::Windows::Foundation::IInspectable {nullptr}))>);
 }
 
-TEST_CASE("cppwinrt::cppwinrt_ptr<T>") {
+TEST_CASE("cppwinrt_ptr<T>") {
   STATIC_CHECK(cppwinrt_ptr<winrt::Windows::Foundation::IInspectable*>);
   // Add more tests before fixing this :)
   CHECK_FALSE(cppwinrt_ptr<winrt::Windows::Foundation::IInspectable>);
   // STATIC_CHECK_FALSE(cppwinrt_ptr<winrt::Windows::Foundation::IInspectable>);
 }
 
-TEST_CASE("cppwinrt::com_ptr<T>") {
+TEST_CASE("com_ptr<T>") {
   SKIP("Untested - TODO");
 }
 
-TEST_CASE("cppwinrt::cppwinrt_strong_ref<T>") {
+TEST_CASE("cppwinrt_strong_ref<T>") {
   SECTION("With a WinRT object") {
     winrt::Windows::Foundation::IInspectable it {nullptr};
     STATIC_CHECK(cppwinrt_strong_ref<decltype(it)>);
@@ -49,7 +49,7 @@ TEST_CASE("cppwinrt::cppwinrt_strong_ref<T>") {
   }
 }
 
-TEST_CASE("cppwinrt::cppwinrt_weak_ref<T>") {
+TEST_CASE("cppwinrt_weak_ref<T>") {
   SECTION("With a WinRT object") {
     winrt::Windows::Foundation::IInspectable it {nullptr};
     STATIC_CHECK_FALSE(cppwinrt_weak_ref<decltype(it)>);
@@ -73,6 +73,6 @@ TEST_CASE("cppwinrt::cppwinrt_weak_ref<T>") {
   }
 }
 
-TEST_CASE("cppwinrt::raw_pointer<T>") {
+TEST_CASE("raw_pointer<T>") {
   SKIP("Untested - TODO");
 }

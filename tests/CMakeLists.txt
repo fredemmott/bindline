@@ -6,39 +6,17 @@ include(Catch)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-if(WIN32)
-    add_library(
-        catch2_cppwinrt_main
-        STATIC
-        EXCLUDE_FROM_ALL
-        catch2_cppwinrt_main.cpp
-    )
-    target_link_libraries(
-        catch2_cppwinrt_main
-        PRIVATE
-        Catch2::Catch2
-        cppwinrt::windows-sdk
-    )
-
-    # We don't explicitly set these on the actual tests as we want to test that
-    # they inherit the requirement from the library target. As we're not
-    # linking against the main library here, we need to - otherwise we'll end
-    # up on whatever the dependency's minimum C++ is, and may get ABI issues.
-    #
-    # As of 2024-08-05, without this:
-    # - we'd build this target with C++17
-    # - on MSVC, we'll get a coroutines ABI mismatch error when linking with
-    #   C++20 objects
-    target_compile_features(
-        catch2_cppwinrt_main
-        PRIVATE
-        ${REQUIRED_COMPILE_FEATURES}
-    )
-endif()
-
 function(add_test_executable TARGET)
     set(options CPPWINRT_MAIN)
+    set(valueArgs TEST_PREFIX)
     set(multiValueArgs SOURCES LINK_LIBRARIES)
+
+    if("${TEST_ARG_TEST_PREFIX}")
+        set(TEST_PREFIX "${CTEST_ARG_TEST_PREFIX}")
+    else()
+        string(REPLACE "-" "/" TEST_PREFIX "${TARGET}")
+        string(APPEND TEST_PREFIX "/")
+    endif()
 
     cmake_parse_arguments(
         TEST_ARG
@@ -50,14 +28,15 @@ function(add_test_executable TARGET)
     set(TARGET_ARGS ${TEST_ARG_UNPARSED_ARGUMENTS} ${TEST_ARG_SOURCES})
 
     if(TEST_ARG_CPPWINRT_MAIN)
-        list(APPEND TEST_ARG_LINK_LIBRARIES "Catch2::Catch2" catch2_cppwinrt_main)
+        list(APPEND TARGET_ARGS "catch2_cppwinrt_main.cpp")
+        list(APPEND TEST_ARG_LINK_LIBRARIES "Catch2::Catch2")
     else()
         list(APPEND TEST_ARG_LINK_LIBRARIES "Catch2::Catch2WithMain")
     endif()
 
 
     add_executable(${TARGET} ${TARGET_ARGS})
-    catch_discover_tests(${TARGET})
+    catch_discover_tests(${TARGET} TEST_PREFIX "${TEST_PREFIX}")
 
     target_link_libraries(
         ${TARGET}

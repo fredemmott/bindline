@@ -30,7 +30,7 @@ concurrency::task<winrt::apartment_context> get_background_context(auto dq) {
   co_return ret;
 }
 
-TEST_CASE("thread switching") {
+TEST_CASE("winrt::apartment_context") {
   auto dqc = winrt::Windows::System::DispatcherQueueController::
     CreateOnDedicatedThread();
 
