@@ -1,3 +1,6 @@
+# Copyright (C) 2024 Fred Emmott <fred@fredemmott.com>
+# SPDX-License-Identifier: MIT
+
 cmake_minimum_required(VERSION 3.25)
 project(FredEmmott_WeakRefs VERSION 0.1 LANGUAGES CXX)
 
@@ -14,5 +17,6 @@ add_library(FredEmmott::cppwinrt ALIAS "${PROJECT_NAME}")
 add_library(FredEmmott::weak_refs ALIAS "${PROJECT_NAME}")
 
 if(ENABLE_TESTS)
+    add_subdirectory(third-party)
     add_subdirectory(tests)
 endif()
