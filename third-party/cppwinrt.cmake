@@ -40,5 +40,6 @@ add_library(
 add_dependencies(cppwinrt-windows-sdk INTERFACE cppwinrt-windows-sdk-gen)
 target_include_directories(cppwinrt-windows-sdk INTERFACE "${WINDOWS_SDK_WINRT_OUTPUT}")
 target_link_libraries(cppwinrt-windows-sdk INTERFACE "WindowsApp")
+target_compile_features(cppwinrt-windows-sdk INTERFACE cxx_std_17)
 
 add_library(cppwinrt::windows-sdk ALIAS cppwinrt-windows-sdk)

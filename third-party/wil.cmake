@@ -16,3 +16,4 @@ target_include_directories(
     INTERFACE
     "${wil_SOURCE_DIR}/include"
 )
+target_compile_features(wil::wil INTERFACE cxx_std_17)

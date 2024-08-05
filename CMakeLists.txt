@@ -10,9 +10,11 @@ option(ENABLE_TESTS "Build and run tests" ${PROJECT_IS_TOP_LEVEL})
 
 message(STATUS "${PROJECT_NAME} tests: ${ENABLE_TESTS}")
 
+set(REQUIRED_COMPILE_FEATURES cxx_std_20)
+
 add_library("${PROJECT_NAME}" INTERFACE)
 target_include_directories("${PROJECT_NAME}" INTERFACE include)
-target_compile_features("${PROJECT_NAME}" INTERFACE cxx_std_20)
+target_compile_features("${PROJECT_NAME}" INTERFACE ${REQUIRED_COMPILE_FEATURES})
 
 add_library(FredEmmott::bind ALIAS "${PROJECT_NAME}")
 add_library(FredEmmott::cppwinrt ALIAS "${PROJECT_NAME}")
