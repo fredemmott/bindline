@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include <shims/winrt/base.h>
-
 #ifndef OPENKNEEBOARD_BIND_ENABLE_CPPWINRT
 #define OPENKNEEBOARD_BIND_ENABLE_CPPWINRT (__has_include(<winrt/base.h>))
 #endif
@@ -22,7 +20,3 @@
 #if OPENKNEEBOARD_BIND_ENABLE_WEAK_REFS
 #include "bind/weak_refs.hpp"
 #endif
-
-namespace OpenKneeboard {
-using namespace ::FredEmmott::bind;
-}

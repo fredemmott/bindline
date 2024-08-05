@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include <shims/winrt/base.h>
-
 /*
  * Helpers for writing templates that deal with both
  * std::weak_ptr and winrt::weak_ref.
@@ -143,7 +141,3 @@ void test_bind_front(TestBindFront* t, std::weak_ptr<int> weakInt) {
 }
 }// namespace
 }// namespace TestNS
-
-namespace OpenKneeboard {
-using namespace ::FredEmmott::weak_refs;
-}// namespace OpenKneeboard
