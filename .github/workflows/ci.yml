@@ -1,0 +1,82 @@
+name: Build and test
+on: [push, pull_request]
+jobs:
+  build:
+    name: ${{matrix.os}}/${{matrix.compiler}}
+    runs-on: ${{matrix.runs-on}}
+    continue-on-error: true
+    strategy:
+      matrix:
+        include:
+          - os: windows
+            runs-on: windows-2022
+            compiler: cl
+          - os: windows
+            runs-on: windows-2022
+            compiler: clang++
+          - os: windows
+            runs-on: windows-2022
+            compiler: clang-cl
+          - os: linux
+            runs-on: ubuntu-22.04
+            compiler: clang++
+          - os: linux
+            runs-on: ubuntu-22.04
+            compiler: g++
+          - os: macos
+            runs-on: macos-14
+            compiler: clang++
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: source
+          fetch-depth: 0
+          submodules: true
+      - name: Download Ninja
+        if: matrix.os == 'windows'
+        run: |
+          Invoke-WebRequest https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip -OutFile ninja.zip
+          Expand-Archive ninja.zip -DestinationPath ${{runner.temp}}
+      - name: Configure
+        shell: pwsh
+        run: |
+          New-Item -ItemType directory build
+          $Args = @()
+          if ("${{matrix.compiler}}" -eq "clang-cl") {
+            $KitsRoot = Get-ItemPropertyValue `
+              -Path "HKLM:\SOFTWARE\Microsoft\Windows Kits\Installed Roots" `
+              -Name "KitsRoot10"
+            $KitVersion = Get-ItemPropertyValue `
+              -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v10.0" `
+              -Name "ProductVersion"
+            $MtExe = "$KitsRoot/bin/$KitVersion.0/x64/mt.exe"
+            $Args += "-DCMAKE_MT=$MtExe"
+          }
+          # cl.exe is not in PATH, but CMake will find it with the msbuild generator
+          if ("${{matrix.compiler}}" -ne "cl") {
+            $Args += "-DCMAKE_CXX_COMPILER=${{matrix.compiler}}"
+          }
+          if(("${{matrix.os}}" -eq "windows") -and "${{matrix.compiler}}" -ne "cl") {
+            # default generator ignores CMAKE_CXX_COMPILER
+            $Args += @(
+              "-G",
+              "Ninja",
+              "-DCMAKE_MAKE_PROGRAM=${{runner.temp}}/ninja.exe"
+            )
+          }
+          cd build
+          cmake `
+            ${{github.workspace}}/source `
+            -DCMAKE_BUILD_TYPE=Debug `
+            @args
+      - name: Build
+        working-directory: build
+        shell: pwsh
+        run: |
+          cmake `
+            --build . `
+            --config Debug `
+            --parallel
+      - name: Run tests
+        working-directory: build
+        run: ctest . -C Debug --output-on-failure
