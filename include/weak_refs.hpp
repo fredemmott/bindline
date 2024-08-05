@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include <weak_refs/config.hpp>
+
 /*
  * Helpers for writing templates that deal with both
  * std::weak_ptr and winrt::weak_ref.
@@ -33,22 +35,6 @@
  * - `bind_front(maybe_refs, ...)`: tag-based ADL alias for
  *   `bind_maybe_refs_front()`
  */
-
-#ifndef FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT
-#define FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT (__has_include(<winrt/base.h>))
-#endif
-#ifndef FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT_GET_WEAK
-#define FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT_GET_WEAK \
-  FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT
-#endif
-
-#ifndef FREDEMMOTT_WEAK_REFS_ENABLE_STD_SHARED_PTR
-#define FREDEMMOTT_WEAK_REFS_ENABLE_STD_SHARED_PTR true
-#endif
-#ifndef FREDEMMOTT_WEAK_REFS_ENABLE_WEAK_FROM_THIS
-#define FREDEMMOTT_WEAK_REFS_ENABLE_WEAK_FROM_THIS \
-  FREDEMMOTT_WEAK_REFS_ENABLE_STD_SHARED_PTR
-#endif
 
 #include "weak_refs/base.hpp"
 #include "weak_refs/bind_maybe_refs_front.hpp"
