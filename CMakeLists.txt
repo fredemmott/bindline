@@ -1,7 +1,8 @@
 # Copyright (C) 2024 Fred Emmott <fred@fredemmott.com>
 # SPDX-License-Identifier: MIT
 
-cmake_minimum_required(VERSION 3.25)
+# As of 2024-05-08, this is the version available in Ubuntu LTS (22.04)
+cmake_minimum_required(VERSION 3.22)
 project(FredEmmott_WeakRefs VERSION 0.1 LANGUAGES CXX)
 
 option(ENABLE_TESTS "Build and run tests" ${PROJECT_IS_TOP_LEVEL})

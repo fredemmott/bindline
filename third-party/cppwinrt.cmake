@@ -7,6 +7,7 @@ FetchContent_Declare(
     cppwinrt
     URL https://www.nuget.org/api/v2/package/Microsoft.Windows.CppWinRT/2.0.240405.15
     URL_HASH SHA256=E889007B5D9235931E7340DDF737D2C346EEBDD23C619F1F4F2426A2AAE47180
+    DOWNLOAD_EXTRACT_TIMESTAMP ON
 )
 FetchContent_MakeAvailable(cppwinrt)
 
