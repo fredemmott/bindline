@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include <bind/config.hpp>
+#include <FredEmmott/bind/config.hpp>
 
 #include "bind/bind_front.hpp"
 

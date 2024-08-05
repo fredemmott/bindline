@@ -2,20 +2,18 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#ifndef FREDEMMOTT_CPPWINRT_USE_WIL
-#define FREDEMMOTT_CPPWINRT_USE_WIL (__has_include(<wil/cppwinrt_helpers.h>))
-#endif
+#include <FredEmmott/cppwinrt/config.hpp>
 
 #include <winrt/base.h>
 
-#if FREDEMMOTT_CPPWINRT_USE_WIL
+#if FREDEMMOTT_CPPWINRT_ENABLE_WIL
 #include <wil/cppwinrt_helpers.h>
 #endif
 
 #include <memory>
 
 namespace FredEmmott::cppwinrt_detail {
-#if FREDEMMOTT_CPPWINRT_USE_WIL
+#if FREDEMMOTT_CPPWINRT_ENABLE_WIL
 template <class T>
 concept wil_thread = requires(T v) { wil::resume_foreground(v); };
 #endif
@@ -50,7 +48,7 @@ struct context_binder_inner
   static auto switch_context(const winrt::apartment_context& ctx) {
     return ctx;
   }
-#if FREDEMMOTT_CPPWINRT_USE_WIL
+#if FREDEMMOTT_CPPWINRT_ENABLE_WIL
   template <wil_thread Context>
   static auto switch_context(Context&& ctx) {
     return wil::resume_foreground(std::forward<Context>(ctx));

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include <weak_refs/config.hpp>
+#include <FredEmmott/weak_refs/config.hpp>
 
 /*
  * Helpers for writing templates that deal with both

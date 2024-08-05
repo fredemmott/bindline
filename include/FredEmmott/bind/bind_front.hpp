@@ -4,6 +4,8 @@
 
 #include "detail/static_const.hpp"
 
+#include <functional>
+
 namespace FredEmmott::bind_detail {
 
 template <class... TArgs>
