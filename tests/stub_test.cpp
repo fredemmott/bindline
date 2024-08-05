@@ -6,9 +6,15 @@
 #include <FredEmmott/weak_refs.hpp>
 #include <FredEmmott/bind.hpp>
 
-static_assert(FREDEMMOTT_BIND_ENABLE_CPPWINRT);
+#if _WIN32
 static_assert(FREDEMMOTT_CPPWINRT_ENABLE_WIL);
+static_assert(FREDEMMOTT_BIND_ENABLE_CPPWINRT);
 static_assert(FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT);
+#else
+// UNDEFINED: static_assert(FREDEMMOTT_CPPWINRT_ENABLE_WIL);
+static_assert(!FREDEMMOTT_BIND_ENABLE_CPPWINRT);
+static_assert(!FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT);
+#endif
 
 int main() {
     return 0;

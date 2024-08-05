@@ -11,8 +11,6 @@ target_link_libraries(
     stub_test
     PRIVATE
     "${PROJECT_NAME}"
-    cppwinrt::windows-sdk
-    wil::wil
 )
 
 set_target_properties(
@@ -21,11 +19,17 @@ set_target_properties(
     CXX_EXTENSIONS OFF
 )
 
+if(WIN32)
+    target_link_libraries(
+        stub_test
+        cppwinrt::windows-sdk
+        wil::wil
+    )
+endif()
+
 include(CTest)
 
 add_test(
     NAME stub_test 
     COMMAND "$<TARGET_FILE:stub_test>"
 )
-
-message(STATUS "Compiler: ${CMAKE_CXX_COMPILER}")
