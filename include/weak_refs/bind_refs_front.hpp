@@ -24,7 +24,7 @@
 #include <tuple>
 #include <utility>
 
-namespace OpenKneeboard::weak_refs {
+namespace FredEmmott::weak_refs {
 
 template <class F, convertible_to_weak_ref... Binds>
 auto bind_refs_front(F&& f, Binds&&... binds) {
@@ -36,4 +36,4 @@ auto bind_refs_front(F&& f, Binds&&... binds) {
   return ret;
 }
 
-}// namespace OpenKneeboard::weak_refs
+}// namespace FredEmmott::weak_refs

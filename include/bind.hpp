@@ -41,5 +41,5 @@
 #endif
 
 namespace OpenKneeboard {
-using namespace ::OpenKneeboard::bind;
+using namespace ::FredEmmott::bind;
 }

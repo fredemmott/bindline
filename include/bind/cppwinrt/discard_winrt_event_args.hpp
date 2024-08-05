@@ -21,8 +21,8 @@
 
 #include "../../cppwinrt/concepts.hpp"
 
-namespace OpenKneeboard::bind_detail::cppwinrt {
-using namespace ::OpenKneeboard::cppwinrt::cppwinrt_concepts;
+namespace FredEmmott::bind_detail::cppwinrt {
+using namespace ::FredEmmott::cppwinrt::cppwinrt_concepts;
 
 template <class... Args>
 struct bind_trace_t {};
@@ -46,16 +46,16 @@ constexpr auto
 adl_bind_front(discard_winrt_event_args_t, Fn&& fn, Args&&... args) {
   // Fully-qualify so that ADL doesn't lead us to `std::bind_front()` if `fn` is
   // an `std::function<>`
-  const auto next = ::OpenKneeboard::bind::bind_front(
+  const auto next = ::FredEmmott::bind::bind_front(
     std::forward<Fn>(fn), std::forward<Args>(args)...);
 
   return discard_winrt_event_args_fn<
     std::decay_t<decltype(next)>,
     bind_trace_t<Args...>> {next};
 }
-}// namespace OpenKneeboard::bind_detail::cppwinrt
+}// namespace FredEmmott::bind_detail::cppwinrt
 
-namespace OpenKneeboard::bind::inline cppwinrt_bind_tags {
+namespace FredEmmott::bind::inline cppwinrt_bind_tags {
 constexpr bind_detail::cppwinrt::discard_winrt_event_args_t
   discard_winrt_event_args {};
 

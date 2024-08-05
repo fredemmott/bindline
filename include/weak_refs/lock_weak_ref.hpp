@@ -34,7 +34,7 @@
  * `Foo`, it shouldn't be used in ADL for `weak_ref(Foo::Bar {})`.
  */
 
-namespace OpenKneeboard::weak_refs_detail {
+namespace FredEmmott::weak_refs_detail {
 struct lock_weak_ref_fn {
   template <weak_refs::weak_ref T>
   constexpr auto operator()(T&& weak) const {
@@ -43,13 +43,13 @@ struct lock_weak_ref_fn {
   }
 };
 
-}// namespace OpenKneeboard::weak_refs_detail
+}// namespace FredEmmott::weak_refs_detail
 
-namespace OpenKneeboard::weak_refs {
+namespace FredEmmott::weak_refs {
 
 namespace {
 constexpr auto const& lock_weak_ref
   = weak_refs_detail::static_const<weak_refs_detail::lock_weak_ref_fn>;
 }// namespace
 
-}// namespace OpenKneeboard::weak_refs
+}// namespace FredEmmott::weak_refs

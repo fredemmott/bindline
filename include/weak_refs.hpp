@@ -109,8 +109,8 @@ void takes_regular_invocable_callback_extra_arg(
   std::regular_invocable<int, std::shared_ptr<int>, int> auto);
 
 void test_bind_front(TestBindFront* t, std::weak_ptr<int> weakInt) {
-  namespace weak_refs = OpenKneeboard::weak_refs;
-  using namespace OpenKneeboard::bind;
+  namespace weak_refs = FredEmmott::weak_refs;
+  using namespace FredEmmott::bind;
   using namespace weak_refs;
 
   auto std_byval = std::bind_front(&TestBindFront::byval, t);
@@ -162,5 +162,5 @@ void test_bind_front(TestBindFront* t, std::weak_ptr<int> weakInt) {
 }// namespace TestNS
 
 namespace OpenKneeboard {
-using namespace ::OpenKneeboard::weak_refs;
+using namespace ::FredEmmott::weak_refs;
 }// namespace OpenKneeboard

@@ -23,8 +23,8 @@
 
 #include <memory>
 
-namespace OpenKneeboard::weak_refs_extensions {
-namespace weak_refs = ::OpenKneeboard::weak_refs;
+namespace FredEmmott::weak_refs_extensions {
+namespace weak_refs = ::FredEmmott::weak_refs;
 
 template <class T>
 concept with_weak_from_this = std::is_pointer_v<T> && requires(T x) {
@@ -40,14 +40,14 @@ struct make_weak_ref_fn<T> {
   }
 };
 
-}// namespace OpenKneeboard::weak_refs_extensions
+}// namespace FredEmmott::weak_refs_extensions
 
 // TODO: split to test file
 
 #include "std_shared_ptr.hpp"
 
-namespace OpenKneeboard::weak_refs_test {
-using namespace OpenKneeboard::weak_refs;
+namespace FredEmmott::weak_refs_test {
+using namespace FredEmmott::weak_refs;
 struct TestWeakFromThis
   : public std::enable_shared_from_this<TestWeakFromThis> {};
 
@@ -57,4 +57,4 @@ static_assert(
 static_assert(convertible_to_weak_ref<TestWeakFromThis*>);
 static_assert(!strong_ref<TestWeakFromThis*>);
 
-}// namespace OpenKneeboard::weak_refs_test
+}// namespace FredEmmott::weak_refs_test

@@ -21,7 +21,7 @@
 
 #include "extensions.hpp"
 
-namespace OpenKneeboard::weak_refs::inline weak_refs_ref_types {
+namespace FredEmmott::weak_refs::inline weak_refs_ref_types {
 
 /// e.g. `std::weak_ptr<T>`
 template <class TStrong>
@@ -34,4 +34,4 @@ using strong_ref_t
   = decltype(weak_refs_extensions::lock_weak_ref_fn<std::decay_t<TWeak>>::lock(
     std::declval<TWeak>()));
 
-}// namespace OpenKneeboard::weak_refs::inline weak_refs_ref_types
+}// namespace FredEmmott::weak_refs::inline weak_refs_ref_types

@@ -23,7 +23,7 @@
 
 #include <memory>
 
-namespace OpenKneeboard::weak_refs_extensions {
+namespace FredEmmott::weak_refs_extensions {
 template <class T>
 concept std_shared_ptr = std::same_as<
   std::decay_t<T>,
@@ -50,9 +50,9 @@ struct lock_weak_ref_fn<T> {
     return value.lock();
   }
 };
-}// namespace OpenKneeboard::weak_refs_extensions
+}// namespace FredEmmott::weak_refs_extensions
 
-namespace OpenKneeboard::weak_refs {
+namespace FredEmmott::weak_refs {
 static_assert(strong_ref<std::shared_ptr<int>>);
 static_assert(!weak_ref<std::shared_ptr<int>>);
 
@@ -80,4 +80,4 @@ static_assert(weak_ref<std::weak_ptr<Test>>);
 static_assert(convertible_to_weak_ref<std::shared_ptr<Test>>);
 static_assert(convertible_to_weak_ref<std::weak_ptr<Test>>);
 
-}// namespace OpenKneeboard::weak_refs
+}// namespace FredEmmott::weak_refs

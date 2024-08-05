@@ -31,7 +31,7 @@
 
 #include <memory>
 
-namespace OpenKneeboard::cppwinrt_detail {
+namespace FredEmmott::cppwinrt_detail {
 #if OPENKNEEBOARD_CPPWINRT_USE_WIL
 template <class T>
 concept wil_thread = requires(T v) { wil::resume_foreground(v); };
@@ -98,9 +98,9 @@ struct context_binder_outer {
   std::shared_ptr<context_binder_inner<TContext, TFn>> mInner;
 };
 
-}// namespace OpenKneeboard::cppwinrt_detail
+}// namespace FredEmmott::cppwinrt_detail
 
-namespace OpenKneeboard::cppwinrt {
+namespace FredEmmott::cppwinrt {
 
 template <class Context, class F>
 auto bind_context(Context&& context, F&& f) {
@@ -109,4 +109,4 @@ auto bind_context(Context&& context, F&& f) {
       std::forward<Context>(context), std::forward<F>(f)};
 }
 
-}// namespace OpenKneeboard::cppwinrt
+}// namespace FredEmmott::cppwinrt

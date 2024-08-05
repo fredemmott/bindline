@@ -23,7 +23,7 @@
 
 #include <concepts>
 
-namespace OpenKneeboard::weak_refs::inline weak_refs_concepts {
+namespace FredEmmott::weak_refs::inline weak_refs_concepts {
 
 /** An object without keep-alive semantics, but can be 'locked' to produce one
  * with keep-alive semantics.
@@ -59,4 +59,4 @@ concept strong_ref = convertible_to_weak_ref<T>
 static_assert(!strong_ref<int*>);
 static_assert(!weak_ref<int*>);
 
-}// namespace OpenKneeboard::weak_refs
+}// namespace FredEmmott::weak_refs

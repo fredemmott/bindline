@@ -21,7 +21,7 @@
 
 #include "detail/static_const.hpp"
 
-namespace OpenKneeboard::bind_detail {
+namespace FredEmmott::bind_detail {
 
 template <class... TArgs>
 concept has_adl_bind_front
@@ -50,13 +50,13 @@ struct bind_front_fn {
   }
 };
 
-}// namespace OpenKneeboard::bind_detail
+}// namespace FredEmmott::bind_detail
 
-namespace OpenKneeboard::bind::inline bind_core {
+namespace FredEmmott::bind::inline bind_core {
 
 namespace {
 constexpr auto const& bind_front
   = bind_detail::static_const<bind_detail::bind_front_fn>;
 }
 
-}// namespace OpenKneeboard::bind
+}// namespace FredEmmott::bind

@@ -26,9 +26,9 @@
 
 #include <memory>
 
-namespace OpenKneeboard::weak_refs_extensions {
+namespace FredEmmott::weak_refs_extensions {
 
-using namespace OpenKneeboard::cppwinrt::cppwinrt_concepts;
+using namespace FredEmmott::cppwinrt::cppwinrt_concepts;
 
 template <cppwinrt_strong_ref T>
 struct make_weak_ref_fn<T> {
@@ -45,9 +45,9 @@ struct lock_weak_ref_fn<T> {
   }
 };
 
-}// namespace OpenKneeboard::weak_refs_extensions
+}// namespace FredEmmott::weak_refs_extensions
 
-namespace OpenKneeboard::weak_refs {
+namespace FredEmmott::weak_refs {
 static_assert(convertible_to_weak_ref<winrt::Windows::Foundation::IStringable>);
 static_assert(strong_ref<winrt::Windows::Foundation::IStringable>);
 static_assert(!weak_ref<winrt::Windows::Foundation::IStringable>);
@@ -57,4 +57,4 @@ static_assert(!strong_ref<decltype(winrt::make_weak(
 static_assert(!strong_ref<winrt::Windows::Foundation::IStringable*>);
 static_assert(weak_ref<decltype(winrt::make_weak(
                 winrt::Windows::Foundation::IStringable {nullptr}))>);
-}// namespace OpenKneeboard::weak_refs
+}// namespace FredEmmott::weak_refs

@@ -19,7 +19,7 @@
  */
 #pragma once
 
-namespace OpenKneeboard::weak_refs_detail {
+namespace FredEmmott::weak_refs_detail {
 template <class T>
 constexpr T static_const {};
 }

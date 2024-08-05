@@ -27,7 +27,7 @@
 #include <tuple>
 #include <utility>
 
-namespace OpenKneeboard::weak_refs::bind_maybe_refs_detail {
+namespace FredEmmott::weak_refs::bind_maybe_refs_detail {
 
 enum class NotARefBehavior { Passthrough, Error };
 
@@ -166,9 +166,9 @@ struct front_binder {
   }
 };
 
-}// namespace OpenKneeboard::weak_refs::bind_maybe_refs_detail
+}// namespace FredEmmott::weak_refs::bind_maybe_refs_detail
 
-namespace OpenKneeboard::weak_refs {
+namespace FredEmmott::weak_refs {
 
 template <class F, class First, class... Rest>
 auto bind_maybe_refs_front(F&& f, First&& first, Rest&&... rest) {
@@ -191,4 +191,4 @@ auto bind_maybe_refs_front(F&& f, First&& first, Rest&&... rest) {
   return ret;
 }
 
-}// namespace OpenKneeboard::weak_refs
+}// namespace FredEmmott::weak_refs

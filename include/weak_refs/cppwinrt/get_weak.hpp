@@ -22,9 +22,9 @@
 #include "../../cppwinrt/concepts.hpp"
 #include "../cppwinrt.hpp"
 
-namespace OpenKneeboard::weak_refs_extensions {
+namespace FredEmmott::weak_refs_extensions {
 
-using namespace OpenKneeboard::cppwinrt::cppwinrt_concepts;
+using namespace FredEmmott::cppwinrt::cppwinrt_concepts;
 
 template <cppwinrt_raw_pointer T>
 struct make_weak_ref_fn<T> {
@@ -35,4 +35,4 @@ struct make_weak_ref_fn<T> {
 
 // FIXME: test winrt::com_ptr()
 
-}// namespace OpenKneeboard::weak_refs_extensions
+}// namespace FredEmmott::weak_refs_extensions

@@ -27,7 +27,7 @@
 #include <optional>
 #include <tuple>
 
-namespace OpenKneeboard::weak_refs {
+namespace FredEmmott::weak_refs {
 
 template <convertible_to_weak_ref... Args>
 constexpr auto make_weak_refs(Args&&... args) noexcept {
@@ -56,4 +56,4 @@ constexpr auto lock_weak_refs(const std::tuple<Weak...>& weak) noexcept {
   return locked_t {strong};
 }
 
-}// namespace OpenKneeboard::weak_refs
+}// namespace FredEmmott::weak_refs

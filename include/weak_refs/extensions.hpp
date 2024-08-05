@@ -21,7 +21,7 @@
 
 #include <concepts>
 
-namespace OpenKneeboard::weak_refs_extensions {
+namespace FredEmmott::weak_refs_extensions {
 
 template <class T>
 struct make_weak_ref_fn {
@@ -48,4 +48,4 @@ struct lock_weak_ref_fn {
   static constexpr auto lock(T&&) = delete;
 };
 
-}// namespace OpenKneeboard::weak_refs_extensions
+}// namespace FredEmmott::weak_refs_extensions

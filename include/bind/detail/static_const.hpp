@@ -19,7 +19,7 @@
  */
 #pragma once
 
-namespace OpenKneeboard::bind_detail {
+namespace FredEmmott::bind_detail {
 template <class T>
 constexpr T static_const {};
 }
