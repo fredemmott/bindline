@@ -1,35 +1,26 @@
 # Copyright (C) 2024 Fred Emmott <fred@fredemmott.com>
 # SPDX-License-Identifier: MIT
-include(CTest)
 
-add_executable(
-    stub_test
-    stub_test.cpp
-)
+include(Catch)
 
-target_link_libraries(
-    stub_test
-    PRIVATE
-    "${PROJECT_NAME}"
-)
+function(add_test_executable TARGET)
+    add_executable(${TARGET} ${ARGN})
+    catch_discover_tests(${TARGET})
 
-set_target_properties(
-    stub_test
-    PROPERTIES
-    CXX_EXTENSIONS OFF
-)
+    target_link_libraries(
+        ${TARGET}
+        PRIVATE
+        "${PROJECT_NAME}"
+        Catch2::Catch2WithMain
+    )
+    set_target_properties(
+        ${TARGET}
+        PROPERTIES
+        CXX_EXTENSIONS OFF
+    )
+endfunction()
 
 if(WIN32)
-    target_link_libraries(
-        stub_test
-        cppwinrt::windows-sdk
-        wil::wil
-    )
+  add_test_executable(cppwinrt-concepts cppwinrt/concepts.cpp)
+  target_link_libraries(cppwinrt-concepts PRIVATE cppwinrt::windows-sdk)
 endif()
-
-include(CTest)
-
-add_test(
-    NAME stub_test 
-    COMMAND "$<TARGET_FILE:stub_test>"
-)

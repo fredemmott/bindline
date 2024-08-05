@@ -23,9 +23,6 @@ template <class T>
 concept cppwinrt_strong_ref = cppwinrt_com_ptr<T>
   || (cppwinrt_type<T> && requires(T v) { winrt::make_weak(v); });
 
-static_assert(cppwinrt_strong_ref<winrt::Windows::Foundation::IInspectable>);
-static_assert(cppwinrt_strong_ref<winrt::Windows::Foundation::IStringable>);
-
 template <class T>
 concept cppwinrt_weak_ref
   = (cppwinrt_strong_ref<decltype(std::declval<T>().get())>
@@ -38,16 +35,5 @@ template <class T>
 concept cppwinrt_raw_pointer = std::is_pointer_v<T> && requires(T v) {
   { v->get_weak() } -> cppwinrt_weak_ref;
 };
-
-static_assert(!cppwinrt_strong_ref<int>);
-static_assert(!cppwinrt_strong_ref<std::shared_ptr<int>>);
-static_assert(!cppwinrt_weak_ref<std::weak_ptr<int>>);
-
-static_assert(cppwinrt_strong_ref<winrt::Windows::Foundation::IInspectable>);
-static_assert(cppwinrt_strong_ref<winrt::Windows::Foundation::IStringable>);
-static_assert(!cppwinrt_strong_ref<
-              winrt::weak_ref<winrt::Windows::Foundation::IStringable>>);
-static_assert(
-  cppwinrt_weak_ref<winrt::weak_ref<winrt::Windows::Foundation::IStringable>>);
 
 }// namespace FredEmmott::cppwinrt::inline cppwinrt_concepts
