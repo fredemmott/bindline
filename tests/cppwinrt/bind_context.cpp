@@ -35,7 +35,7 @@ concurrency::task<winrt::apartment_context> get_background_context(auto dq) {
   co_return ret;
 }
 
-TEST_CASE("winrt::apartment_context") {
+TEST_CASE("switch to given winrt::apartment_context") {
   STATIC_REQUIRE(valid_context<winrt::apartment_context>);
 
   auto dqc = winrt::Windows::System::DispatcherQueueController::
@@ -72,6 +72,6 @@ TEST_CASE("winrt::apartment_context") {
   dqc.ShutdownQueueAsync().get();
 }
 
-TEST_CASE("included before <winrt/Windows.System.h>") {
+TEST_CASE("can't switch to a DispatcherQueue") {
   STATIC_CHECK_FALSE(valid_context<winrt::Windows::System::DispatcherQueue>);
 }

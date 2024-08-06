@@ -18,7 +18,13 @@ using namespace FredEmmott::cppwinrt;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::System;
 
-TEST_CASE("basic") {
+TEST_CASE("switch to given DispatcherQueue") {
+  SKIP("TODO - not implemented");
+}
+
+// This tests that we're using `wil::resume_foreground()`, not
+// `winrt::resume_foreground()`
+TEST_CASE("suspends even if already in the correct thread") {
   SKIP("TODO - not implemented");
 }
 
@@ -42,7 +48,7 @@ TEST_CASE("basic") {
  * return if we're already in the correct thread, turning our 'blocker' into a
  * busy-loop which actually blocks the thread.
  */
-TEST_CASE("lifetime safety") {
+TEST_CASE("doesn't invoke callback if destructed while waiting") {
   auto dqc = DispatcherQueueController::CreateOnDedicatedThread();
   auto dq = dqc.DispatcherQueue();
 

@@ -11,19 +11,19 @@ function(add_test_executable TARGET)
     set(valueArgs TEST_PREFIX)
     set(multiValueArgs SOURCES LINK_LIBRARIES)
 
-    if("${TEST_ARG_TEST_PREFIX}")
-        set(TEST_PREFIX "${CTEST_ARG_TEST_PREFIX}")
+    cmake_parse_arguments(
+        TEST_ARG
+        "${options}"
+        "${valueArgs}"
+        "${multiValueArgs}"
+        ${ARGN})
+
+    if(TEST_ARG_TEST_PREFIX)
+        set(TEST_PREFIX "${TEST_ARG_TEST_PREFIX}")
     else()
         string(REPLACE "-" "/" TEST_PREFIX "${TARGET}")
     endif()
     string(APPEND TEST_PREFIX "➡️")
-
-    cmake_parse_arguments(
-        TEST_ARG
-        "${options}"
-        ""
-        "${multiValueArgs}"
-        ${ARGN})
         
     set(TARGET_ARGS ${TEST_ARG_UNPARSED_ARGUMENTS} ${TEST_ARG_SOURCES})
 
@@ -70,15 +70,6 @@ if(WIN32)
     )
 
     add_test_executable(
-        cppwinrt-bind_context-DispatcherQueue
-        CPPWINRT_MAIN
-        SOURCES
-        cppwinrt/bind_context-DispatcherQueue.cpp
-        LINK_LIBRARIES
-        cppwinrt::windows-sdk
-    )
-
-    add_test_executable(
         cppwinrt-bind_context-wil
         CPPWINRT_MAIN
         SOURCES
@@ -86,5 +77,16 @@ if(WIN32)
         LINK_LIBRARIES
         cppwinrt::windows-sdk
         wil::wil
+    )
+
+    add_test_executable(
+        cppwinrt-bind_context-winrt_resume_foreground
+        CPPWINRT_MAIN
+        TEST_PREFIX
+        "cppwinrt/winrt::resume_foreground"
+        SOURCES
+        cppwinrt/bind_context-winrt_resume_foreground.cpp
+        LINK_LIBRARIES
+        cppwinrt::windows-sdk
     )
 endif()

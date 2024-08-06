@@ -25,7 +25,7 @@ using namespace FredEmmott::cppwinrt;
 template <class T>
 concept valid_context = requires(T ctx) { bind_context(ctx, []() {}); };
 
-TEST_CASE("winrt::Windows::System::DispatcherQueue") {
+TEST_CASE("switch to winrt::Windows::System::DispatcherQueue thread") {
   STATIC_REQUIRE(valid_context<winrt::Windows::System::DispatcherQueue>);
 
   auto dqc = winrt::Windows::System::DispatcherQueueController::
