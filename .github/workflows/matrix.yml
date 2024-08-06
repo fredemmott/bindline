@@ -22,7 +22,6 @@ jobs:
           - os: linux
             runs-on: ubuntu-22.04
             compiler: g++
-            experimental: true
           - os: macos
             runs-on: macos-14
             compiler: clang++
