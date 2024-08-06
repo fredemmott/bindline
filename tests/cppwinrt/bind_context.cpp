@@ -74,7 +74,3 @@ TEST_CASE("winrt::apartment_context") {
 TEST_CASE("included before <winrt/Windows.System.h>") {
   STATIC_CHECK_FALSE(valid_context<winrt::Windows::System::DispatcherQueue>);
 }
-
-TEST_CASE("lifetime safety") {
-  SKIP("not implemented - TODO");
-}
