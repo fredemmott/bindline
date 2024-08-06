@@ -9,6 +9,7 @@
 #include <wil/cppwinrt_helpers.h>
 #endif
 
+#include <concepts>
 #include <memory>
 
 namespace FredEmmott::cppwinrt_detail {
@@ -22,13 +23,16 @@ struct impossible_argument_t {
 namespace winrt {
 // Avoid undefined function compile errors if none of the definitions have been
 // included
-void resume_foreground(
-  const FredEmmott::cppwinrt_detail::impossible_argument_t&)
-  = delete;
+inline void resume_foreground(
+  const FredEmmott::cppwinrt_detail::impossible_argument_t&) {
+}
 };// namespace winrt
 #endif
 
 namespace FredEmmott::cppwinrt_detail {
+
+template <class A, class B>
+concept different_to = !std::same_as<A, B>;
 
 auto switch_context(const winrt::apartment_context& ctx) {
   return ctx;
@@ -36,8 +40,9 @@ auto switch_context(const winrt::apartment_context& ctx) {
 
 #if FREDEMMOTT_CPPWINRT_ENABLE_WINRT_RESUME_FOREGROUND
 template <class T>
-concept cppwinrt_dispatcherqueue
-  = requires(T v) { winrt::resume_foreground(v); };
+concept cppwinrt_dispatcherqueue = requires(T v) {
+  { winrt::resume_foreground(v) } -> different_to<void>;
+};
 
 template <cppwinrt_dispatcherqueue T>
 auto switch_context(T&& v) {
