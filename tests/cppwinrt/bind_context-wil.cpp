@@ -27,6 +27,7 @@ TEST_CASE("switch to DispatcherQueue thread") {
 TEST_CASE("suspends even if already in the correct thread") {
   auto dqc = DispatcherQueueController::CreateOnDedicatedThread();
   auto dq = dqc.DispatcherQueue();
+  SKIP("incomplete");
 }
 
 /** Test that if the `bind_context()` functor is destructed while waiting, it
