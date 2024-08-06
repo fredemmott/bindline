@@ -54,6 +54,8 @@
 #include "weak_refs/weak_from_this.hpp"
 #endif
 
+#if 0
+// FIXME: move to test
 // Just for testing:
 #include "bind.hpp"
 
@@ -127,3 +129,4 @@ void test_bind_front(TestBindFront* t, std::weak_ptr<int> weakInt) {
 }
 }// namespace
 }// namespace TestNS
+#endif

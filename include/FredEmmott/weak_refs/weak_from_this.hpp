@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "base.hpp"
-
 #include <memory>
+
+#include "base.hpp"
 
 namespace FredEmmott::weak_refs_extensions {
 namespace weak_refs = ::FredEmmott::weak_refs;
@@ -25,7 +25,8 @@ struct make_weak_ref_fn<T> {
 
 }// namespace FredEmmott::weak_refs_extensions
 
-// TODO: split to test file
+#if 0
+//FIXME TODO: split to test file
 
 #include "std_shared_ptr.hpp"
 
@@ -41,3 +42,4 @@ static_assert(convertible_to_weak_ref<TestWeakFromThis*>);
 static_assert(!strong_ref<TestWeakFromThis*>);
 
 }// namespace FredEmmott::weak_refs_test
+#endif
