@@ -4,7 +4,6 @@ jobs:
   build:
     name: ${{matrix.os}}/${{matrix.compiler}}
     runs-on: ${{matrix.runs-on}}
-    continue-on-error: true
     strategy:
       matrix:
         include:
