@@ -21,8 +21,8 @@ using namespace FredEmmott::cppwinrt;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::System;
 
+#include "common/always_suspends.hpp"
 #include "common/test_does_not_invoke_if_destroyed.hpp"
-#include "common/test_dq_always_suspends.hpp"
 #include "common/test_switch_to_dispatcherqueue.hpp"
 
 TEST_CASE("switch to DispatcherQueue thread") {
