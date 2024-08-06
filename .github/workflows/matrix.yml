@@ -4,6 +4,7 @@ jobs:
   call-build-and-test:
     name: ${{matrix.os}}/${{matrix.compiler}}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: windows
@@ -21,6 +22,7 @@ jobs:
           - os: linux
             runs-on: ubuntu-22.04
             compiler: g++
+            experimental: true
           - os: macos
             runs-on: macos-14
             compiler: clang++
@@ -29,3 +31,4 @@ jobs:
       os: ${{matrix.os}}
       runs-on: ${{matrix.runs-on}}
       compiler: ${{matrix.compiler}}
+      experimental: ${{matrix.experimental || false }}
