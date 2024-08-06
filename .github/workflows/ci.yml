@@ -80,4 +80,10 @@ jobs:
         working-directory: build
         env:
           CLICOLOR_FORCE: 1
-        run: ctest . -C Debug --output-on-failure
+        run: ctest . -C Debug --output-on-failure --output-log "${{runner.temp}}/ctest.log"
+      - name: Publish test log
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ctest-logs-${{matrix.os}}-${{matrix.compiler}}-GHA${{github.run_number}}
+          path: "${{runner.temp}}/ctest.log"
