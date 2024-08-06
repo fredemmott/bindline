@@ -87,14 +87,14 @@ TEST_CASE("lifetime safety") {
     state->cv.notify_all();
   };
 
-  auto retained
-    = bind_context(dq, std::bind_front(impl, &state.invoked_retained));
-  retained();
   {
     auto unretained
       = bind_context(dq, std::bind_front(impl, &state.invoked_unretained));
     unretained();
   }
+  auto retained
+    = bind_context(dq, std::bind_front(impl, &state.invoked_retained));
+  retained();
 
   {
     std::unique_lock lock(state.mutex);
@@ -102,7 +102,9 @@ TEST_CASE("lifetime safety") {
     state.cv.notify_all();
   }
 
-  ([](auto dq) -> IAsyncAction { co_await winrt::resume_foreground(dq); })(dq)
+  ([](auto dq) -> IAsyncAction {
+    co_await winrt::resume_foreground(dq, DispatcherQueuePriority::Low);
+  })(dq)
     .get();
 
   CHECK_FALSE(state.blocked);
