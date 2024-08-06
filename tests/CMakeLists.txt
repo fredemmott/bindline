@@ -15,8 +15,8 @@ function(add_test_executable TARGET)
         set(TEST_PREFIX "${CTEST_ARG_TEST_PREFIX}")
     else()
         string(REPLACE "-" "/" TEST_PREFIX "${TARGET}")
-        string(APPEND TEST_PREFIX "/")
     endif()
+    string(APPEND TEST_PREFIX "➡️")
 
     cmake_parse_arguments(
         TEST_ARG
