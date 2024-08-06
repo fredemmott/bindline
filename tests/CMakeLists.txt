@@ -57,6 +57,8 @@ function(add_test_executable SOURCE)
     )
 endfunction()
 
+add_test_executable(weak_refs/concepts.cpp)
+
 if(WIN32)
     add_test_executable(
         cppwinrt/concepts.cpp
