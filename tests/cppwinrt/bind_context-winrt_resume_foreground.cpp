@@ -11,10 +11,6 @@
 
 #include <FredEmmott/cppwinrt.hpp>
 
-#include <functional>
-#include <future>
-#include <optional>
-
 #include <catch2/catch_test_macros.hpp>
 
 static_assert(
@@ -25,12 +21,18 @@ using namespace FredEmmott::cppwinrt;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::System;
 
+#include "common/test_does_not_invoke_if_destroyed.hpp"
+#include "common/test_dq_always_suspends.hpp"
 #include "common/test_switch_to_dispatcherqueue.hpp"
 
 TEST_CASE("switch to DispatcherQueue thread") {
   test_switch_to_dispatcherqueue();
 }
 
-TEST_CASE("does not suspend if already in correct thread") {
-  SKIP("TODO - not implemented");
+TEST_CASE("suspends even if already in correct thread") {
+  test_dq_always_suspends();
+}
+
+TEST_CASE("doesn't invoke callback if destructed while waiting") {
+  test_does_not_invoke_if_destroyed();
 }
