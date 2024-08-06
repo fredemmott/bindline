@@ -65,6 +65,15 @@ if(WIN32)
     )
 
     add_test_executable(
+        cppwinrt-bind_context-DispatcherQueue
+        CPPWINRT_MAIN
+        SOURCES
+        cppwinrt/bind_context-DispatcherQueue.cpp
+        LINK_LIBRARIES
+        cppwinrt::windows-sdk
+    )
+
+    add_test_executable(
         cppwinrt-bind_context-wil
         CPPWINRT_MAIN
         SOURCES

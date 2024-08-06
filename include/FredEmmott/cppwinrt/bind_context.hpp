@@ -1,10 +1,9 @@
 // Copyright (C) 2024 Fred Emmott <fred@fredemmott.com>
 // SPDX-License-Identifier: MIT
 #pragma once
+#include <winrt/base.h>
 
 #include <FredEmmott/cppwinrt/config.hpp>
-
-#include <winrt/base.h>
 
 #if FREDEMMOTT_CPPWINRT_ENABLE_WIL
 #include <wil/cppwinrt_helpers.h>
@@ -13,19 +12,64 @@
 #include <memory>
 
 namespace FredEmmott::cppwinrt_detail {
-#if FREDEMMOTT_CPPWINRT_ENABLE_WIL
-template <class T>
-concept wil_thread = requires(T v) { wil::resume_foreground(v); };
+struct impossible_argument_t {
+  impossible_argument_t() = delete;
+};
+
+}// namespace FredEmmott::cppwinrt_detail
+
+#if FREDEMMOTT_CPPWINRT_ENABLE_WINRT_RESUME_FOREGROUND
+namespace winrt {
+// Avoid undefined function compile errors if none of the definitions have been
+// included
+void resume_foreground(
+  const FredEmmott::cppwinrt_detail::impossible_argument_t&)
+  = delete;
+};// namespace winrt
 #endif
 
-template <class TContext, class TFn>
+namespace FredEmmott::cppwinrt_detail {
+
+auto switch_context(const winrt::apartment_context& ctx) {
+  return ctx;
+}
+
+#if FREDEMMOTT_CPPWINRT_ENABLE_WINRT_RESUME_FOREGROUND
+template <class T>
+concept cppwinrt_dispatcherqueue
+  = requires(T v) { winrt::resume_foreground(v); };
+
+template <cppwinrt_dispatcherqueue T>
+auto switch_context(T&& v) {
+  return winrt::resume_foreground(std::forward<T>(v));
+}
+#else
+template <class T>
+concept cppwinrt_dispatcherqueue = false;
+#endif
+
+#if FREDEMMOTT_CPPWINRT_ENABLE_WIL
+template <class T>
+concept wil_thread = (!cppwinrt_dispatcherqueue<T>)
+  && requires(T v) { wil::resume_foreground(v); };
+
+template <wil_thread T>
+auto switch_context(T&& v) {
+  return wil::resume_foreground(std::forward<T>(v));
+}
+#endif
+
+template <class T>
+concept switchable_context = requires(T v) { switch_context(v); };
+
+template <switchable_context TContext, class TFn>
 struct context_binder_inner
   : std::enable_shared_from_this<context_binder_inner<TContext, TFn>> {
  public:
   using function_t = TFn;
 
   context_binder_inner() = delete;
-  template <class InitContext, class InitFn>
+  template <std::convertible_to<TContext> InitContext, class InitFn>
   context_binder_inner(InitContext&& context, InitFn&& fn)
     : mContext(std::forward<InitContext>(context)),
       mFn(std::forward<InitFn>(fn)) {
@@ -45,21 +89,11 @@ struct context_binder_inner
   }
 
  private:
-  static auto switch_context(const winrt::apartment_context& ctx) {
-    return ctx;
-  }
-#if FREDEMMOTT_CPPWINRT_ENABLE_WIL
-  template <wil_thread Context>
-  static auto switch_context(Context&& ctx) {
-    return wil::resume_foreground(std::forward<Context>(ctx));
-  }
-#endif
-
   TContext mContext;
   TFn mFn;
 };
 
-template <class TContext, class TFn>
+template <switchable_context TContext, class TFn>
 struct context_binder_outer {
   using function_t = TFn;
 
@@ -83,7 +117,7 @@ struct context_binder_outer {
 
 namespace FredEmmott::cppwinrt {
 
-template <class Context, class F>
+template <cppwinrt_detail::switchable_context Context, class F>
 auto bind_context(Context&& context, F&& f) {
   return cppwinrt_detail::
     context_binder_outer<std::decay_t<Context>, std::decay_t<F>> {
