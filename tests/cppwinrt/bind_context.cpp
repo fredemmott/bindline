@@ -9,6 +9,7 @@
 static_assert(
   !FREDEMMOTT_CPPWINRT_ENABLE_WIL,
   "WIL support is covered in a separate test");
+static_assert(!FREDEMMOTT_CPPWINRT_ENABLE_WINRT_RESUME_FOREGROUND);
 
 #include <pplawait.h>
 

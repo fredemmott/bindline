@@ -7,6 +7,8 @@
 // Must be *before* cppwinrt.hpp
 #include <winrt/Windows.System.h>
 
+#define FREDEMMOTT_CPPWINRT_ENABLE_WINRT_RESUME_FOREGROUND true
+
 #include <FredEmmott/cppwinrt.hpp>
 
 static_assert(
