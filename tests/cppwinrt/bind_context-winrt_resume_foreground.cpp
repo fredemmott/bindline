@@ -11,50 +11,26 @@
 
 #include <FredEmmott/cppwinrt.hpp>
 
-static_assert(
-  !FREDEMMOTT_CPPWINRT_ENABLE_WIL,
-  "WIL support is covered in a separate test");
-
 #include <functional>
+#include <future>
 #include <optional>
 
 #include <catch2/catch_test_macros.hpp>
 
+static_assert(
+  !FREDEMMOTT_CPPWINRT_ENABLE_WIL,
+  "WIL support is covered in a separate test");
+
 using namespace FredEmmott::cppwinrt;
+using namespace winrt::Windows::Foundation;
+using namespace winrt::Windows::System;
 
-template <class T>
-concept valid_context = requires(T ctx) { bind_context(ctx, []() {}); };
+#include "common/test_switch_to_dispatcherqueue.hpp"
 
-TEST_CASE("switch to winrt::Windows::System::DispatcherQueue thread") {
-  STATIC_REQUIRE(valid_context<winrt::Windows::System::DispatcherQueue>);
+TEST_CASE("switch to DispatcherQueue thread") {
+  test_switch_to_dispatcherqueue();
+}
 
-  auto dqc = winrt::Windows::System::DispatcherQueueController::
-    CreateOnDedicatedThread();
-
-  const DWORD thisThreadID = GetCurrentThreadId();
-  std::optional<DWORD> otherThreadID;
-
-  winrt::handle event {CreateEvent(nullptr, false, false, nullptr)};
-  HANDLE handles[] = {event.get()};
-
-  auto f = bind_context(
-    dqc.DispatcherQueue(),
-    std::bind_front(
-      [](auto idPtr, auto event) {
-        *idPtr = GetCurrentThreadId();
-        SetEvent(event);
-      },
-      &otherThreadID,
-      event.get()));
-
-  f();
-  while (MsgWaitForMultipleObjects(1, handles, false, INFINITE, QS_ALLEVENTS)
-         != WAIT_OBJECT_0) {
-  }
-
-  CHECK(thisThreadID == GetCurrentThreadId());
-  CHECK(otherThreadID);
-  CHECK(otherThreadID != thisThreadID);
-
-  dqc.ShutdownQueueAsync().get();
+TEST_CASE("does not suspend if already in correct thread") {
+  SKIP("TODO - not implemented");
 }

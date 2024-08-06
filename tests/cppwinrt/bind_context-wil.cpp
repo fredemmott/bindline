@@ -8,24 +8,25 @@
 
 #include <FredEmmott/cppwinrt.hpp>
 
-static_assert(FREDEMMOTT_CPPWINRT_ENABLE_WIL);
-
-#include <future>
-
 #include <catch2/catch_test_macros.hpp>
+
+static_assert(FREDEMMOTT_CPPWINRT_ENABLE_WIL);
 
 using namespace FredEmmott::cppwinrt;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::System;
 
-TEST_CASE("switch to given DispatcherQueue") {
-  SKIP("TODO - not implemented");
+#include "common/test_switch_to_dispatcherqueue.hpp"
+
+TEST_CASE("switch to DispatcherQueue thread") {
+  test_switch_to_dispatcherqueue();
 }
 
 // This tests that we're using `wil::resume_foreground()`, not
 // `winrt::resume_foreground()`
 TEST_CASE("suspends even if already in the correct thread") {
-  SKIP("TODO - not implemented");
+  auto dqc = DispatcherQueueController::CreateOnDedicatedThread();
+  auto dq = dqc.DispatcherQueue();
 }
 
 /** Test that if the `bind_context()` functor is destructed while waiting, it
