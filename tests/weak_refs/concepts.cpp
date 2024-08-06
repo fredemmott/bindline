@@ -1,7 +1,5 @@
 // Copyright (C) 2024 Fred Emmott <fred@fredemmott.com>
 // SPDX-License-Identifier: MIT
-#pragma once
-
 #include <FredEmmott/weak_refs.hpp>
 
 #include <catch2/catch_test_macros.hpp>
