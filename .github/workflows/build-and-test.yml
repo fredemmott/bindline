@@ -76,7 +76,7 @@ jobs:
           CLICOLOR_FORCE: 1
         run: ctest . -C Debug --output-on-failure --output-log "${{runner.temp}}/ctest.log"
       - name: Publish test log
-        if: ${{ failure() }}
+        if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
           name: ctest-logs-${{inputs.os}}-${{inputs.compiler}}-GHA${{github.run_number}}
