@@ -36,7 +36,12 @@ function(add_test_executable TARGET)
 
 
     add_executable(${TARGET} ${TARGET_ARGS})
-    catch_discover_tests(${TARGET} TEST_PREFIX "${TEST_PREFIX}")
+    catch_discover_tests(
+        ${TARGET}
+        TEST_PREFIX "${TEST_PREFIX}"
+        PROPERTIES
+        SKIP_RETURN_CODE 4
+    )
 
     target_link_libraries(
         ${TARGET}
