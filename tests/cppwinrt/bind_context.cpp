@@ -21,6 +21,9 @@ static_assert(!FREDEMMOTT_CPPWINRT_ENABLE_WINRT_RESUME_FOREGROUND);
 #include <winrt/Windows.System.h>
 
 using namespace FredEmmott::cppwinrt;
+using namespace winrt::Windows::System;
+
+#include "common/always_suspends.hpp"
 
 template <class T>
 concept valid_context = requires(T ctx) { bind_context(ctx, []() {}); };
@@ -68,6 +71,17 @@ TEST_CASE("switch to given winrt::apartment_context") {
   CHECK(thisThreadID == GetCurrentThreadId());
   CHECK(backgroundThreadID);
   CHECK(backgroundThreadID != thisThreadID);
+
+  dqc.ShutdownQueueAsync().get();
+}
+
+TEST_CASE("doesn't suspend on an apartment context") {
+  // This is inconsistent - see
+  // https://github.com/fredemmott/weak_refs/issues/12
+  auto dqc = winrt::Windows::System::DispatcherQueueController::
+    CreateOnDedicatedThread();
+  const auto otherThread = get_background_context(dqc.DispatcherQueue()).get();
+  CHECK_FALSE(always_suspends(otherThread));
 
   dqc.ShutdownQueueAsync().get();
 }

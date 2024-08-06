@@ -46,12 +46,3 @@ inline bool always_suspends(auto context) {
   CHECK(state.invoked);
   return state.did_suspend_first.value();
 }
-
-inline void test_dq_always_suspends() {
-  auto dqc = DispatcherQueueController::CreateOnDedicatedThread();
-  auto dq = dqc.DispatcherQueue();
-
-  CHECK(always_suspends(dq));
-
-  dqc.ShutdownQueueAsync().get();
-}
