@@ -55,6 +55,15 @@ function(add_test_executable SOURCE)
         "${PROJECT_NAME}"
         ${TEST_ARG_LINK_LIBRARIES}
     )
+
+    if(WIN32 AND (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") AND (NOT "cppwinrt::windows-sdk" IN_LIST TEST_ARG_LINK_LIBRARIES))
+        # The version of C++/WinRT included in the Windows SDK might not be usable without <Windows.h>
+        #
+        # e.g. for Clang, https://github.com/microsoft/cppwinrt/pull/1180
+        #
+        # Replace the `__has_include(<winrt/base.h>)` check
+        target_compile_definitions("${TARGET}" PRIVATE "FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT=false")
+    endif()
 endfunction()
 
 add_test_executable(weak_refs/concepts.cpp)
