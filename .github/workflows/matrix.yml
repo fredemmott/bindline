@@ -1,0 +1,31 @@
+name: CI Matrix
+on: [push, pull_request]
+jobs:
+  call-build-and-test:
+    name: ${{matrix.os}}/${{matrix.compiler}}
+    strategy:
+      matrix:
+        include:
+          - os: windows
+            runs-on: windows-2022
+            compiler: cl
+          - os: windows
+            runs-on: windows-2022
+            compiler: clang++
+          - os: windows
+            runs-on: windows-2022
+            compiler: clang-cl
+          - os: linux
+            runs-on: ubuntu-22.04
+            compiler: clang++
+          - os: linux
+            runs-on: ubuntu-22.04
+            compiler: g++
+          - os: macos
+            runs-on: macos-14
+            compiler: clang++
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      os: ${{matrix.os}}
+      runs-on: ${{matrix.runs-on}}
+      compiler: ${{matrix.compiler}}

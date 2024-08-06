@@ -1,30 +1,20 @@
-name: Build and test
-on: [push, pull_request]
+name: "Build and test"
+on:
+  workflow_call:
+    inputs:
+      os:
+        required: true
+        type: string
+      runs-on:
+        required: true
+        type: string
+      compiler:
+        required: true
+        type: string
 jobs:
-  build:
-    name: ${{matrix.os}}/${{matrix.compiler}}
-    runs-on: ${{matrix.runs-on}}
-    strategy:
-      matrix:
-        include:
-          - os: windows
-            runs-on: windows-2022
-            compiler: cl
-          - os: windows
-            runs-on: windows-2022
-            compiler: clang++
-          - os: windows
-            runs-on: windows-2022
-            compiler: clang-cl
-          - os: linux
-            runs-on: ubuntu-22.04
-            compiler: clang++
-          - os: linux
-            runs-on: ubuntu-22.04
-            compiler: g++
-          - os: macos
-            runs-on: macos-14
-            compiler: clang++
+  build-and-test:
+    name: Build and Test
+    runs-on: ${{inputs.runs-on}}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -32,7 +22,7 @@ jobs:
           fetch-depth: 0
           submodules: true
       - name: Download Ninja
-        if: matrix.os == 'windows'
+        if: inputs.os == 'windows'
         run: |
           Invoke-WebRequest https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip -OutFile ninja.zip
           Expand-Archive ninja.zip -DestinationPath ${{runner.temp}}
@@ -41,7 +31,7 @@ jobs:
         run: |
           New-Item -ItemType directory build
           $Args = @()
-          if ("${{matrix.compiler}}" -eq "clang-cl") {
+          if ("${{inputs.compiler}}" -eq "clang-cl") {
             $KitsRoot = Get-ItemPropertyValue `
               -Path "HKLM:\SOFTWARE\Microsoft\Windows Kits\Installed Roots" `
               -Name "KitsRoot10"
@@ -52,10 +42,10 @@ jobs:
             $Args += "-DCMAKE_MT=$MtExe"
           }
           # cl.exe is not in PATH, but CMake will find it with the msbuild generator
-          if ("${{matrix.compiler}}" -ne "cl") {
-            $Args += "-DCMAKE_CXX_COMPILER=${{matrix.compiler}}"
+          if ("${{inputs.compiler}}" -ne "cl") {
+            $Args += "-DCMAKE_CXX_COMPILER=${{inputs.compiler}}"
           }
-          if(("${{matrix.os}}" -eq "windows") -and "${{matrix.compiler}}" -ne "cl") {
+          if(("${{inputs.os}}" -eq "windows") -and "${{inputs.compiler}}" -ne "cl") {
             # default generator ignores CMAKE_CXX_COMPILER
             $Args += @(
               "-G",
@@ -85,5 +75,5 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: ctest-logs-${{matrix.os}}-${{matrix.compiler}}-GHA${{github.run_number}}
+          name: ctest-logs-${{inputs.os}}-${{inputs.compiler}}-GHA${{github.run_number}}
           path: "${{runner.temp}}/ctest.log"
