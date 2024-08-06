@@ -37,17 +37,14 @@ TEST_CASE("winrt::apartment_context") {
   const DWORD thisThreadID = GetCurrentThreadId();
   std::optional<DWORD> backgroundThreadID;
 
-  const auto backgroundContext = get_background_context(dqc.DispatcherQueue()
-
-                                                          )
-                                   .get();
-  CHECK(backgroundContext);
+  const auto otherThread = get_background_context(dqc.DispatcherQueue()).get();
+  CHECK(otherThread);
 
   winrt::handle event {CreateEvent(nullptr, false, false, nullptr)};
   HANDLE handles[] = {event.get()};
 
   auto f = bind_context(
-    backgroundContext,
+    otherThread,
     std::bind_front(
       [](auto idPtr, auto event) {
         *idPtr = GetCurrentThreadId();
