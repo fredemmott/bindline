@@ -16,6 +16,7 @@ using std::operator""s;
 using namespace FredEmmott::weak_refs;
 using namespace winrt::Windows::Foundation;
 
+// Just make sure the GET_WEAK definition took effect
 TEST_CASE("a WinRT interface") {
   STATIC_CHECK(strong_ref<IStringable>);
   STATIC_CHECK_FALSE(weak_ref<IStringable>);
@@ -44,6 +45,9 @@ struct TestClass : winrt::implements<TestClass, IStringable> {
 };
 
 TEST_CASE("a WinRT implementation") {
+  // make sure we're not accidentally testing the pointer path
+  STATIC_CHECK_FALSE(convertible_to_weak_ref<TestClass*>);
+
   auto it = winrt::make<TestClass>();
   STATIC_CHECK(strong_ref<decltype(it)>);
   STATIC_CHECK_FALSE(weak_ref<decltype(it)>);
