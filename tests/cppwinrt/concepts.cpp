@@ -53,7 +53,11 @@ TEST_CASE("winrt_implements") {
   STATIC_CHECK_FALSE(winrt_implements<TestClass, winrt::no_weak_ref>);
 }
 
-TEST_CASE("com_ptr<T>") {
+TEST_CASE("winrt_com_ptr<T>") {
+  SKIP("Untested - TODO");
+}
+
+TEST_CASE("any_com_ptr<T>") {
   SKIP("Untested - TODO");
 }
 
