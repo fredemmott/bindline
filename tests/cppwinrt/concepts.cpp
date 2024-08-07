@@ -42,17 +42,15 @@ TEST_CASE("winrt_type<T>") {
     winrt_type<decltype(winrt::make_weak(IInspectable {nullptr}))>);
 }
 
-TEST_CASE("winrt_implements_type") {
-  STATIC_CHECK(winrt_implements_type<TestClass, IStringable>);
-  STATIC_CHECK(
-    winrt_implements_type<TestClassNoWeakRefLeadingMarker, IStringable>);
+TEST_CASE("winrt_implements") {
+  STATIC_CHECK(winrt_implements<TestClass, IStringable>);
+  STATIC_CHECK(winrt_implements<TestClassNoWeakRefLeadingMarker, IStringable>);
 
   STATIC_CHECK(
-    winrt_implements_type<TestClassNoWeakRefLeadingMarker, winrt::no_weak_ref>);
-  STATIC_CHECK(winrt_implements_type<
-               TestClassNoWeakRefTrailingMarker,
-               winrt::no_weak_ref>);
-  STATIC_CHECK_FALSE(winrt_implements_type<TestClass, winrt::no_weak_ref>);
+    winrt_implements<TestClassNoWeakRefLeadingMarker, winrt::no_weak_ref>);
+  STATIC_CHECK(
+    winrt_implements<TestClassNoWeakRefTrailingMarker, winrt::no_weak_ref>);
+  STATIC_CHECK_FALSE(winrt_implements<TestClass, winrt::no_weak_ref>);
 }
 
 TEST_CASE("com_ptr<T>") {

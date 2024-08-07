@@ -16,12 +16,11 @@ concept winrt_type = std::
 // This uses the `cppwinrt_` prefix instead of `winrt_` as it does not require
 // that `T` is a Windows Runtime tpye.
 template <class T, class Marker>
-concept cppwinrt_implements_type
+concept cppwinrt_implements
   = ::FredEmmott::cppwinrt_detail::is_implements_v<T, Marker>;
 
 template <class T, class Marker>
-concept winrt_implements_type
-  = winrt_type<T> && cppwinrt_implements_type<T, Marker>;
+concept winrt_implements = winrt_type<T> && cppwinrt_implements<T, Marker>;
 
 template <class T>
 concept winrt_raw_pointer
