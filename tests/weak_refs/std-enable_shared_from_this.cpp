@@ -16,5 +16,27 @@ TEST_CASE("concepts") {
 }
 
 TEST_CASE("conversions") {
-  SKIP("TODO: not implemented");
+  auto orig = std::make_shared<TestClass>();
+  STATIC_CHECK(strong_ref<decltype(orig)>);
+
+  auto raw = orig.get();
+  STATIC_REQUIRE(std::same_as<TestClass*, decltype(raw)>);
+
+  STATIC_CHECK_FALSE(strong_ref<decltype(raw)>);
+  STATIC_CHECK_FALSE(weak_ref<decltype(raw)>);
+  STATIC_CHECK(convertible_to_weak_ref<decltype(raw)>);
+
+  auto weak = make_weak_ref(raw);
+  STATIC_REQUIRE(std::same_as<std::weak_ptr<TestClass>, decltype(weak)>);
+
+  STATIC_CHECK_FALSE(strong_ref<decltype(weak)>);
+  STATIC_CHECK(weak_ref<decltype(weak)>);
+  STATIC_CHECK(convertible_to_weak_ref<decltype(weak)>);
+
+  auto strong = lock_weak_ref(weak);
+  STATIC_REQUIRE(std::same_as<std::shared_ptr<TestClass>, decltype(strong)>);
+
+  STATIC_CHECK(strong_ref<decltype(strong)>);
+  STATIC_CHECK_FALSE(weak_ref<decltype(strong)>);
+  STATIC_CHECK(convertible_to_weak_ref<decltype(strong)>);
 }

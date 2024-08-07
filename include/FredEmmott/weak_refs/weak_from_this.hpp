@@ -24,22 +24,3 @@ struct make_weak_ref_fn<T> {
 };
 
 }// namespace FredEmmott::weak_refs_extensions
-
-#if 0
-//FIXME TODO: split to test file
-
-#include "std_shared_ptr.hpp"
-
-namespace FredEmmott::weak_refs_test {
-using namespace FredEmmott::weak_refs;
-struct TestWeakFromThis
-  : public std::enable_shared_from_this<TestWeakFromThis> {};
-
-static_assert(
-  std::same_as<weak_ref_t<TestWeakFromThis*>, std::weak_ptr<TestWeakFromThis>>);
-
-static_assert(convertible_to_weak_ref<TestWeakFromThis*>);
-static_assert(!strong_ref<TestWeakFromThis*>);
-
-}// namespace FredEmmott::weak_refs_test
-#endif
