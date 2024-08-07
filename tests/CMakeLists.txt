@@ -73,6 +73,8 @@ add_test_executable("weak_refs/std-enable_shared_from_this.cpp")
 add_test_executable("weak_refs/std-shared_ptr.cpp")
 
 if(WIN32)
+    # --- cppwinrt ---
+
     add_test_executable(
         cppwinrt/concepts.cpp
         LINK_LIBRARIES
@@ -96,6 +98,16 @@ if(WIN32)
 
     add_test_executable(
         "cppwinrt/bind_context/DispatcherQueue without WIL.cpp"
+        CPPWINRT_MAIN
+        LINK_LIBRARIES
+        cppwinrt::windows-sdk
+    )
+    
+
+    # --- weak_refs ---
+
+    add_test_executable(
+        "weak_refs/cppwinrt/winrt refs.cpp"
         CPPWINRT_MAIN
         LINK_LIBRARIES
         cppwinrt::windows-sdk
