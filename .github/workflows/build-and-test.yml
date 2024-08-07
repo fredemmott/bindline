@@ -75,6 +75,11 @@ jobs:
         env:
           CLICOLOR_FORCE: 1
         run: ctest . -C Debug --output-on-failure --output-log "${{runner.temp}}/ctest.log"
+      - name: Post test summary
+        if: ${{ always() }}
+        shell: pwsh
+        run: |
+          Write-Host "::notice title=🧪 Test summary - ${{inputs.os}}/${{inputs.compiler}}::$(Get-Content -Encoding UTF8 ${{runner.temp}}/ctest.log | Select-String -Pattern 'tests passed')"
       - name: Publish test log
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
