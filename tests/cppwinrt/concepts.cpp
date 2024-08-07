@@ -4,14 +4,22 @@
 // Must be included before winrt/base.h
 #include <Unknwn.h>
 
+#include <winrt/Windows.Foundation.h>
+
 #include <FredEmmott/cppwinrt.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 
 using namespace FredEmmott::cppwinrt;
 
+struct TestClass
+  : winrt::implements<TestClass, winrt::Windows::Foundation::IStringable> {
+  virtual winrt::hstring ToString() const noexcept = 0;
+};
+
 TEST_CASE("cppwinrt_type<T>") {
   STATIC_CHECK(cppwinrt_type<winrt::Windows::Foundation::IInspectable>);
+  STATIC_CHECK(cppwinrt_type<TestClass>);
   STATIC_CHECK_FALSE(cppwinrt_type<int>);
   STATIC_CHECK_FALSE(cppwinrt_type<std::shared_ptr<int>>);
   STATIC_CHECK_FALSE(cppwinrt_type<IUnknown*>);
@@ -36,6 +44,7 @@ TEST_CASE("cppwinrt_strong_ref<T>") {
   SECTION("With a WinRT object") {
     winrt::Windows::Foundation::IInspectable it {nullptr};
     STATIC_CHECK(cppwinrt_strong_ref<decltype(it)>);
+    STATIC_CHECK(cppwinrt_strong_ref<TestClass>);
 
     auto weak = winrt::make_weak(it);
     STATIC_CHECK_FALSE(cppwinrt_strong_ref<decltype(weak)>);
