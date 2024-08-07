@@ -17,6 +17,13 @@ struct TestClass
   virtual winrt::hstring ToString() const noexcept = 0;
 };
 
+struct TestClassNoWeakRef : winrt::implements<
+                              TestClassNoWeakRef,
+                              winrt::no_weak_ref,
+                              winrt::Windows::Foundation::IStringable> {
+  virtual winrt::hstring ToString() const noexcept = 0;
+};
+
 TEST_CASE("winrt_type<T>") {
   STATIC_CHECK(winrt_type<winrt::Windows::Foundation::IInspectable>);
   STATIC_CHECK(winrt_type<TestClass>);
@@ -26,6 +33,11 @@ TEST_CASE("winrt_type<T>") {
   STATIC_CHECK_FALSE(winrt_type<winrt::com_ptr<IUnknown>>);
   STATIC_CHECK_FALSE(winrt_type<decltype(winrt::make_weak(
                        winrt::Windows::Foundation::IInspectable {nullptr}))>);
+}
+
+TEST_CASE("marked_winrt_type") {
+  STATIC_CHECK(marked_winrt_type<TestClassNoWeakRef, winrt::no_weak_ref>);
+  STATIC_CHECK_FALSE(marked_winrt_type<TestClass, winrt::no_weak_ref>);
 }
 
 TEST_CASE("com_ptr<T>") {
