@@ -8,7 +8,7 @@ namespace FredEmmott::weak_refs_extensions {
 
 using namespace FredEmmott::cppwinrt::cppwinrt_concepts;
 
-template <cppwinrt_strong_ref T>
+template <winrt_strong_ref T>
 struct make_weak_ref_fn<T> {
   template <class TValue>
   static constexpr auto make(TValue&& value) {
@@ -16,7 +16,7 @@ struct make_weak_ref_fn<T> {
   }
 };
 
-template <cppwinrt_weak_ref T>
+template <winrt_weak_ref T>
 struct lock_weak_ref_fn<T> {
   static constexpr auto lock(auto&& value) {
     return value.get();

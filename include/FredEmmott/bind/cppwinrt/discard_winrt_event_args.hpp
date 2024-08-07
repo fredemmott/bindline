@@ -16,7 +16,7 @@ template <class TNext, class BindTrace>
 struct discard_winrt_event_args_fn {
   TNext mNext;
 
-  template <cppwinrt_type TSender, cppwinrt_type TEventArgs, class... Extras>
+  template <winrt_type TSender, winrt_type TEventArgs, class... Extras>
     requires std::invocable<TNext, Extras...>
   constexpr auto
   operator()(Extras&&... extras, const TSender&, const TEventArgs&) const {
