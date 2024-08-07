@@ -1,9 +1,9 @@
 // Copyright (C) 2024 Fred Emmott <fred@fredemmott.com>
 // SPDX-License-Identifier: MIT
 #pragma once
-#include <winrt/base.h>
+#include "config.hpp"
 
-#include <FredEmmott/cppwinrt/config.hpp>
+#include <winrt/base.h>
 
 #if FREDEMMOTT_CPPWINRT_ENABLE_WIL
 #include <wil/cppwinrt_helpers.h>

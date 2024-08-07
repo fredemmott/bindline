@@ -20,6 +20,8 @@ DeriveLineEnding: false
 DerivePointerAlignment: false
 IncludeBlocks: Regroup
 IncludeCategories:
+  - Regex: 'config\.hpp"$'
+    Priority: 10
   - Regex: '^<Windows\.h>$'
     Priority: 30
   - Regex: '^<Unknwn\.h>'

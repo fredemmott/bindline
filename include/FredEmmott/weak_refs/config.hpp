@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#if __has_include(<FredEmmott.weak_refs.tweaks.hpp>)
+#include <FredEmmott.weak_refs.tweaks.hpp>
+#endif
+
 #ifndef FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT
 #if __has_include(<winrt/base.h>)
 #define FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT true
