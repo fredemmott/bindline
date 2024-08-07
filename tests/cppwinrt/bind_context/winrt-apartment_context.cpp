@@ -75,7 +75,7 @@ TEST_CASE("switch to given winrt::apartment_context") {
   dqc.ShutdownQueueAsync().get();
 }
 
-TEST_CASE("doesn't suspend on an apartment context") {
+TEST_CASE("doesn't suspend if already in the correct thread") {
   // This is inconsistent - see
   // https://github.com/fredemmott/weak_refs/issues/12
   auto dqc = winrt::Windows::System::DispatcherQueueController::
