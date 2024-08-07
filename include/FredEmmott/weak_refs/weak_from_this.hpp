@@ -4,8 +4,6 @@
 
 #include <memory>
 
-#include "base.hpp"
-
 namespace FredEmmott::weak_refs_extensions {
 namespace weak_refs = ::FredEmmott::weak_refs;
 

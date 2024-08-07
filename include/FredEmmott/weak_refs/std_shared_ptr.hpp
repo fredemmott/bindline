@@ -4,8 +4,6 @@
 
 #include <memory>
 
-#include "base.hpp"
-
 namespace FredEmmott::weak_refs_extensions {
 template <class T>
 concept std_shared_ptr = std::same_as<
