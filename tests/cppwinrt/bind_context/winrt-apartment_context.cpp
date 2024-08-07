@@ -75,8 +75,13 @@ TEST_CASE("switch to given winrt::apartment_context") {
 }
 
 TEST_CASE("doesn't suspend if already in the correct thread") {
-  // This is inconsistent - see
-  // https://github.com/fredemmott/weak_refs/issues/12
+  // This is inconsistent with using the associated DispatcherQueue as the
+  // context, as there isn't necessarily going to be a DispatcherQueue
+  // associated with the `winrt::apartment_context`. Deferral requires a queue,
+  // and as we might not have one, we can't defer.
+  //
+  // Instead of deferring if we can, test that the behavior is consistent for
+  // all `winrt::apartment_context`s, even once that do have a DispatcherQueue.
   auto dqc = winrt::Windows::System::DispatcherQueueController::
     CreateOnDedicatedThread();
   const auto otherThread = get_background_context(dqc.DispatcherQueue()).get();
