@@ -46,3 +46,19 @@ TEST_CASE("a WinRT implementation") {
   CHECK(winrt::to_string(strong->ToString()) == "Hello, "s + __FILE__);
   strong->NotInWinRTInterface();
 }
+
+struct TestNoWeakRef
+  : winrt::implements<TestNoWeakRef, winrt::no_weak_ref, IStringable> {
+  winrt::hstring ToString() const noexcept {
+    return L"No weak refs!";
+  }
+};
+
+TEST_CASE("A WinRT implementation with no_weak_ref") {
+  auto rt = winrt::make<TestNoWeakRef>();
+  STATIC_CHECK(!convertible_to_weak_ref<decltype(rt)>);
+  auto com = rt.as<TestNoWeakRef>();
+  auto raw = com.get();
+
+  STATIC_CHECK(!convertible_to_weak_ref<decltype(raw)>);
+}
