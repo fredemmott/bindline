@@ -16,8 +16,8 @@ using namespace FredEmmott::cppwinrt;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::System;
 
-#include "common/test_does_not_invoke_if_destroyed.hpp"
 #include "common/test_dq_always_suspends.hpp"
+#include "common/test_invoked_even_if_destroyed.hpp"
 #include "common/test_switch_to_dispatcherqueue.hpp"
 
 TEST_CASE("switch to DispatcherQueue thread") {
@@ -30,6 +30,6 @@ TEST_CASE("suspends even if already in the correct thread") {
   test_dq_always_suspends();
 }
 
-TEST_CASE("doesn't invoke callback if destructed while waiting") {
-  test_does_not_invoke_if_destroyed();
+TEST_CASE("invokes callback, even if functor destroyed while waiting") {
+  test_invoked_even_if_destroyed();
 }

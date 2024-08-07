@@ -5,7 +5,7 @@
 #include <functional>
 #include <mutex>
 
-void test_does_not_invoke_if_destroyed() {
+void test_invoked_even_if_destroyed() {
   auto dqc = DispatcherQueueController::CreateOnDedicatedThread();
   auto dq = dqc.DispatcherQueue();
 
@@ -76,7 +76,7 @@ void test_does_not_invoke_if_destroyed() {
 
   CHECK_FALSE(state.blocked);
   CHECK(state.invoked_retained);
-  CHECK_FALSE(state.invoked_unretained);
+  CHECK(state.invoked_unretained);
 
   dqc.ShutdownQueueAsync().get();
 }

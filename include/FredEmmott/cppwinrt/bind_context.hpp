@@ -68,54 +68,39 @@ template <class T>
 concept switchable_context = requires(T v) { switch_context(v); };
 
 template <switchable_context TContext, class TFn>
-struct context_binder_inner
-  : std::enable_shared_from_this<context_binder_inner<TContext, TFn>> {
+struct context_binder {
  public:
   using function_t = TFn;
 
-  context_binder_inner() = delete;
+  context_binder() = delete;
   template <std::convertible_to<TContext> InitContext, class InitFn>
-  context_binder_inner(InitContext&& context, InitFn&& fn)
+  context_binder(InitContext&& context, InitFn&& fn)
     : mContext(std::forward<InitContext>(context)),
       mFn(std::forward<InitFn>(fn)) {
   }
 
-  // Not using perfect forwarding for the arguments as this is a coroutine - so
-  // we **MUST** copy the arguments.
+  // Not using perfect forwarding for the arguments as this is an async
+  // invocation/coroutine - we **MUST** copy the arguments.
   template <class... UnboundArgs>
     requires std::invocable<TFn, UnboundArgs...>
-  winrt::fire_and_forget operator()(UnboundArgs... unboundArgs) const {
-    auto weak = this->weak_from_this();
-    auto ctx = mContext;
-    co_await switch_context(ctx);
-    if (auto self = weak.lock()) {
-      std::invoke(mFn, unboundArgs...);
-    }
+  void operator()(const UnboundArgs&... unboundArgs) const {
+    dispatch_coro(mContext, mFn, unboundArgs...);
   }
 
  private:
   TContext mContext;
   TFn mFn;
-};
-
-template <switchable_context TContext, class TFn>
-struct context_binder_outer {
-  using function_t = TFn;
-
-  context_binder_outer() = delete;
-  template <class... Args>
-  context_binder_outer(Args&&... args) {
-    mInner = std::make_shared<context_binder_inner<TContext, TFn>>(
-      std::forward<Args>(args)...);
-  }
 
   template <class... UnboundArgs>
-  void operator()(UnboundArgs&&... unboundArgs) const {
-    std::invoke(*mInner, std::forward<UnboundArgs>(unboundArgs)...);
+    requires std::invocable<TFn, UnboundArgs...>
+  static winrt::fire_and_forget
+  dispatch_coro(TContext context, TFn fn, UnboundArgs... unboundArgs) {
+    static_assert(!std::is_reference_v<decltype(context)>);
+    static_assert(!std::is_reference_v<decltype(fn)>);
+    static_assert((!std::is_reference_v<decltype(unboundArgs)> && ...));
+    co_await switch_context(context);
+    std::invoke(fn, unboundArgs...);
   }
-
- private:
-  std::shared_ptr<context_binder_inner<TContext, TFn>> mInner;
 };
 
 }// namespace FredEmmott::cppwinrt_detail
@@ -125,7 +110,7 @@ namespace FredEmmott::cppwinrt {
 template <cppwinrt_detail::switchable_context Context, class F>
 auto bind_context(Context&& context, F&& f) {
   return cppwinrt_detail::
-    context_binder_outer<std::decay_t<Context>, std::decay_t<F>> {
+    context_binder<std::decay_t<Context>, std::decay_t<F>> {
       std::forward<Context>(context), std::forward<F>(f)};
 }
 
