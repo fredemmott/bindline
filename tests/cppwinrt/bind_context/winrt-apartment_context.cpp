@@ -9,7 +9,6 @@
 static_assert(
   !FREDEMMOTT_CPPWINRT_ENABLE_WIL,
   "WIL support is covered in a separate test");
-static_assert(!FREDEMMOTT_CPPWINRT_ENABLE_WINRT_RESUME_FOREGROUND);
 
 #include <pplawait.h>
 
@@ -84,8 +83,4 @@ TEST_CASE("doesn't suspend if already in the correct thread") {
   CHECK_FALSE(always_suspends(otherThread));
 
   dqc.ShutdownQueueAsync().get();
-}
-
-TEST_CASE("can't switch to a DispatcherQueue") {
-  STATIC_CHECK_FALSE(valid_context<winrt::Windows::System::DispatcherQueue>);
 }

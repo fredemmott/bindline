@@ -95,7 +95,7 @@ if(WIN32)
     )
 
     add_test_executable(
-        cppwinrt/bind_context/winrt-resume_foreground.cpp
+        "cppwinrt/bind_context/DispatcherQueue without WIL.cpp"
         CPPWINRT_MAIN
         LINK_LIBRARIES
         cppwinrt::windows-sdk

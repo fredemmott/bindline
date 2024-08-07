@@ -26,12 +26,22 @@ inline bool always_suspends(auto context) {
   });
   auto test_fn = std::bind_front(
     [](auto fnUnderTest, auto context, auto state) -> winrt::fire_and_forget {
-      co_await FredEmmott::cppwinrt_detail::switch_context(*context);
-      (*fnUnderTest)();
-      std::unique_lock lock(state->mutex);
-      state->did_suspend_first = !state->invoked;
-      state->returned++;
-      state->cv.notify_one();
+      auto invoke_and_notify = [=]() {
+        (*fnUnderTest)();
+        std::unique_lock lock(state->mutex);
+        state->did_suspend_first = !state->invoked;
+        state->returned++;
+        state->cv.notify_one();
+      };
+      if constexpr (FredEmmott::cppwinrt_detail::awaitable_context<
+                      decltype(*context)>) {
+        co_await FredEmmott::cppwinrt_detail::switch_context_awaitable(
+          *context);
+        invoke_and_notify();
+      } else {
+        context->TryEnqueue(invoke_and_notify);
+      }
+      co_return;
     },
     &fn_under_test,
     &context,

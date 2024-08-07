@@ -19,18 +19,14 @@ void test_invoked_even_if_destroyed() {
   } state;
 
   dq.TryEnqueue(std::bind_front(
-    [](auto dq, auto state) -> IAsyncAction {
+    [](auto dq, auto state) {
       {
         std::unique_lock lock(state->mutex);
         state->blocked = true;
         state->cv.notify_all();
       }
       while (!state->dispatched) {
-#if FREDEMMOTT_CPPWINRT_ENABLE_WINRT_RESUME_FOREGROUND
-        co_await winrt::resume_foreground(dq, DispatcherQueuePriority::High);
-#else
-        co_await wil::resume_foreground(dq, DispatcherQueuePriority::High);
-#endif
+        REQUIRE(dq.TryEnqueue(DispatcherQueuePriority::High, []() {}));
       }
       {
         std::unique_lock lock(state->mutex);

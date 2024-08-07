@@ -7,8 +7,6 @@
 // Must be *before* cppwinrt.hpp
 #include <winrt/Windows.System.h>
 
-#define FREDEMMOTT_CPPWINRT_ENABLE_WINRT_RESUME_FOREGROUND true
-
 #include <FredEmmott/cppwinrt.hpp>
 
 #include <catch2/catch_test_macros.hpp>
@@ -26,6 +24,11 @@ using namespace winrt::Windows::System;
 #include "common/test_switch_to_dispatcherqueue.hpp"
 
 TEST_CASE("switch to DispatcherQueue thread") {
+  STATIC_CHECK_FALSE(
+    decltype(bind_context(DispatcherQueue {nullptr}, []() {}))::use_coro_v);
+  STATIC_CHECK(decltype(bind_context(
+    DispatcherQueue {nullptr}, []() {}))::use_tryenqueue_v);
+
   test_switch_to_dispatcherqueue();
 }
 

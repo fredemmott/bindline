@@ -19,58 +19,41 @@ struct impossible_argument_t {
 
 }// namespace FredEmmott::cppwinrt_detail
 
-#if FREDEMMOTT_CPPWINRT_ENABLE_WINRT_RESUME_FOREGROUND
-namespace winrt {
-// Avoid undefined function compile errors if none of the definitions have been
-// included
-inline void resume_foreground(
-  const FredEmmott::cppwinrt_detail::impossible_argument_t&) {
-}
-};// namespace winrt
-#endif
-
 namespace FredEmmott::cppwinrt_detail {
 
 template <class A, class B>
 concept different_to = !std::same_as<A, B>;
 
-auto switch_context(const winrt::apartment_context& ctx) {
+auto switch_context_awaitable(const winrt::apartment_context& ctx) {
   return ctx;
 }
 
-#if FREDEMMOTT_CPPWINRT_ENABLE_WINRT_RESUME_FOREGROUND
-template <class T>
-concept cppwinrt_dispatcherqueue = requires(T v) {
-  { winrt::resume_foreground(v) } -> different_to<void>;
-};
-
-template <cppwinrt_dispatcherqueue T>
-auto switch_context(T&& v) {
-  return winrt::resume_foreground(std::forward<T>(v));
-}
-#else
-template <class T>
-concept cppwinrt_dispatcherqueue = false;
-#endif
-
 #if FREDEMMOTT_CPPWINRT_ENABLE_WIL
 template <class T>
-concept wil_thread = (!cppwinrt_dispatcherqueue<T>)
-  && requires(T v) { wil::resume_foreground(v); };
+concept wil_thread = requires(T v) { wil::resume_foreground(v); };
 
 template <wil_thread T>
-auto switch_context(T&& v) {
+auto switch_context_awaitable(T&& v) {
   return wil::resume_foreground(std::forward<T>(v));
 }
 #endif
 
 template <class T>
-concept switchable_context = requires(T v) { switch_context(v); };
+concept dispatcher_queue = requires(T v) { v.TryEnqueue([]() {}); };
+
+template <class T>
+concept awaitable_context = requires(T v) { switch_context_awaitable(v); };
+
+template <class T>
+concept switchable_context = dispatcher_queue<T> || awaitable_context<T>;
 
 template <switchable_context TContext, class TFn>
 struct context_binder {
  public:
   using function_t = TFn;
+  static constexpr bool use_coro_v = awaitable_context<TContext>;
+  static constexpr bool use_tryenqueue_v
+    = dispatcher_queue<TContext> && !awaitable_context<TContext>;
 
   context_binder() = delete;
   template <std::convertible_to<TContext> InitContext, class InitFn>
@@ -84,7 +67,14 @@ struct context_binder {
   template <class... UnboundArgs>
     requires std::invocable<TFn, UnboundArgs...>
   void operator()(const UnboundArgs&... unboundArgs) const {
-    dispatch_coro(mContext, mFn, unboundArgs...);
+    if constexpr (use_coro_v) {
+      dispatch_coro(mContext, mFn, unboundArgs...);
+    } else if constexpr (use_tryenqueue_v) {
+      mContext.TryEnqueue(mFn);
+    } else {
+      // Should be unreachable due to `switchable_context` requirement
+      static_assert(false, "Don't know how to invoke in supplied context");
+    }
   }
 
  private:
@@ -98,7 +88,7 @@ struct context_binder {
     static_assert(!std::is_reference_v<decltype(context)>);
     static_assert(!std::is_reference_v<decltype(fn)>);
     static_assert((!std::is_reference_v<decltype(unboundArgs)> && ...));
-    co_await switch_context(context);
+    co_await switch_context_awaitable(context);
     std::invoke(fn, unboundArgs...);
   }
 };
