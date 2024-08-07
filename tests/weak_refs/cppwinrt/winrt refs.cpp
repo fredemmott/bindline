@@ -65,3 +65,21 @@ TEST_CASE("a WinRT implementation") {
 
   CHECK(winrt::to_string(strong.ToString()) == "Hello, "s + __FILE__);
 }
+
+struct TestNoWeakRef
+  : winrt::implements<TestNoWeakRef, IStringable, winrt::no_weak_ref> {
+  winrt::hstring ToString() const noexcept {
+    return winrt::to_hstring("Hello, "s + __FILE__);
+  }
+};
+
+TEST_CASE("a class that implements winrt::no_weak_ref") {
+  STATIC_CHECK_FALSE(convertible_to_weak_ref<TestNoWeakRef>);
+
+  // While C++/WinRT considers it a strong reference, it is a strong reference
+  // that can not be converted to a weak reference. For the `weak_refs` library,
+  // all strong references can be converted to weak references, so while it's a
+  // winrt_strong_ref, it isn't a strong_ref :)
+  STATIC_CHECK(FredEmmott::cppwinrt::winrt_strong_ref<TestNoWeakRef>);
+  STATIC_CHECK_FALSE(strong_ref<TestNoWeakRef>);
+}

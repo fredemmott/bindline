@@ -8,7 +8,11 @@ namespace FredEmmott::weak_refs_extensions {
 
 using namespace FredEmmott::cppwinrt::cppwinrt_concepts;
 
-template <winrt_strong_ref T>
+template <class T>
+concept winrt_strong_ref_with_weak_ref = winrt_strong_ref<T>
+  && !winrt_implements<std::remove_pointer_t<T>, winrt::no_weak_ref>;
+
+template <winrt_strong_ref_with_weak_ref T>
 struct make_weak_ref_fn<T> {
   template <class TValue>
   static constexpr auto make(TValue&& value) {
