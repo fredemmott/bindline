@@ -37,8 +37,7 @@ concept winrt_com_ptr
   && any_com_ptr<T>;
 
 template <class T>
-concept winrt_strong_ref = winrt_com_ptr<T>
-  || (winrt_type<T> && requires(T v) { winrt::make_weak(v); });
+concept winrt_strong_ref = winrt_com_ptr<T> || winrt_type<T>;
 
 template <class T>
 concept winrt_weak_ref

@@ -66,6 +66,8 @@ TEST_CASE("winrt_strong_ref<T>") {
     winrt::Windows::Foundation::IInspectable it {nullptr};
     STATIC_CHECK(winrt_strong_ref<decltype(it)>);
     STATIC_CHECK(winrt_strong_ref<TestClass>);
+    STATIC_CHECK(winrt_strong_ref<TestClassNoWeakRefLeadingMarker>);
+    STATIC_CHECK(winrt_strong_ref<TestClassNoWeakRefTrailingMarker>);
 
     auto weak = winrt::make_weak(it);
     STATIC_CHECK_FALSE(winrt_strong_ref<decltype(weak)>);
