@@ -19,3 +19,24 @@ TEST_CASE("std::weak_ptr<T> concepts") {
   STATIC_CHECK(weak_ref<T>);
   STATIC_CHECK(convertible_to_weak_ref<T>);
 }
+
+TEST_CASE("conversions") {
+  std::shared_ptr<int> orig;
+
+  auto weak = make_weak_ref(orig);
+  STATIC_CHECK(convertible_to_weak_ref<decltype(weak)>);
+  STATIC_CHECK(weak_ref<decltype(weak)>);
+  STATIC_CHECK_FALSE(strong_ref<decltype(weak)>);
+  STATIC_CHECK(
+    std::same_as<decltype(weak), std::weak_ptr<decltype(orig)::element_type>>);
+
+  auto strong = lock_weak_ref(weak);
+  STATIC_CHECK(convertible_to_weak_ref<decltype(strong)>);
+  STATIC_CHECK_FALSE(weak_ref<decltype(strong)>);
+  STATIC_CHECK(strong_ref<decltype(strong)>);
+  STATIC_CHECK(
+    std::
+      same_as<decltype(strong), std::shared_ptr<decltype(orig)::element_type>>);
+
+  STATIC_CHECK(std::same_as<decltype(orig), decltype(strong)>);
+}
