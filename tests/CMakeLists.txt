@@ -69,6 +69,7 @@ function(add_test_executable SOURCE)
 endfunction()
 
 add_test_executable("weak_refs/raw pointers.cpp")
+add_test_executable("weak_refs/std-enable_shared_from_this.cpp")
 add_test_executable("weak_refs/std-shared_ptr.cpp")
 
 if(WIN32)
