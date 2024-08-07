@@ -55,12 +55,12 @@ struct TestNoWeakRef
 };
 
 TEST_CASE("A WinRT implementation with no_weak_ref") {
+  STATIC_CHECK_FALSE(convertible_to_weak_ref<TestNoWeakRef*>);
+  STATIC_CHECK_FALSE(weak_ref<TestNoWeakRef*>);
+  STATIC_CHECK_FALSE(strong_ref<TestNoWeakRef*>);
+
   auto rt = winrt::make<TestNoWeakRef>();
   auto com = rt.as<TestNoWeakRef>();
   auto raw = com.get();
-
-  using markers = winrt::impl::
-    filter<winrt::impl::is_marker, TestNoWeakRef::implements_type>;
-  constexpr auto has_marker
-    = markers::find(winrt::impl::has_interface_traits<winrt::no_weak_ref> {});
+  STATIC_REQUIRE(std::same_as<TestNoWeakRef*, decltype(raw)>);
 }
