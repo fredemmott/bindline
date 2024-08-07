@@ -7,21 +7,29 @@
 
 namespace FredEmmott::cppwinrt_detail {
 
-/** This appears to require use of `winrt::impl` as:
- * - there aren't requirements/enable_if on the relevant functions, especially
- * for testing `no_weak_ref`; static assertions lead to compile failures even in
- * concept requirements.
- * - the types/values/... on the implements_type are private
- */
-template <class T, class Marker>
-consteval bool has_marker() {
-  using markers_t
-    = winrt::impl::filter<winrt::impl::is_marker, typename T::implements_type>;
-  // Using has_interface_traits as a generic type-equality trait
-  using equality_marker_t = typename winrt::impl::has_interface_traits<Marker>;
-  constexpr equality_marker_t equality_marker {};
-  return markers_t::find(equality_marker);
+template <class T, class Find, class...>
+struct is_implements_t;
+
+template <class T, class Find, class First, class... Rest>
+struct is_implements_t<T, Find, winrt::implements<First, Rest...>> {
+  static consteval bool test() {
+    if constexpr (std::same_as<Find, First>) {
+      return true;
+    }
+
+    if constexpr (sizeof...(Rest) == 0) {
+      return false;
+    } else {
+      return
+        typename is_implements_t<T, Find, winrt::implements<Rest...>>::test();
+    }
+  }
 };
+
+template <class T, class Find>
+constexpr bool is_implements_v
+  = is_implements_t<T, Find, typename T::implements_type>::test();
+
 }// namespace FredEmmott::cppwinrt_detail
 
 namespace FredEmmott::cppwinrt::inline cppwinrt_concepts {
@@ -30,9 +38,15 @@ template <class T>
 concept winrt_type = std::
   convertible_to<std::decay_t<T>, winrt::Windows::Foundation::IInspectable>;
 
+// This uses the `cppwinrt_` prefix instead of `winrt_` as it does not require
+// that `T` is a Windows Runtime tpye.
 template <class T, class Marker>
-concept marked_winrt_type
-  = winrt_type<T> && ::FredEmmott::cppwinrt_detail::has_marker<T, Marker>();
+concept cppwinrt_implements_type
+  = ::FredEmmott::cppwinrt_detail::is_implements_v<T, Marker>;
+
+template <class T, class Marker>
+concept winrt_implements_type
+  = winrt_type<T> && cppwinrt_implements_type<T, Marker>;
 
 template <class T>
 concept winrt_raw_pointer
