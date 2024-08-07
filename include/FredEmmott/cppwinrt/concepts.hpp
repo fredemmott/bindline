@@ -10,11 +10,12 @@ concept cppwinrt_type = std::
   convertible_to<std::decay_t<T>, winrt::Windows::Foundation::IInspectable>;
 
 template <class T>
-concept cppwinrt_ptr = cppwinrt_type<std::decay_t<std::remove_pointer_t<T>>>;
+concept cppwinrt_raw_pointer
+  = std::is_pointer_v<T> && cppwinrt_type<std::remove_pointer_t<T>>;
 
 template <class T>
 concept cppwinrt_com_ptr
-  = cppwinrt_ptr<std::decay_t<decltype(std::declval<T>().get())>>
+  = cppwinrt_raw_pointer<std::decay_t<decltype(std::declval<T>().get())>>
   && std::same_as<
       std::decay_t<T>,
       winrt::com_ptr<std::decay_t<decltype(*std::declval<T>().get())>>>;
@@ -30,10 +31,5 @@ concept cppwinrt_weak_ref
   && std::same_as<
       std::decay_t<T>,
       std::decay_t<decltype(winrt::make_weak(std::declval<T>().get()))>>;
-
-template <class T>
-concept cppwinrt_raw_pointer = std::is_pointer_v<T> && requires(T v) {
-  { v->get_weak() } -> cppwinrt_weak_ref;
-};
 
 }// namespace FredEmmott::cppwinrt::inline cppwinrt_concepts

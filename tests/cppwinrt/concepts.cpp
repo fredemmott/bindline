@@ -28,14 +28,6 @@ TEST_CASE("cppwinrt_type<T>") {
                        winrt::Windows::Foundation::IInspectable {nullptr}))>);
 }
 
-TEST_CASE("cppwinrt_ptr<T>", "[!shouldfail]") {
-  STATIC_CHECK(cppwinrt_ptr<winrt::Windows::Foundation::IInspectable*>);
-  // Add more tests before fixing this :)
-  CHECK_FALSE(cppwinrt_ptr<winrt::Windows::Foundation::IInspectable>);
-  SKIP("Known bug: #11");
-  // STATIC_CHECK_FALSE(cppwinrt_ptr<winrt::Windows::Foundation::IInspectable>);
-}
-
 TEST_CASE("com_ptr<T>") {
   SKIP("Untested - TODO");
 }
@@ -84,5 +76,7 @@ TEST_CASE("cppwinrt_weak_ref<T>") {
 }
 
 TEST_CASE("raw_pointer<T>") {
-  SKIP("Untested - TODO");
+  STATIC_CHECK(cppwinrt_raw_pointer<winrt::Windows::Foundation::IInspectable*>);
+  STATIC_CHECK_FALSE(
+    cppwinrt_raw_pointer<winrt::Windows::Foundation::IInspectable>);
 }
