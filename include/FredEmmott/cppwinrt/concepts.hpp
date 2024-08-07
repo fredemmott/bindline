@@ -5,32 +5,7 @@
 #include <winrt/Windows.Foundation.h>
 #include <winrt/base.h>
 
-namespace FredEmmott::cppwinrt_detail {
-
-template <class T, class Find, class...>
-struct is_implements_t;
-
-template <class T, class Find, class First, class... Rest>
-struct is_implements_t<T, Find, winrt::implements<First, Rest...>> {
-  static consteval bool test() {
-    if constexpr (std::same_as<Find, First>) {
-      return true;
-    }
-
-    if constexpr (sizeof...(Rest) == 0) {
-      return false;
-    } else {
-      return
-        typename is_implements_t<T, Find, winrt::implements<Rest...>>::test();
-    }
-  }
-};
-
-template <class T, class Find>
-constexpr bool is_implements_v
-  = is_implements_t<T, Find, typename T::implements_type>::test();
-
-}// namespace FredEmmott::cppwinrt_detail
+#include "detail/is_implements.hpp"
 
 namespace FredEmmott::cppwinrt::inline cppwinrt_concepts {
 

@@ -25,7 +25,7 @@ struct TestClassNoWeakRefLeadingMarker : winrt::implements<
 };
 
 struct TestClassNoWeakRefTrailingMarker : winrt::implements<
-                                            TestClassNoWeakRefLeadingMarker,
+                                            TestClassNoWeakRefTrailingMarker,
                                             IStringable,
                                             winrt::no_weak_ref> {
   virtual winrt::hstring ToString() const noexcept = 0;
@@ -50,7 +50,7 @@ TEST_CASE("winrt_implements_type") {
   STATIC_CHECK(
     winrt_implements_type<TestClassNoWeakRefLeadingMarker, winrt::no_weak_ref>);
   STATIC_CHECK(winrt_implements_type<
-               TestClassNoWeakRefReorderedTrailingMarker,
+               TestClassNoWeakRefTrailingMarker,
                winrt::no_weak_ref>);
   STATIC_CHECK_FALSE(winrt_implements_type<TestClass, winrt::no_weak_ref>);
 }
