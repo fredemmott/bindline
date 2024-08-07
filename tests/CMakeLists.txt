@@ -7,7 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 function(add_test_executable SOURCE)
-    string(REPLACE "/" "-" TARGET "${SOURCE}")
+    set(TARGET "${SOURCE}")
+    string(REPLACE "/" "-" TARGET "${TARGET}")
+    string(REPLACE " " "-" TARGET "${TARGET}")
     string(REPLACE ".cpp" "" TARGET "${TARGET}")
 
     set(options CPPWINRT_MAIN)
@@ -66,7 +68,8 @@ function(add_test_executable SOURCE)
     endif()
 endfunction()
 
-add_test_executable(weak_refs/concepts.cpp)
+add_test_executable("weak_refs/raw pointers.cpp")
+add_test_executable("weak_refs/std-shared_ptr.cpp")
 
 if(WIN32)
     add_test_executable(

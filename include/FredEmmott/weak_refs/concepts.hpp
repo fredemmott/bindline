@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "ref_types.hpp"
-
 #include <concepts>
+
+#include "ref_types.hpp"
 
 namespace FredEmmott::weak_refs::inline weak_refs_concepts {
 
@@ -39,7 +39,4 @@ template <class T>
 concept strong_ref = convertible_to_weak_ref<T>
   && std::same_as<std::decay_t<T>, strong_ref_t<weak_ref_t<T>>>;
 
-static_assert(!strong_ref<int*>);
-static_assert(!weak_ref<int*>);
-
-}// namespace FredEmmott::weak_refs
+}// namespace FredEmmott::weak_refs::inline weak_refs_concepts

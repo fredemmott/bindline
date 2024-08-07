@@ -6,7 +6,8 @@
 
 using namespace FredEmmott::weak_refs;
 
-TEST_CASE("raw pointers") {
+TEST_CASE("concepts") {
   STATIC_CHECK(!strong_ref<int*>);
   STATIC_CHECK(!weak_ref<int*>);
+  STATIC_CHECK(!convertible_to_weak_ref<int*>);
 }
