@@ -20,5 +20,4 @@ struct make_weak_ref_fn<T> {
   }
 };
 
-// FIXME: test winrt::com_ptr()
 }// namespace FredEmmott::weak_refs_extensions
