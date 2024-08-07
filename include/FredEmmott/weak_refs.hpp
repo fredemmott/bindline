@@ -27,8 +27,6 @@
  *
  * - `make_weak_ref()`: creates a `weak_ref`
  * - `lock_weak_ref()`: upgrades a `weak_ref` to a `strong_ref`
- * - `make_weak_refs()`: creates a tuple of `weak_ref`
- * - `lock_weak_refs()`: creates an std::optional of strong references
  * - `bind_maybe_refs_front()`: like `std::bind_front()`, but automatically
  *    converts `convertible_to_weak_ref()` parameters to weak, then back to
  *    strong
