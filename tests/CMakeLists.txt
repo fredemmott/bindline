@@ -112,4 +112,11 @@ if(WIN32)
         LINK_LIBRARIES
         cppwinrt::windows-sdk
     )
+
+    add_test_executable(
+        "weak_refs/cppwinrt/get_weak.cpp"
+        CPPWINRT_MAIN
+        LINK_LIBRARIES
+        cppwinrt::windows-sdk
+    )
 endif()
