@@ -17,8 +17,17 @@ struct TestClass : winrt::implements<TestClass, IStringable> {
   virtual winrt::hstring ToString() const noexcept = 0;
 };
 
-struct TestClassNoWeakRef
-  : winrt::implements<TestClassNoWeakRef, winrt::no_weak_ref, IStringable> {
+struct TestClassNoWeakRefLeadingMarker : winrt::implements<
+                                           TestClassNoWeakRefLeadingMarker,
+                                           winrt::no_weak_ref,
+                                           IStringable> {
+  virtual winrt::hstring ToString() const noexcept = 0;
+};
+
+struct TestClassNoWeakRefTrailingMarker : winrt::implements<
+                                            TestClassNoWeakRefLeadingMarker,
+                                            IStringable,
+                                            winrt::no_weak_ref> {
   virtual winrt::hstring ToString() const noexcept = 0;
 };
 
@@ -35,9 +44,14 @@ TEST_CASE("winrt_type<T>") {
 
 TEST_CASE("winrt_implements_type") {
   STATIC_CHECK(winrt_implements_type<TestClass, IStringable>);
-  STATIC_CHECK(winrt_implements_type<TestClassNoWeakRef, IStringable>);
+  STATIC_CHECK(
+    winrt_implements_type<TestClassNoWeakRefLeadingMarker, IStringable>);
 
-  STATIC_CHECK(winrt_implements_type<TestClassNoWeakRef, winrt::no_weak_ref>);
+  STATIC_CHECK(
+    winrt_implements_type<TestClassNoWeakRefLeadingMarker, winrt::no_weak_ref>);
+  STATIC_CHECK(winrt_implements_type<
+               TestClassNoWeakRefReorderedTrailingMarker,
+               winrt::no_weak_ref>);
   STATIC_CHECK_FALSE(winrt_implements_type<TestClass, winrt::no_weak_ref>);
 }
 
