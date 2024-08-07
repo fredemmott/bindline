@@ -15,6 +15,10 @@ TEST_CASE("concepts") {
   STATIC_CHECK(convertible_to_weak_ref<T>);
 }
 
+TEST_CASE("type alias") {
+  STATIC_CHECK(std::same_as<std::weak_ptr<TestClass>, weak_ref_t<TestClass*>>);
+}
+
 TEST_CASE("conversions") {
   auto orig = std::make_shared<TestClass>();
   STATIC_CHECK(strong_ref<decltype(orig)>);

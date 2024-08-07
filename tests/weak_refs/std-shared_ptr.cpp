@@ -40,3 +40,10 @@ TEST_CASE("conversions") {
 
   STATIC_CHECK(std::same_as<decltype(orig), decltype(strong)>);
 }
+
+TEST_CASE("type aliases") {
+  using TStrong = std::shared_ptr<int>;
+  using TWeak = std::weak_ptr<int>;
+  STATIC_CHECK(std::same_as<TWeak, weak_ref_t<TStrong>>);
+  STATIC_CHECK(std::same_as<TStrong, strong_ref_t<TWeak>>);
+}
