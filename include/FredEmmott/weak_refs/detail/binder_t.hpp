@@ -14,21 +14,20 @@ namespace FredEmmott::weak_refs_detail {
 
 using namespace FredEmmott::weak_refs;
 
-template <class TFn, weak_ref... TBinds>
+template <class TTraits, class TFn, weak_ref... TBinds>
   requires(sizeof...(TBinds) >= 1)
-struct front_binder {
+struct binder_t {
   using function_t = TFn;
 
-  front_binder() = delete;
+  binder_t() = delete;
   template <class TInitFn, class... TInitBinds>
-  front_binder(TInitFn&& fn, TInitBinds... binds)
+  binder_t(TInitFn&& fn, TInitBinds... binds)
     : mFn(std::forward<TInitFn>(fn)),
       mBinds(
         std::make_tuple(make_weak_ref(std::forward<TInitBinds>(binds))...)) {
   }
 
   template <class... UnboundArgs>
-    requires std::invocable<TFn, strong_ref_t<TBinds>..., UnboundArgs...>
   void operator()(UnboundArgs&&... unboundArgs) const {
     auto strong_binds = std::apply(
       [](const auto&... binds) {
@@ -47,9 +46,8 @@ struct front_binder {
 
     std::apply(
       mFn,
-      std::tuple_cat(
-        strong_binds,
-        std::make_tuple(std::forward<UnboundArgs>(unboundArgs)...)));
+      TTraits::make_args_tuple(
+        strong_binds, std::forward<UnboundArgs>(unboundArgs)...));
   }
 
  private:

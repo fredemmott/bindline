@@ -8,7 +8,7 @@ using namespace FredEmmott::weak_refs;
 
 template <class... Args>
 auto bind_function_under_test(Args&&... args) {
-  return bind_refs_front(std::forward<Args>(args)...);
+  return bind_refs_back(std::forward<Args>(args)...);
 }
 
 #include "common/bind.hpp"
@@ -16,10 +16,10 @@ auto bind_function_under_test(Args&&... args) {
 TEST_CASE("partial application") {
   auto strong = std::make_shared<int>(123);
   bool invoked = false;
-  bind_refs_front(
+  bind_refs_back(
     [&invoked](auto a, auto b) {
-      CHECK(*a == 123);
-      CHECK(b == 456);
+      CHECK(a == 456);
+      CHECK(*b == 123);
       invoked = true;
     },
     strong)(456);

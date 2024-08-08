@@ -114,6 +114,7 @@ add_test_executable("bind/bind_tap.cpp")
 add_test_executable("weak_refs/raw pointers.cpp")
 add_test_executable("weak_refs/std-enable_shared_from_this.cpp")
 add_test_executable("weak_refs/std-shared_ptr.cpp")
+add_test_executable("weak_refs/bind_refs_back.cpp")
 add_test_executable("weak_refs/bind_refs_front.cpp")
 
 if(WIN32)
