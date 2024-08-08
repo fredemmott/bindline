@@ -107,3 +107,44 @@ TEST_CASE("stale weak_ptrs") {
   f();
   CHECK(!invoked);
 }
+
+struct TestClass {
+  size_t count = 0;
+  void increment() {
+    ++count;
+  }
+
+  void always_fail() {
+    CHECK(false);
+  }
+};
+
+TEST_CASE("Member function pointer with a shared_ptr") {
+  auto counter = std::make_shared<TestClass>();
+
+  bind_refs_front(&TestClass::increment, counter)();
+  CHECK(counter->count == 1);
+
+  bind_refs_front(&TestClass::increment, std::weak_ptr {counter})();
+  CHECK(counter->count == 2);
+
+  auto f = bind_refs_front(&TestClass::always_fail, counter);
+  counter = nullptr;
+  f();
+}
+
+struct TestClassESFT : public TestClass,
+                       public std::enable_shared_from_this<TestClassESFT> {};
+
+TEST_CASE("Member function pointer with std::enable_shared_from_this") {
+  auto counter = std::make_shared<TestClassESFT>();
+  bind_refs_front(&TestClass::increment, counter)();
+  CHECK(counter->count == 1);
+
+  bind_refs_front(&TestClass::increment, counter.get())();
+  CHECK(counter->count == 2);
+
+  auto f = bind_refs_front(&TestClass::always_fail, counter.get());
+  counter = nullptr;
+  f();
+}
