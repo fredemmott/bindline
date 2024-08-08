@@ -14,9 +14,16 @@ on:
       experimental:
         type: boolean
         default: false
+      force-cxx-standard:
+        type: string
+        default: "OFF"
+      suffix:
+        type: string
+      fs-suffix:
+        type: string
 jobs:
   build-and-test:
-    name: Build and Test
+    name: Build and test${{inputs.suffix && format(' - {0}', inputs.suffix)}}
     runs-on: ${{inputs.runs-on}}
     continue-on-error: ${{inputs.experimental}}
     steps:
@@ -62,6 +69,7 @@ jobs:
             ${{github.workspace}}/source `
             -DCMAKE_BUILD_TYPE=Debug `
             -DIS_GITHUB_ACTIONS=ON `
+            -DFORCE_CXX_STANDARD=${{inputs.force-cxx-standard}} `
             @args
       - name: Build
         working-directory: build
@@ -80,10 +88,10 @@ jobs:
         if: ${{ always() }}
         shell: pwsh
         run: |
-          Write-Host "::notice title=🧪 Test summary - ${{inputs.os}}/${{inputs.compiler}}::$(Get-Content -Encoding UTF8 ${{runner.temp}}/ctest.log | Select-String -Pattern 'tests passed')"
+          Write-Host "::notice title=🧪 Test summary - ${{inputs.os}}/${{inputs.compiler}}${{inputs.suffix && format('/{0}', inputs.suffix)}}::$(Get-Content -Encoding UTF8 ${{runner.temp}}/ctest.log | Select-String -Pattern 'tests passed')"
       - name: Publish test log
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: ctest-logs-${{inputs.os}}-${{inputs.compiler}}-GHA${{github.run_number}}
+          name: ctest-logs-${{inputs.os}}-${{inputs.compiler}}${{inputs.fs-suffix && format('-{0}', inputs.fs-suffix)}})
           path: "${{runner.temp}}/ctest.log"

@@ -12,7 +12,15 @@ jobs:
             compiler: cl
           - os: windows
             runs-on: windows-2022
+            compiler: cl
+            force-cxx-standard: 23
+          - os: windows
+            runs-on: windows-2022
             compiler: clang++
+          - os: windows
+            runs-on: windows-2022
+            compiler: clang++
+            force-cxx-standard: 23
           - os: windows
             runs-on: windows-2022
             compiler: clang-cl
@@ -31,3 +39,6 @@ jobs:
       runs-on: ${{matrix.runs-on}}
       compiler: ${{matrix.compiler}}
       experimental: ${{matrix.experimental || false }}
+      force-cxx-standard: ${{matrix.force-cxx-standard || 0}}
+      suffix: ${{matrix.force-cxx-standard && format('C++{0}', matrix.force-cxx-standard)}}
+      fs-suffix: ${{matrix.force-cxx-standard && format('cxx{0}', matrix.force-cxx-standard)}}
