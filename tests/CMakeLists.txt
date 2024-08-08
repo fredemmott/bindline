@@ -19,7 +19,7 @@ macro(WARN MESSAGE_TEXT)
 endmacro()
 
 function(add_test_executable SOURCE)
-    set(options CPPWINRT_MAIN)
+    set(options CPPWINRT_MAIN WIN32)
     set(valueArgs TEST_NAME ENABLED_FLAG)
     set(multiValueArgs SOURCES LINK_LIBRARIES CXX_COMPILE_FEATURES)
 
@@ -29,6 +29,10 @@ function(add_test_executable SOURCE)
         "${valueArgs}"
         "${multiValueArgs}"
         ${ARGN})
+
+    if (TEST_ARG_WIN32)
+        list(APPEND TEST_ARG_ENABLED_FLAG "WIN32")
+    endif ()
 
     set(TARGET "${SOURCE}")
     string(REPLACE "/" "-" TARGET "${TARGET}")
@@ -46,6 +50,10 @@ function(add_test_executable SOURCE)
     string(APPEND TEST_PREFIX "📂${TEST_NAME}➡️")
 
     if(TEST_ARG_ENABLED_FLAG AND NOT "${${TEST_ARG_ENABLED_FLAG}}")
+        if(TEST_ARG_ENABLED_FLAG STREQUAL "WIN32")
+            # No point warning on 'requires Windows' things.
+            return()
+        endif()
         set(DISABLED_BECAUSE_FLAG ${TEST_ARG_ENABLED_FLAG})
         WARN("Skipping test ${SOURCE} because ${TEST_ARG_ENABLED_FLAG} is not set")
         set(SOURCE "cmake/skip-stub.cpp")
@@ -107,9 +115,31 @@ try_compile(
     CXX_STANDARD ${REQUIRED_CXX_STANDARD}
 )
 
+##### bind #####
+
 add_test_executable("bind/bind_back.cpp" ENABLED_FLAG HAVE_STD_BIND_BACK)
 add_test_executable("bind/bind_front.cpp")
 add_test_executable("bind/bind_tap.cpp")
+
+##### cppwinrt #####
+
+add_test_executable("cppwinrt/concepts.cpp" WIN32 LINK_LIBRARIES cppwinrt::windows-sdk)
+add_test_executable(
+    "cppwinrt/bind_context/winrt-apartment_context.cpp"
+    WIN32 CPPWINRT_MAIN
+    LINK_LIBRARIES cppwinrt::windows-sdk
+)
+add_test_executable(
+    "cppwinrt/bind_context/wil-resume_foreground.cpp"
+    WIN32 CPPWINRT_MAIN
+    LINK_LIBRARIES cppwinrt::windows-sdk wil::wil
+)
+add_test_executable(
+    "cppwinrt/bind_context/DispatcherQueue without WIL.cpp"
+    WIN32 CPPWINRT_MAIN LINK_LIBRARIES cppwinrt::windows-sdk
+)
+
+##### weak_refs #####
 
 add_test_executable("weak_refs/raw pointers.cpp")
 add_test_executable("weak_refs/std-enable_shared_from_this.cpp")
@@ -117,51 +147,14 @@ add_test_executable("weak_refs/std-shared_ptr.cpp")
 add_test_executable("weak_refs/bind_refs_back.cpp")
 add_test_executable("weak_refs/bind_refs_front.cpp")
 
-if(WIN32)
-    # --- cppwinrt ---
+add_test_executable(
+    "weak_refs/cppwinrt/winrt refs.cpp"
+    WIN32 CPPWINRT_MAIN
+    LINK_LIBRARIES cppwinrt::windows-sdk
+)
 
-    add_test_executable(
-        cppwinrt/concepts.cpp
-        LINK_LIBRARIES
-        cppwinrt::windows-sdk
-    )
-
-    add_test_executable(
-        cppwinrt/bind_context/winrt-apartment_context.cpp
-        CPPWINRT_MAIN
-        LINK_LIBRARIES
-        cppwinrt::windows-sdk
-    )
-
-    add_test_executable(
-        cppwinrt/bind_context/wil-resume_foreground.cpp
-        CPPWINRT_MAIN
-        LINK_LIBRARIES
-        cppwinrt::windows-sdk
-        wil::wil
-    )
-
-    add_test_executable(
-        "cppwinrt/bind_context/DispatcherQueue without WIL.cpp"
-        CPPWINRT_MAIN
-        LINK_LIBRARIES
-        cppwinrt::windows-sdk
-    )
-    
-
-    # --- weak_refs ---
-
-    add_test_executable(
-        "weak_refs/cppwinrt/winrt refs.cpp"
-        CPPWINRT_MAIN
-        LINK_LIBRARIES
-        cppwinrt::windows-sdk
-    )
-
-    add_test_executable(
-        "weak_refs/cppwinrt/get_weak.cpp"
-        CPPWINRT_MAIN
-        LINK_LIBRARIES
-        cppwinrt::windows-sdk
-    )
-endif()
+add_test_executable(
+    "weak_refs/cppwinrt/get_weak.cpp"
+    WIN32 CPPWINRT_MAIN
+    LINK_LIBRARIES cppwinrt::windows-sdk
+)
