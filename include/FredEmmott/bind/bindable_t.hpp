@@ -10,11 +10,11 @@
 
 namespace FredEmmott::bind {
 
-struct bind_component_t {
+struct bindable_t {
   constexpr auto bind_to(const auto& fn) = delete;
 };
 
-template <class TFunction, std::derived_from<bind_component_t> TComponent>
+template <class TFunction, std::derived_from<bindable_t> TComponent>
 constexpr auto operator|(TFunction&& lhs, TComponent&& rhs) {
   return rhs.bind_to(std::forward<TFunction>(lhs));
 }

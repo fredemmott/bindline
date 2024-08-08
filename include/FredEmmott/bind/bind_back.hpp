@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "bind_component_t.hpp"
+#include "bindable_t.hpp"
 #include "detail/binder_t.hpp"
 
 namespace FredEmmott::bind_detail {

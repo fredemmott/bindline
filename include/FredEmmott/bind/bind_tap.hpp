@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "bind_component_t.hpp"
+#include "bindable_t.hpp"
 
 namespace FredEmmott::bind {
 
 template <class TTap>
-struct bind_tap : public bind_component_t {
+struct bind_tap : public bindable_t {
   bind_tap() = delete;
   bind_tap(TTap tap) : mTap(std::forward<TTap>(tap)) {
   }

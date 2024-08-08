@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "../bind_component_t.hpp"
+#include "../bindable_t.hpp"
 
 namespace FredEmmott::bind_detail {
 
 template <class bind_fn, class... Binds>
   requires(sizeof...(Binds) >= 1)
-struct binder_t : public bind::bind_component_t {
+struct binder_t : public bind::bindable_t {
   binder_t() = delete;
 
   binder_t(const Binds&... args) : mBound(static_cast<Binds>(args)...) {
