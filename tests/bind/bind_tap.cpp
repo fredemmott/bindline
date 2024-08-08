@@ -4,8 +4,6 @@
 
 #include <FredEmmott/bind.hpp>
 
-#include <string>
-
 #include <catch2/catch_test_macros.hpp>
 
 using namespace FredEmmott::bind;
@@ -20,8 +18,7 @@ TEST_CASE("at start of pipeline") {
       CHECK(b == 456);
     }
     | bind_tap([&invoked](const auto&... args) {
-        const auto str = (std::to_string(args) + ...);
-        CHECK(str == "123456");
+        CHECK(std::vector {args...} == std::vector {123, 456});
         invoked = true;
       })
     | bind_front(123) | bind_front(456);
@@ -55,8 +52,7 @@ TEST_CASE("with unbound args") {
       CHECK(b == 456);
     }
     | bind_front(123) | bind_tap([&invoked](const auto&... args) {
-        CHECK(sizeof...(args) == 1);
-        CHECK((std::to_string(args) + ...) == "456");
+        CHECK(std::vector {args...} == std::vector {456});
         invoked = true;
       });
   CHECK_FALSE(invoked);
@@ -72,8 +68,7 @@ TEST_CASE("in middle of pipeline") {
       CHECK(b == 456);
     }
     | bind_front(123) | bind_tap([&invoked](const auto&... args) {
-        CHECK(sizeof...(args) == 1);
-        CHECK((std::to_string(args) + ...) == "456");
+        CHECK(std::vector {args...} == std::vector {456});
         invoked = true;
       })
     | bind_front(456);
