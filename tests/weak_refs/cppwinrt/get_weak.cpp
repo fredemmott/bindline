@@ -30,6 +30,8 @@ TEST_CASE("a WinRT implementation") {
 
   auto rt = winrt::make<TestClass>();
   auto com = rt.as<TestClass>();
+  CHECK(com);
+  CHECK(winrt::to_string(com->ToString()) == "Hello, "s + __FILE__);
   auto raw = com.get();
   STATIC_REQUIRE(std::same_as<TestClass*, decltype(raw)>);
 
