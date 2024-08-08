@@ -31,4 +31,15 @@ struct lock_weak_ref_fn {
   static constexpr auto lock(T&&) = delete;
 };
 
+template <class T>
+  requires requires(T v) {
+    // Equivalent to `weak_ref<T>`, but avoids a circular dependency
+    { lock_weak_ref_fn<T>::lock(v) } -> std::copyable;
+  }
+struct make_weak_ref_fn<T> {
+  static constexpr auto make(T&& value) {
+    return std::forward<T>(value);
+  }
+};
+
 }// namespace FredEmmott::weak_refs_extensions

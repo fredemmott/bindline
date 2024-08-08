@@ -25,7 +25,6 @@ struct make_weak_ref_fn {
   }
 
   template <weak_refs::convertible_to_weak_ref T>
-    requires(!weak_refs::weak_ref<T>)
   constexpr auto operator()(T&& strong) const {
     return weak_refs_extensions::make_weak_ref_fn<std::decay_t<T>>::make(
       std::forward<T>(strong));

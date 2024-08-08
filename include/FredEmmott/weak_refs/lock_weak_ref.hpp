@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include <utility>
+
 #include "concepts.hpp"
 #include "detail/static_const.hpp"
-
-#include <utility>
 
 /**
  * This is implemented using the pattern described in
