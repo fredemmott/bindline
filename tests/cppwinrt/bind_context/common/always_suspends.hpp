@@ -2,36 +2,28 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include <condition_variable>
 #include <functional>
-#include <mutex>
+#include <latch>
 #include <optional>
 
 [[nodiscard]]
 inline bool always_suspends(auto context) {
   struct {
-    std::mutex mutex;
-    std::condition_variable cv;
+    std::latch latch {2};
     bool invoked {false};
-    size_t returned = 0;
     std::optional<bool> did_suspend_first;
   } state;
 
   auto fn_under_test = bind_context(context, [&state]() {
     state.invoked = true;
-
-    std::unique_lock lock(state.mutex);
-    state.returned++;
-    state.cv.notify_one();
+    state.latch.count_down();
   });
   auto test_fn = std::bind_front(
     [](auto fnUnderTest, auto context, auto state) -> winrt::fire_and_forget {
       auto invoke_and_notify = [=]() {
         (*fnUnderTest)();
-        std::unique_lock lock(state->mutex);
         state->did_suspend_first = !state->invoked;
-        state->returned++;
-        state->cv.notify_one();
+        state->latch.count_down();
       };
       if constexpr (FredEmmott::cppwinrt_detail::awaitable_context<
                       decltype(*context)>) {
@@ -48,8 +40,7 @@ inline bool always_suspends(auto context) {
     &state);
   test_fn();
 
-  std::unique_lock lock(state.mutex);
-  state.cv.wait(lock, [&]() { return state.returned == 2; });
+  state.latch.wait();
 
   REQUIRE(state.did_suspend_first.has_value());
 
