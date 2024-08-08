@@ -34,7 +34,6 @@
  *   `bind_maybe_refs_front()`
  */
 
-#include "weak_refs/bind_maybe_refs_front.hpp"
 #include "weak_refs/bind_refs_front.hpp"
 #include "weak_refs/concepts.hpp"
 
