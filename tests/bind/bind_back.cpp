@@ -50,3 +50,21 @@ TEST_CASE("partial") {
   bound(123);
   CHECK(invoked);
 }
+
+TEST_CASE("mixed with bind_front") {
+  {
+    std::vector<int> log;
+    auto f = [&log](auto... args) { log = {args...}; } | bind_front(1)
+      | bind_back(2) | bind_front(3) | bind_back(4);
+    f(5);
+    CHECK(log == std::vector<int> {1, 3, 5, 4, 2});
+  }
+
+  {
+    std::vector<int> log;
+    auto f = [&log](auto... args) { log = {args...}; } | bind_front(1, 2)
+      | bind_back(3, 4) | bind_front(5) | bind_back(6);
+    f(7);
+    CHECK(log == std::vector<int> {1, 2, 5, 7, 6, 3, 4});
+  }
+}
