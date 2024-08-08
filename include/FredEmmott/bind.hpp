@@ -6,6 +6,7 @@
 
 #include "bind/bind_component_t.hpp"
 #include "bind/bind_front.hpp"
+#include "bind/bind_tap.hpp"
 
 #ifdef __cpp_lib_bind_back
 #include "bind/bind_back.hpp"

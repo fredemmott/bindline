@@ -109,6 +109,7 @@ try_compile(
 
 add_test_executable("bind/bind_back.cpp" ENABLED_FLAG HAVE_STD_BIND_BACK)
 add_test_executable("bind/bind_front.cpp")
+add_test_executable("bind/bind_tap.cpp")
 
 add_test_executable("weak_refs/raw pointers.cpp")
 add_test_executable("weak_refs/std-enable_shared_from_this.cpp")
