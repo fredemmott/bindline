@@ -61,6 +61,7 @@ jobs:
           cmake `
             ${{github.workspace}}/source `
             -DCMAKE_BUILD_TYPE=Debug `
+            -DIS_GITHUB_ACTIONS=ON `
             @args
       - name: Build
         working-directory: build

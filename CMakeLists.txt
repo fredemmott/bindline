@@ -10,7 +10,15 @@ option(ENABLE_TESTS "Build and run tests" ${PROJECT_IS_TOP_LEVEL})
 
 message(STATUS "${PROJECT_NAME} tests: ${ENABLE_TESTS}")
 
-set(REQUIRED_COMPILE_FEATURES cxx_std_20)
+set(REQUIRED_CXX_STANDARD 20)
+if(ENABLE_TESTS)
+    set(FORCE_CXX_VERSION OFF CACHE STRING "Version of C++ to use for building the tests")
+    if(FORCE_CXX_VERSION)
+        set(REQUIRED_CXX_STANDARD "${FORCE_CXX_VERSION}")
+    endif()
+endif()
+set(REQUIRED_COMPILE_FEATURES "cxx_std_${REQUIRED_CXX_STANDARD}")
+message(STATUS "Required compile features: ${REQUIRED_COMPILE_FEATURES}")
 
 add_library("${PROJECT_NAME}" INTERFACE)
 target_include_directories("${PROJECT_NAME}" INTERFACE include)

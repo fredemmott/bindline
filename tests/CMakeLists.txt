@@ -6,15 +6,19 @@ include(Catch)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-function(add_test_executable SOURCE)
-    set(TARGET "${SOURCE}")
-    string(REPLACE "/" "-" TARGET "${TARGET}")
-    string(REPLACE " " "-" TARGET "${TARGET}")
-    string(REPLACE ".cpp" "" TARGET "${TARGET}")
+option(IS_GITHUB_ACTIONS "Use github-action-specific output syntax etc" OFF)
 
+macro(WARN MESSAGE_TEXT)
+    message(WARNING "⚠️ ${MESSAGE_TEXT}")
+    if(IS_GITHUB_ACTIONS)
+        message(STATUS "::warning::${MESSAGE_TEXT}")
+    endif()
+endmacro()
+
+function(add_test_executable SOURCE)
     set(options CPPWINRT_MAIN)
-    set(valueArgs TEST_NAME)
-    set(multiValueArgs SOURCES LINK_LIBRARIES)
+    set(valueArgs TEST_NAME ENABLED_FLAG)
+    set(multiValueArgs SOURCES LINK_LIBRARIES CXX_COMPILE_FEATURES)
 
     cmake_parse_arguments(
         TEST_ARG
@@ -22,6 +26,11 @@ function(add_test_executable SOURCE)
         "${valueArgs}"
         "${multiValueArgs}"
         ${ARGN})
+
+    set(TARGET "${SOURCE}")
+    string(REPLACE "/" "-" TARGET "${TARGET}")
+    string(REPLACE " " "-" TARGET "${TARGET}")
+    string(REPLACE ".cpp" "" TARGET "${TARGET}")
 
     if(TEST_ARG_TEST_NAME)
         set(TEST_NAME "${TEST_ARG_TEST_NAME}")
@@ -32,7 +41,13 @@ function(add_test_executable SOURCE)
     cmake_path(GET SOURCE PARENT_PATH TEST_PREFIX)
     string(REPLACE "/" "📂" TEST_PREFIX "${TEST_PREFIX}")
     string(APPEND TEST_PREFIX "📂${TEST_NAME}➡️")
-        
+
+    if(TEST_ARG_ENABLED_FLAG AND NOT "${${TEST_ARG_ENABLED_FLAG}}")
+        set(DISABLED_BECAUSE_FLAG ${TEST_ARG_ENABLED_FLAG})
+        WARN("Skipping test ${SOURCE} because ${TEST_ARG_ENABLED_FLAG} is not set")
+        set(SOURCE "cmake/skip-stub.cpp")
+    endif()
+
     set(TARGET_ARGS ${TEST_ARG_UNPARSED_ARGUMENTS} ${SOURCE})
 
     if(TEST_ARG_CPPWINRT_MAIN)
@@ -44,6 +59,11 @@ function(add_test_executable SOURCE)
 
 
     add_executable(${TARGET} ${TARGET_ARGS})
+
+    if(DISABLED_BECAUSE_FLAG)
+        target_compile_definitions(${TARGET} PRIVATE "FEATURE_TEST_VARIABLE_NAME=${TEST_ARG_ENABLED_FLAG}")
+    endif()
+
     catch_discover_tests(
         ${TARGET}
         TEST_PREFIX "${TEST_PREFIX}"
@@ -58,6 +78,10 @@ function(add_test_executable SOURCE)
         ${TEST_ARG_LINK_LIBRARIES}
     )
 
+    if(TEST_ARG_CXX_COMPILE_FEATURES)
+        target_compile_features(${TARGET} PRIVATE "${TEST_ARG_CXX_COMPILE_FEATURES}")
+    endif()
+
     if(WIN32 AND (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") AND (NOT "cppwinrt::windows-sdk" IN_LIST TEST_ARG_LINK_LIBRARIES))
         # The version of C++/WinRT included in the Windows SDK might not be usable without <Windows.h>
         #
@@ -67,6 +91,21 @@ function(add_test_executable SOURCE)
         target_compile_definitions("${TARGET}" PRIVATE "FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT=false")
     endif()
 endfunction()
+
+if(CMAKE_VERSION VERSION_LESS "3.25")
+    macro(try_compile TEST_NAME)
+        WARN("Skipping ${TEST_NAME} test because this version of CMake is too old.")
+    endmacro()
+endif()
+
+try_compile(
+    HAVE_STD_BIND_BACK
+    SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/cmake/have-std-bind_back.cpp"
+    CXX_STANDARD ${REQUIRED_CXX_STANDARD}
+)
+
+add_test_executable("bind/bind_back.cpp" ENABLED_FLAG HAVE_STD_BIND_BACK)
+add_test_executable("bind/bind_front.cpp")
 
 add_test_executable("weak_refs/raw pointers.cpp")
 add_test_executable("weak_refs/std-enable_shared_from_this.cpp")
