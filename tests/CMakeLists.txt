@@ -11,7 +11,10 @@ option(IS_GITHUB_ACTIONS "Use github-action-specific output syntax etc" OFF)
 macro(WARN MESSAGE_TEXT)
     message(WARNING "⚠️ ${MESSAGE_TEXT}")
     if(IS_GITHUB_ACTIONS)
-        message(STATUS "::warning::${MESSAGE_TEXT}")
+        execute_process(
+            COMMAND
+            "${CMAKE_COMMAND}" -E echo "::warning::${MESSAGE_TEXT}"
+        )
     endif()
 endmacro()
 
