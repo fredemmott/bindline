@@ -17,3 +17,7 @@
 #if FREDEMMOTT_BIND_ENABLE_WEAK_REFS
 #include "bind/weak_refs.hpp"
 #endif
+
+#if FREDEMMOTT_BIND_ENABLE_CPPWINRT
+#include "bind/cppwinrt.hpp"
+#endif

@@ -99,7 +99,12 @@ function(add_test_executable SOURCE)
         # e.g. for Clang, https://github.com/microsoft/cppwinrt/pull/1180
         #
         # Replace the `__has_include(<winrt/base.h>)` check
-        target_compile_definitions("${TARGET}" PRIVATE "FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT=false")
+        target_compile_definitions(
+            "${TARGET}"
+            PRIVATE
+            "FREDEMMOTT_BIND_ENABLE_CPPWINRT=false"
+            "FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT=false"
+        )
     endif()
 endfunction()
 
@@ -163,3 +168,9 @@ add_test_executable("bind/bind_back.cpp" REQUIRED_FLAGS HAVE_STD_BIND_BACK)
 
 add_test_executable("bind/weak_refs/bind_refs_back.cpp")
 add_test_executable("bind/weak_refs/bind_refs_front.cpp")
+
+add_test_executable(
+    "bind/cppwinrt/bind_winrt_context.cpp"
+    WIN32 CPPWINRT_MAIN
+    LINK_LIBRARIES cppwinrt::windows-sdk
+)

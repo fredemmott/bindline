@@ -15,6 +15,7 @@ struct bind_refs_front_fn {
       std::forward<Args>(args)...);
   }
 };
+
 template <class... Args>
 struct bind_refs_front_t : binder_t<bind_refs_front_fn, std::decay_t<Args>...> {
   using binder_t<bind_refs_front_fn, std::decay_t<Args>...>::binder_t;

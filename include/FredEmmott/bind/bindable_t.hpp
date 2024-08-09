@@ -17,7 +17,7 @@ namespace FredEmmott::bind {
 
 struct bindable_t {
   [[nodiscard]]
-  constexpr auto bind_to(const auto& fn) const
+  constexpr auto bind_to(auto&& fn) const
     = delete;
 
   template <template <class...> class T, class TProjection, class... TArgs>
