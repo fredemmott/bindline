@@ -35,12 +35,14 @@ TEST_CASE("partial application") {
 TEST_CASE("composition") {
   auto strong = std::make_shared<int>(123);
   bool invoked = false;
-  ([&invoked](auto a, auto b, auto c) {
-    CHECK(*a == 123);
-    CHECK(b == 456);
-    CHECK(c == 789);
-    invoked = true;
-  } | bind_refs_front(strong)
-   | bind_front(456))(789);
+  auto f =
+    [&invoked](auto a, auto b, auto c) {
+      CHECK(*a == 123);
+      CHECK(b == 456);
+      CHECK(c == 789);
+      invoked = true;
+    }
+    | bind_refs_front(strong) | bind_front(456);
+  f(789);
   CHECK(invoked);
 }
