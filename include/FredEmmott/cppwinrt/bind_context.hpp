@@ -10,6 +10,7 @@
 #endif
 
 #include <concepts>
+#include <functional>
 #include <memory>
 
 namespace FredEmmott::cppwinrt_detail {
@@ -70,7 +71,7 @@ struct context_binder {
     if constexpr (use_coro_v) {
       dispatch_coro(mContext, mFn, unboundArgs...);
     } else if constexpr (use_tryenqueue_v) {
-      mContext.TryEnqueue(mFn);
+      mContext.TryEnqueue(std::bind_front(mFn, unboundArgs...));
     } else {
       // Should be unreachable due to `switchable_context` requirement
       static_assert(false, "Don't know how to invoke in supplied context");

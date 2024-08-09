@@ -20,6 +20,7 @@ using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::System;
 
 #include "common/test_dq_always_suspends.hpp"
+#include "common/test_dq_forwards_arguments.hpp"
 #include "common/test_invoked_even_if_destroyed.hpp"
 #include "common/test_switch_to_dispatcherqueue.hpp"
 

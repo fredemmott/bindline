@@ -23,6 +23,7 @@ using namespace FredEmmott::cppwinrt;
 using namespace winrt::Windows::System;
 
 #include "common/always_suspends.hpp"
+#include "common/check_forwards_arguments.hpp"
 
 template <class T>
 concept valid_context = requires(T ctx) { bind_context(ctx, []() {}); };
@@ -86,6 +87,17 @@ TEST_CASE("doesn't suspend if already in the correct thread") {
     CreateOnDedicatedThread();
   const auto otherThread = get_background_context(dqc.DispatcherQueue()).get();
   CHECK_FALSE(always_suspends(otherThread));
+
+  dqc.ShutdownQueueAsync().get();
+}
+
+TEST_CASE("forwarding arguments") {
+  auto dqc = winrt::Windows::System::DispatcherQueueController::
+    CreateOnDedicatedThread();
+  const auto otherThread = get_background_context(dqc.DispatcherQueue()).get();
+  CHECK_FALSE(always_suspends(otherThread));
+
+  check_forwards_arguments(otherThread);
 
   dqc.ShutdownQueueAsync().get();
 }
