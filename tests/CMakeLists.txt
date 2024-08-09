@@ -157,6 +157,9 @@ add_test_executable(
 add_test_executable("bind/bind_front.cpp")
 add_test_executable("bind/bind_tap.cpp")
 add_test_executable("bind/direct invocation.cpp")
-add_test_executable("bind/weak_refs/bind_refs_front.cpp")
+
 
 add_test_executable("bind/bind_back.cpp" REQUIRED_FLAGS HAVE_STD_BIND_BACK)
+
+add_test_executable("bind/weak_refs/bind_refs_back.cpp")
+add_test_executable("bind/weak_refs/bind_refs_front.cpp")

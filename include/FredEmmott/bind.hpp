@@ -15,5 +15,5 @@
 #endif
 
 #if FREDEMMOTT_BIND_ENABLE_WEAK_REFS
-#include "bind/weak_refs/bind_refs_front.hpp"
+#include "bind/weak_refs.hpp"
 #endif
