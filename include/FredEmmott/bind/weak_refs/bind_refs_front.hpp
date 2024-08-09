@@ -28,14 +28,13 @@ template <class... TArgs>
 [[nodiscard]]
 constexpr auto bind_refs_front(TArgs&&... args) {
   using ::FredEmmott::bind_detail::bind_refs_front_t;
-  using ::FredEmmott::weak_refs::convertible_to_weak_ref;
-  using ::FredEmmott::weak_refs::make_weak_ref;
+  namespace wr = ::FredEmmott::weak_refs;
 
   // We need to convert to weak refs here so that the
   // `invocable_or_bindable_t` doesn't store a strong reference
   return bindable_t::make_projected<bind_refs_front_t>(
-    []<convertible_to_weak_ref T>(T&& v) constexpr {
-      return make_weak_ref(std::forward<T>(v));
+    []<wr::convertible_to_weak_ref T>(T&& v) constexpr {
+      return wr::make_weak_ref(std::forward<T>(v));
     },
     std::forward<TArgs>(args)...);
 }
