@@ -38,11 +38,13 @@ TEST_CASE("composition") {
   auto f =
     [&invoked](auto front, auto mid, auto back) {
       CHECK(*back == 123);
-      CHECK(mid == 456);
-      CHECK(front == 789);
+      CHECK(front == 456);
+      CHECK(mid == 789);
       invoked = true;
     }
-    | bind_refs_back(strong) | bind_back(456);
+    // Not using `bind_back()` to avoid making this test depend on
+    // std::bind_back
+    | bind_refs_back(strong) | bind_front(456);
   f(789);
   CHECK(invoked);
 }
