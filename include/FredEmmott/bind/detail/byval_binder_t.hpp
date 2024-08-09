@@ -7,12 +7,13 @@
 namespace FredEmmott::bind_detail {
 
 template <class bind_fn, class... Binds>
-struct argument_binder_t : public bind::bindable_t {
-  argument_binder_t() = delete;
+struct byval_binder_t : public bind::bindable_t {
+  static_assert((std::same_as<Binds, std::decay_t<Binds>> && ...));
+  byval_binder_t() = delete;
 
   template <class... TInitBinds>
     requires(sizeof...(Binds) == sizeof...(TInitBinds))
-  constexpr argument_binder_t(TInitBinds&&... args)
+  constexpr byval_binder_t(TInitBinds&&... args)
     : mBound(std::forward<TInitBinds>(args)...) {
   }
 
