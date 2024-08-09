@@ -76,3 +76,18 @@ TEST_CASE("in middle of pipeline") {
   f();
   CHECK(invoked);
 }
+
+TEST_CASE("direct invocation") {
+  bool invoked_inner {false};
+  bool invoked_tap {false};
+  auto inner = [&](auto v) {
+    CHECK(v == 123);
+    invoked_inner = true;
+  };
+  bind_tap(inner, [&](auto v) {
+    CHECK(v == 123);
+    invoked_tap = true;
+  })(123);
+  CHECK(invoked_tap);
+  CHECK(invoked_inner);
+}
