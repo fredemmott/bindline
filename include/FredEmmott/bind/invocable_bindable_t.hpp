@@ -11,15 +11,27 @@ namespace FredEmmott::bind {
 
 template <template <class...> class TNext, class TFirst, class... TRest>
 struct invocable_bindable_t : bindable_t {
+  static_assert(
+    std::same_as<TFirst, std::decay_t<TFirst>>
+    && (std::same_as<TRest, std::decay_t<TRest>> && ...));
+
+  using bindable_t = TNext<TFirst, TRest...>;
+  using invocable_t = TNext<TRest...>;
+
   template <class... TInit>
   constexpr invocable_bindable_t(TInit&&... args)
     : mArgs(std::forward_as_tuple(std::forward<TInit>(args)...)) {
   }
 
-  constexpr auto bind_to(const auto& fn) const {
+  template <class TFn>
+    requires std::invocable<
+      decltype(std::declval<bindable_t>().bind_to(std::declval<TFn>())),
+      TFirst,
+      TRest...>
+  constexpr auto bind_to(const TFn& fn) const {
     const auto next = std::apply(
       []<class... NextArgs>(NextArgs&&... nextArgs) {
-        return TNext<TFirst, TRest...> {std::forward<NextArgs>(nextArgs)...};
+        return bindable_t {std::forward<NextArgs>(nextArgs)...};
       },
       mArgs);
 
@@ -27,11 +39,14 @@ struct invocable_bindable_t : bindable_t {
   }
 
   template <class... Unbound>
+    requires std::invocable<
+      decltype(std::declval<invocable_t>().bind_to(std::declval<TFirst>())),
+      Unbound...>
   constexpr auto operator()(Unbound&&... unbound) const {
     const auto next = std::apply(
       []<class... NextArgs>(auto, NextArgs&&... nextArgs) {
         // Ignored first arg is the function we're invoking
-        return TNext<TRest...> {std::forward<NextArgs>(nextArgs)...};
+        return invocable_t {std::forward<NextArgs>(nextArgs)...};
       },
       mArgs);
     return std::invoke(
@@ -43,7 +58,8 @@ struct invocable_bindable_t : bindable_t {
 };
 
 template <template <class...> class T, class... TArgs>
-auto make_bindable(TArgs&&... args) {
+[[nodiscard]]
+constexpr auto make_bindable(TArgs&&... args) {
   return T<std::decay_t<TArgs>...>(std::forward<TArgs>(args)...);
 }
 
@@ -53,7 +69,8 @@ template <template <class...> class T, class TFirst, class... TRest>
              TFirst,
              TRest...>
   && std::constructible_from<T<std::decay_t<TRest>...>, TRest...>
-auto make_bindable(TFirst&& first, TRest&&... rest) {
+[[nodiscard]]
+constexpr auto make_bindable(TFirst&& first, TRest&&... rest) {
   return invocable_bindable_t<T, std::decay_t<TFirst>, std::decay_t<TRest>...> {
     std::forward<TFirst>(first),
     std::forward<TRest>(rest)...,
