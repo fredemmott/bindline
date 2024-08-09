@@ -114,14 +114,6 @@ try_compile(
     SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/cmake/have-std-bind_back.cpp"
     CXX_STANDARD ${REQUIRED_CXX_STANDARD}
 )
-
-##### bind #####
-
-add_test_executable("bind/bind_back.cpp" REQUIRED_FLAGS HAVE_STD_BIND_BACK)
-add_test_executable("bind/bind_front.cpp")
-add_test_executable("bind/bind_tap.cpp")
-add_test_executable("bind/direct invocation.cpp")
-
 ##### cppwinrt #####
 
 add_test_executable("cppwinrt/concepts.cpp" WIN32 LINK_LIBRARIES cppwinrt::windows-sdk)
@@ -159,3 +151,12 @@ add_test_executable(
     WIN32 CPPWINRT_MAIN
     LINK_LIBRARIES cppwinrt::windows-sdk
 )
+
+##### bind #####
+
+add_test_executable("bind/bind_front.cpp")
+add_test_executable("bind/bind_tap.cpp")
+add_test_executable("bind/direct invocation.cpp")
+add_test_executable("bind/weak_refs/bind_refs_front.cpp")
+
+add_test_executable("bind/bind_back.cpp" REQUIRED_FLAGS HAVE_STD_BIND_BACK)
