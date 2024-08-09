@@ -7,8 +7,8 @@
 using namespace FredEmmott::weak_refs;
 
 template <class... Args>
-auto bind_function_under_test(Args&&... args) {
-  return bind_refs_front(std::forward<Args>(args)...);
+auto bind_function_under_test(const auto& fn, Args&&... args) {
+  return bind_refs_front(fn, std::forward<Args>(args)...);
 }
 
 #include "common/bind.hpp"

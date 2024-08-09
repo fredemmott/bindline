@@ -98,6 +98,7 @@ TEST_CASE(COMMON_BIND_TEST_PREFIX "promoting weak_ptrs") {
 
 TEST_CASE(COMMON_BIND_TEST_PREFIX "stale weak_ptrs") {
   auto strong = std::make_shared<int>(123);
+  std::weak_ptr weak {strong};
 
   bool invoked = false;
   auto f = bind_function_under_test(
@@ -105,7 +106,7 @@ TEST_CASE(COMMON_BIND_TEST_PREFIX "stale weak_ptrs") {
       CHECK(false);
       invoked = true;
     },
-    std::weak_ptr {strong});
+    weak);
   CHECK(!invoked);
   strong = nullptr;
   f();

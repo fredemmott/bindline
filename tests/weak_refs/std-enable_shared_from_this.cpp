@@ -44,3 +44,31 @@ TEST_CASE("conversions") {
   STATIC_CHECK_FALSE(weak_ref<decltype(strong)>);
   STATIC_CHECK(convertible_to_weak_ref<decltype(strong)>);
 }
+
+TEST_CASE("bind_front from a raw pointer") {
+  // This is duplicating some of the other tests, but let's have an exhaustive
+  // test covering all the cases
+  auto self = std::make_shared<TestClass>();
+  std::weak_ptr weak {self};
+  auto raw = self.get();
+
+  STATIC_CHECK(convertible_to_weak_ref<decltype(self)>);
+  STATIC_CHECK(convertible_to_weak_ref<decltype(weak)>);
+  STATIC_CHECK(convertible_to_weak_ref<decltype(raw)>);
+
+  size_t counter = 0;
+
+  auto f = [&counter](...) { ++counter; };
+
+  auto a = make_weak_ref(self);
+  auto b = make_weak_ref(weak);
+  auto c = make_weak_ref(raw);
+
+  bind_refs_front(f, self)();
+  bind_refs_front(f, weak)();
+  bind_refs_front(f, raw)();
+  // R-Value reference
+  bind_refs_front(f, std::weak_ptr {self})();
+
+  CHECK(counter == 4);
+}
