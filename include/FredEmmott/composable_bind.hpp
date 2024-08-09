@@ -10,15 +10,15 @@
 #include "composable_bind/bind_tap.hpp"
 #include "composable_bind/bindable_t.hpp"
 
-#if FREDEMMOTT_COMPOSABLE_BINDENABLE_BIND_BACK
+#if FREDEMMOTT_COMPOSABLE_BIND_ENABLE_BIND_BACK
 #include "composable_bind/bind_back.hpp"
 #endif
 
-#if FREDEMMOTT_COMPOSABLE_BINDENABLE_WEAK_REFS
+#if FREDEMMOTT_COMPOSABLE_BIND_ENABLE_WEAK_REFS
 #include "composable_bind/weak_refs.hpp"
 #endif
 
-#if FREDEMMOTT_COMPOSABLE_BINDENABLE_CPPWINRT
+#if FREDEMMOTT_COMPOSABLE_BIND_ENABLE_CPPWINRT
 #include "composable_bind/cppwinrt.hpp"
 #endif
 

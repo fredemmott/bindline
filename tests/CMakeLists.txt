@@ -102,7 +102,7 @@ function(add_test_executable SOURCE)
         target_compile_definitions(
             "${TARGET}"
             PRIVATE
-            "FREDEMMOTT_COMPOSABLE_BINDENABLE_CPPWINRT=false"
+            "FREDEMMOTT_COMPOSABLE_BIND_ENABLE_CPPWINRT=false"
             "FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT=false"
         )
     endif()
