@@ -5,7 +5,6 @@
 #include "../../weak_refs/bind_refs_front.hpp"
 #include "../bindable_t.hpp"
 #include "../detail/binder_t.hpp"
-#include "../invocable_bindable_t.hpp"
 
 namespace FredEmmott::bind_detail {
 
@@ -16,7 +15,6 @@ struct bind_refs_front_fn {
       std::forward<Args>(args)...);
   }
 };
-
 template <class... Args>
 struct bind_refs_front_t : binder_t<bind_refs_front_fn, std::decay_t<Args>...> {
   using binder_t<bind_refs_front_fn, std::decay_t<Args>...>::binder_t;
@@ -26,26 +24,20 @@ struct bind_refs_front_t : binder_t<bind_refs_front_fn, std::decay_t<Args>...> {
 
 namespace FredEmmott::bind {
 
-template <class First, ::FredEmmott::weak_refs::convertible_to_weak_ref... Rest>
-  requires ::FredEmmott::weak_refs::convertible_to_weak_ref<First>
-  || requires(First first, Rest... rest) {
-       ::FredEmmott::weak_refs::bind_refs_front(first, rest...);
-     }
+template <class... TArgs>
 [[nodiscard]]
-auto bind_refs_front(First&& first, Rest&&... rest) {
-  using namespace ::FredEmmott::bind_detail;
-  using namespace ::FredEmmott::weak_refs;
+constexpr auto bind_refs_front(TArgs&&... args) {
+  using ::FredEmmott::bind_detail::bind_refs_front_t;
+  using ::FredEmmott::weak_refs::convertible_to_weak_ref;
+  using ::FredEmmott::weak_refs::make_weak_ref;
 
-  if constexpr (!convertible_to_weak_ref<First>) {
-    return ::FredEmmott::weak_refs::bind_refs_front(
-      std::forward<First>(first), std::forward<Rest>(rest)...);
-  } else {
-    // We need to convert to weak refs here so that the
-    // `invocable_or_bindable_t` doesn't store a strong reference
-    return make_bindable<bind_refs_front_t>(
-      make_weak_ref(std::forward<First>(first)),
-      make_weak_ref(std::forward<Rest>(rest))...);
-  }
+  // We need to convert to weak refs here so that the
+  // `invocable_or_bindable_t` doesn't store a strong reference
+  return bindable_t::make_projected<bind_refs_front_t>(
+    []<convertible_to_weak_ref T>(T&& v) constexpr {
+      return make_weak_ref(std::forward<T>(v));
+    },
+    std::forward<TArgs>(args)...);
 }
 
 }// namespace FredEmmott::bind

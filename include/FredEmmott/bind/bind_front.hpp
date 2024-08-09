@@ -4,7 +4,6 @@
 
 #include "bindable_t.hpp"
 #include "detail/binder_t.hpp"
-#include "invocable_bindable_t.hpp"
 
 namespace FredEmmott::bind_detail {
 
@@ -27,9 +26,8 @@ namespace FredEmmott::bind {
 template <class... Args>
 [[nodiscard]]
 auto bind_front(Args&&... args) {
-  using namespace bind_detail;
-
-  return make_bindable<front_binder_t>(std::forward<Args>(args)...);
+  return bindable_t::make<::FredEmmott::bind_detail::front_binder_t>(
+    std::forward<Args>(args)...);
 }
 
 }// namespace FredEmmott::bind

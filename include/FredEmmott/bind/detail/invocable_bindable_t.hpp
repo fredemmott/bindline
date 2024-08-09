@@ -5,12 +5,12 @@
 #include <atomic>
 #include <concepts>
 
-#include "bindable_t.hpp"
+#include "../bindable_t.hpp"
 
-namespace FredEmmott::bind {
+namespace FredEmmott::bind_detail {
 
 template <template <class...> class TNext, class TFirst, class... TRest>
-struct invocable_bindable_t : bindable_t {
+struct invocable_bindable_t : ::FredEmmott::bind::bindable_t {
   static_assert(
     std::same_as<TFirst, std::decay_t<TFirst>>
     && (std::same_as<TRest, std::decay_t<TRest>> && ...));
@@ -18,7 +18,11 @@ struct invocable_bindable_t : bindable_t {
   using bindable_t = TNext<TFirst, TRest...>;
   using invocable_t = TNext<TRest...>;
 
+  invocable_bindable_t() = delete;
+
   template <class... TInit>
+    requires std::constructible_from<TNext<TFirst, TRest...>, TFirst, TRest...>
+    && std::constructible_from<TNext<TRest...>, TRest...>
   constexpr invocable_bindable_t(TInit&&... args)
     : mArgs(std::forward_as_tuple(std::forward<TInit>(args)...)) {
   }
@@ -54,24 +58,4 @@ struct invocable_bindable_t : bindable_t {
   std::tuple<TFirst, TRest...> mArgs;
 };
 
-template <template <class...> class T, class... TArgs>
-[[nodiscard]]
-constexpr auto make_bindable(TArgs&&... args) {
-  return T<std::decay_t<TArgs>...>(std::forward<TArgs>(args)...);
-}
-
-template <template <class...> class T, class TFirst, class... TRest>
-  requires std::constructible_from<
-             T<std::decay_t<TFirst>, std::decay_t<TRest>...>,
-             TFirst,
-             TRest...>
-  && std::constructible_from<T<std::decay_t<TRest>...>, TRest...>
-[[nodiscard]]
-constexpr auto make_bindable(TFirst&& first, TRest&&... rest) {
-  return invocable_bindable_t<T, std::decay_t<TFirst>, std::decay_t<TRest>...> {
-    std::forward<TFirst>(first),
-    std::forward<TRest>(rest)...,
-  };
-}
-
-}// namespace FredEmmott::bind
+}// namespace FredEmmott::bind_detail

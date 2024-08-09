@@ -30,8 +30,8 @@ namespace FredEmmott::bind {
 template <class... Args>
 [[nodiscard]]
 auto bind_tap(Args&&... args) {
-  using namespace bind_detail;
-  return make_bindable<bind_tap_t>(std::forward<Args>(args)...);
+  return bindable_t::make<::FredEmmott::bind_detail::bind_tap_t>(
+    std::forward<Args>(args)...);
 }
 
 }// namespace FredEmmott::bind
