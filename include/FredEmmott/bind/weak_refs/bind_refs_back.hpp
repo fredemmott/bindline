@@ -4,7 +4,7 @@
 
 #include "../../weak_refs/bind_refs_back.hpp"
 #include "../bindable_t.hpp"
-#include "../detail/binder_t.hpp"
+#include "../detail/argument_binder_t.hpp"
 
 namespace FredEmmott::bind_detail {
 
@@ -15,8 +15,10 @@ struct bind_refs_back_fn {
   }
 };
 template <class... Args>
-struct bind_refs_back_t : binder_t<bind_refs_back_fn, std::decay_t<Args>...> {
-  using binder_t<bind_refs_back_fn, std::decay_t<Args>...>::binder_t;
+struct bind_refs_back_t
+  : argument_binder_t<bind_refs_back_fn, std::decay_t<Args>...> {
+  using argument_binder_t<bind_refs_back_fn, std::decay_t<Args>...>::
+    argument_binder_t;
 };
 
 }// namespace FredEmmott::bind_detail

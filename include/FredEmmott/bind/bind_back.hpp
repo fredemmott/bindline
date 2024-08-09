@@ -3,7 +3,7 @@
 #pragma once
 
 #include "bindable_t.hpp"
-#include "detail/binder_t.hpp"
+#include "detail/argument_binder_t.hpp"
 
 namespace FredEmmott::bind_detail {
 
@@ -15,8 +15,9 @@ struct bind_back_fn {
 };
 
 template <class... Args>
-struct back_binder_t : binder_t<bind_back_fn, std::decay_t<Args>...> {
-  using binder_t<bind_back_fn, std::decay_t<Args>...>::binder_t;
+struct back_binder_t : argument_binder_t<bind_back_fn, std::decay_t<Args>...> {
+  using argument_binder_t<bind_back_fn, std::decay_t<Args>...>::
+    argument_binder_t;
 };
 }// namespace FredEmmott::bind_detail
 
