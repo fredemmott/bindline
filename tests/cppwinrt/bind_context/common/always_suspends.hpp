@@ -14,10 +14,12 @@ inline bool always_suspends(auto context) {
     std::optional<bool> did_suspend_first;
   } state;
 
-  auto fn_under_test = bind_context(context, [&state]() {
-    state.invoked = true;
-    state.latch.count_down();
-  });
+  auto fn_under_test = bind_context(
+    [&state]() {
+      state.invoked = true;
+      state.latch.count_down();
+    },
+    context);
   auto test_fn = std::bind_front(
     [](auto fnUnderTest, auto context, auto state) -> winrt::fire_and_forget {
       auto invoke_and_notify = [=]() {

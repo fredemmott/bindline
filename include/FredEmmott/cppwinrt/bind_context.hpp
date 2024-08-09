@@ -48,7 +48,7 @@ concept awaitable_context = requires(T v) { switch_context_awaitable(v); };
 template <class T>
 concept switchable_context = dispatcher_queue<T> || awaitable_context<T>;
 
-template <switchable_context TContext, class TFn>
+template <class TFn, switchable_context TContext>
 struct context_binder {
  public:
   using function_t = TFn;
@@ -58,7 +58,7 @@ struct context_binder {
 
   context_binder() = delete;
   template <std::convertible_to<TContext> InitContext, class InitFn>
-  context_binder(InitContext&& context, InitFn&& fn)
+  context_binder(InitFn&& fn, InitContext&& context)
     : mContext(std::forward<InitContext>(context)),
       mFn(std::forward<InitFn>(fn)) {
   }
@@ -98,11 +98,13 @@ struct context_binder {
 
 namespace FredEmmott::cppwinrt {
 
-template <cppwinrt_detail::switchable_context Context, class F>
-auto bind_context(Context&& context, F&& f) {
+template <class F, cppwinrt_detail::switchable_context Context>
+auto bind_context(F&& f, Context&& context) {
   return cppwinrt_detail::
-    context_binder<std::decay_t<Context>, std::decay_t<F>> {
-      std::forward<Context>(context), std::forward<F>(f)};
+    context_binder<std::decay_t<F>, std::decay_t<Context>> {
+      std::forward<F>(f),
+      std::forward<Context>(context),
+    };
 }
 
 }// namespace FredEmmott::cppwinrt

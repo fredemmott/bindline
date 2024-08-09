@@ -26,9 +26,9 @@ using namespace winrt::Windows::System;
 
 TEST_CASE("switch to DispatcherQueue thread") {
   STATIC_CHECK_FALSE(
-    decltype(bind_context(DispatcherQueue {nullptr}, []() {}))::use_coro_v);
+    decltype(bind_context([]() {}, DispatcherQueue {nullptr}))::use_coro_v);
   STATIC_CHECK(decltype(bind_context(
-    DispatcherQueue {nullptr}, []() {}))::use_tryenqueue_v);
+    []() {}, DispatcherQueue {nullptr}))::use_tryenqueue_v);
 
   test_switch_to_dispatcherqueue();
 }

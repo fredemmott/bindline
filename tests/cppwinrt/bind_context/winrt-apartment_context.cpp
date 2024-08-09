@@ -26,7 +26,7 @@ using namespace winrt::Windows::System;
 #include "common/check_forwards_arguments.hpp"
 
 template <class T>
-concept valid_context = requires(T ctx) { bind_context(ctx, []() {}); };
+concept valid_context = requires(T ctx) { bind_context([]() {}, ctx); };
 
 concurrency::task<winrt::apartment_context> get_background_context(auto dq) {
   winrt::apartment_context foreground;
@@ -54,14 +54,14 @@ TEST_CASE("switch to given winrt::apartment_context") {
   HANDLE handles[] = {event.get()};
 
   auto f = bind_context(
-    otherThread,
     std::bind_front(
       [](auto idPtr, auto event) {
         *idPtr = GetCurrentThreadId();
         SetEvent(event);
       },
       &backgroundThreadID,
-      event.get()));
+      event.get()),
+    otherThread);
 
   f();
   while (MsgWaitForMultipleObjects(1, handles, false, INFINITE, QS_ALLEVENTS)

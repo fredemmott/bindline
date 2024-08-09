@@ -21,7 +21,7 @@ struct winrt_context_binder_t : ::FredEmmott::bind::bindable_t {
   [[nodiscard]]
   constexpr auto bind_to(TFn&& fn) const {
     return ::FredEmmott::cppwinrt::bind_context(
-      mContext, std::forward<TFn>(fn));
+      std::forward<TFn>(fn), mContext);
   }
 
  private:

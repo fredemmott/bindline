@@ -19,7 +19,7 @@ inline void check_forwards_arguments(auto context) {
   fn(123, 456, 789, __LINE__);
 
   promise = {};
-  bind_context(context, fn)(123, 456, 789, __LINE__);
+  bind_context(fn, context)(123, 456, 789, __LINE__);
   promise.get_future().wait();
   CHECK(last_line == __LINE__ - 2);
 }

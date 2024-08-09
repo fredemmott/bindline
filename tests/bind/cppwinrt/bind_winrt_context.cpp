@@ -20,7 +20,7 @@ using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::System;
 
 template <class TContext, class TFn>
-auto bind_context(TContext&& context, TFn&& fn) {
+auto bind_context(TFn&& fn, TContext&& context) {
   return bind_winrt_context(
     std::forward<TFn>(fn), std::forward<TContext>(context));
 }
@@ -32,9 +32,9 @@ auto bind_context(TContext&& context, TFn&& fn) {
 
 TEST_CASE("switch to DispatcherQueue thread") {
   STATIC_CHECK_FALSE(
-    decltype(bind_context(DispatcherQueue {nullptr}, []() {}))::use_coro_v);
+    decltype(bind_context([]() {}, DispatcherQueue {nullptr}))::use_coro_v);
   STATIC_CHECK(decltype(bind_context(
-    DispatcherQueue {nullptr}, []() {}))::use_tryenqueue_v);
+    []() {}, DispatcherQueue {nullptr}))::use_tryenqueue_v);
 
   test_switch_to_dispatcherqueue();
 }

@@ -52,11 +52,11 @@ void test_invoked_even_if_destroyed() {
 
   {
     auto unretained
-      = bind_context(dq, std::bind_front(impl, &state.invoked_unretained));
+      = bind_context(std::bind_front(impl, &state.invoked_unretained), dq);
     unretained();
   }
   auto retained
-    = bind_context(dq, std::bind_front(impl, &state.invoked_retained));
+    = bind_context(std::bind_front(impl, &state.invoked_retained), dq);
   retained();
 
   {

@@ -13,13 +13,13 @@ inline void test_switch_to_dispatcherqueue() {
   std::promise<void> promise;
 
   auto f = bind_context(
-    dqc.DispatcherQueue(),
     std::bind_front(
       [&promise](auto idPtr) {
         *idPtr = GetCurrentThreadId();
         promise.set_value();
       },
-      &otherThreadID));
+      &otherThreadID),
+    dqc.DispatcherQueue());
   f();
 
   promise.get_future().wait();
