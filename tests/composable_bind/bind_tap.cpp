@@ -2,11 +2,11 @@
 // Copyright (C) 2024 Fred Emmott <fred@fredemmott.com>
 // SPDX-License-Identifier: MIT
 
-#include <FredEmmott/bind.hpp>
+#include <FredEmmott/composable_bind.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 
-using namespace FredEmmott::bind;
+using namespace FredEmmott::composable_bind;
 
 // This whole file is a good test of mixed pipelines too
 

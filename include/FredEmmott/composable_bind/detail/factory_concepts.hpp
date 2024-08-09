@@ -4,7 +4,7 @@
 
 #include "invocable_bindable_t.hpp"
 
-namespace FredEmmott::bind_detail {
+namespace FredEmmott::composable_bind_detail {
 
 template <template <class...> class T, class... TArgs>
 concept template_instantiable_from = requires { typename T<TArgs...>; };
@@ -13,7 +13,7 @@ template <template <class...> class T, class... TArgs>
 concept bindable_constructible_from
   = template_instantiable_from<T, std::decay_t<TArgs>...>
   && std::constructible_from<T<std::decay_t<TArgs>...>, TArgs...>
-  && std::derived_from<T<TArgs...>, ::FredEmmott::bind::bindable_t>;
+  && std::derived_from<T<TArgs...>, ::FredEmmott::composable_bind::bindable_t>;
 
 template <class T, class TOther>
 concept decays_to = std::same_as<std::decay_t<T>, std::decay_t<TOther>>;
@@ -43,4 +43,4 @@ concept is_invocable
   && requires(T<projected_t<TProjection, TRest>...> v, TFirst f) {
        v.bind_to(f);
      };
-}// namespace FredEmmott::bind_detail
+}// namespace FredEmmott::composable_bind_detail

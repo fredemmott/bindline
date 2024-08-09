@@ -7,10 +7,10 @@
 
 #include "../bindable_t.hpp"
 
-namespace FredEmmott::bind_detail {
+namespace FredEmmott::composable_bind_detail {
 
 template <template <class...> class TNext, class TFirst, class... TRest>
-struct invocable_bindable_t : ::FredEmmott::bind::bindable_t {
+struct invocable_bindable_t : ::FredEmmott::composable_bind::bindable_t {
   static_assert(
     std::same_as<TFirst, std::decay_t<TFirst>>
     && (std::same_as<TRest, std::decay_t<TRest>> && ...));
@@ -60,4 +60,4 @@ struct invocable_bindable_t : ::FredEmmott::bind::bindable_t {
   std::tuple<TFirst, TRest...> mArgs;
 };
 
-}// namespace FredEmmott::bind_detail
+}// namespace FredEmmott::composable_bind_detail

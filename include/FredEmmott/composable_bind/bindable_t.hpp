@@ -8,12 +8,12 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-namespace FredEmmott::bind_detail {
+namespace FredEmmott::composable_bind_detail {
 template <template <class...> class T, class TProjection, class... TArgs>
 struct bindable_factory_t;
 }
 
-namespace FredEmmott::bind {
+namespace FredEmmott::composable_bind {
 
 struct bindable_t {
   [[nodiscard]]
@@ -25,7 +25,7 @@ struct bindable_t {
   static constexpr auto make_projected(
     TProjection&& projection,
     TArgs&&... args) {
-    return ::FredEmmott::bind_detail::
+    return ::FredEmmott::composable_bind_detail::
       bindable_factory_t<T, std::decay_t<TProjection>, std::decay_t<TArgs>...>::
         make(
           std::forward<TProjection>(projection), std::forward<TArgs>(args)...);
@@ -45,6 +45,6 @@ constexpr auto operator|(TFunction&& lhs, TBindable&& rhs) {
   return rhs.bind_to(std::forward<TFunction>(lhs));
 }
 
-}// namespace FredEmmott::bind
+}// namespace FredEmmott::composable_bind
 
 #include "detail/bindable_factory_t.hpp"

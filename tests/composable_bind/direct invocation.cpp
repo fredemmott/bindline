@@ -1,11 +1,11 @@
 // Copyright (C) 2024 Fred Emmott <fred@fredemmott.com>
 // SPDX-License-Identifier: MIT
 
-#include <FredEmmott/bind.hpp>
+#include <FredEmmott/composable_bind.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 
-using namespace FredEmmott::bind;
+using namespace FredEmmott::composable_bind;
 
 TEST_CASE("bind_front without a pipeline") {
   std::vector<std::pair<int, int>> log {};

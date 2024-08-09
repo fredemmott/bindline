@@ -5,7 +5,7 @@
 #include "factory_concepts.hpp"
 #include "invocable_bindable_t.hpp"
 
-namespace FredEmmott::bind_detail {
+namespace FredEmmott::composable_bind_detail {
 
 template <template <class...> class T, class TProjection, class... TArgs>
 struct bindable_factory_t {
@@ -51,4 +51,4 @@ struct bindable_factory_t {
     return bindable.bind_to(std::forward<TFirst>(first));
   }
 };
-}// namespace FredEmmott::bind_detail
+}// namespace FredEmmott::composable_bind_detail

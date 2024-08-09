@@ -4,10 +4,10 @@
 
 #include "bindable_t.hpp"
 
-namespace FredEmmott::bind_detail {
+namespace FredEmmott::composable_bind_detail {
 
 template <class TTap>
-struct bind_tap_t : public ::FredEmmott::bind::bindable_t {
+struct bind_tap_t : public ::FredEmmott::composable_bind::bindable_t {
   static_assert(std::same_as<TTap, std::decay_t<TTap>>);
 
   bind_tap_t() = delete;
@@ -46,14 +46,14 @@ struct bind_tap_t : public ::FredEmmott::bind::bindable_t {
 template <class T>
 bind_tap_t(T) -> bind_tap_t<std::decay_t<T>>;
 
-}// namespace FredEmmott::bind_detail
+}// namespace FredEmmott::composable_bind_detail
 
-namespace FredEmmott::bind {
+namespace FredEmmott::composable_bind {
 template <class T>
 [[nodiscard]]
 constexpr auto bind_tap(T&& tap) {
   auto x = std::bind_front(std::forward<T>(tap));
-  return bind_detail::bind_tap_t(std::forward<T>(tap));
+  return composable_bind_detail::bind_tap_t(std::forward<T>(tap));
 }
 
 template <class TFn, class TTap>
@@ -62,4 +62,4 @@ constexpr auto bind_tap(TFn&& fn, TTap&& tap) {
   return bind_tap(std::forward<TTap>(tap)).bind_to(std::forward<TFn>(fn));
 }
 
-}// namespace FredEmmott::bind
+}// namespace FredEmmott::composable_bind

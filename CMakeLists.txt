@@ -24,7 +24,7 @@ add_library("${PROJECT_NAME}" INTERFACE)
 target_include_directories("${PROJECT_NAME}" INTERFACE include)
 target_compile_features("${PROJECT_NAME}" INTERFACE ${REQUIRED_COMPILE_FEATURES})
 
-add_library(FredEmmott::bind ALIAS "${PROJECT_NAME}")
+add_library(FredEmmott::composable_bind ALIAS "${PROJECT_NAME}")
 add_library(FredEmmott::cppwinrt ALIAS "${PROJECT_NAME}")
 add_library(FredEmmott::weak_refs ALIAS "${PROJECT_NAME}")
 

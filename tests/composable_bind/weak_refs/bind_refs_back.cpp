@@ -1,14 +1,14 @@
 // Copyright (C) 2024 Fred Emmott <fred@fredemmott.com>
 // SPDX-License-Identifier: MIT
 
-#include <FredEmmott/bind.hpp>
+#include <FredEmmott/composable_bind.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 
-using namespace FredEmmott::bind;
+using namespace FredEmmott::composable_bind;
 
 #define COMMON_BIND_TEST_PREFIX "invoking: "
-#define bind_function_under_test ::FredEmmott::bind::bind_refs_back
+#define bind_function_under_test ::FredEmmott::composable_bind::bind_refs_back
 
 #include "../../weak_refs/common/bind.hpp"
 #undef COMMON_BIND_TEST_PREFIX
@@ -16,7 +16,9 @@ using namespace FredEmmott::bind;
 #define COMMON_BIND_TEST_PREFIX "pipeline: "
 template <class... Args>
 auto bind_function_under_test(const auto& fn, Args&&... args) {
-  return fn | ::FredEmmott::bind::bind_refs_back(std::forward<Args>(args)...);
+  return fn
+    | ::FredEmmott::composable_bind::bind_refs_back(
+           std::forward<Args>(args)...);
 }
 
 #include "../../weak_refs/common/bind.hpp"

@@ -8,14 +8,14 @@
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.System.h>
 
-#include <FredEmmott/bind.hpp>
+#include <FredEmmott/composable_bind.hpp>
 #include <FredEmmott/cppwinrt/concepts.hpp>
 
 #include <iostream>
 
 #include <catch2/catch_test_macros.hpp>
 
-using namespace FredEmmott::bind;
+using namespace FredEmmott::composable_bind;
 using namespace winrt::Windows::Foundation;
 using namespace winrt::Windows::System;
 

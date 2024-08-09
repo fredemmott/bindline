@@ -4,10 +4,10 @@
 
 #include "../bindable_t.hpp"
 
-namespace FredEmmott::bind_detail {
+namespace FredEmmott::composable_bind_detail {
 
 template <class bind_fn, class... Binds>
-struct byval_binder_t : public bind::bindable_t {
+struct byval_binder_t : public composable_bind::bindable_t {
   static_assert((std::same_as<Binds, std::decay_t<Binds>> && ...));
   byval_binder_t() = delete;
 
@@ -31,4 +31,4 @@ struct byval_binder_t : public bind::bindable_t {
   std::tuple<Binds...> mBound;
 };
 
-}// namespace FredEmmott::bind_detail
+}// namespace FredEmmott::composable_bind_detail

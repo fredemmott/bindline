@@ -4,10 +4,10 @@
 
 #include "../../cppwinrt/bind_context.hpp"
 
-namespace FredEmmott::bind_detail {
+namespace FredEmmott::composable_bind_detail {
 
 template <class T>
-struct winrt_context_binder_t : ::FredEmmott::bind::bindable_t {
+struct winrt_context_binder_t : ::FredEmmott::composable_bind::bindable_t {
   static_assert(std::same_as<T, std::decay_t<T>>);
 
   winrt_context_binder_t() = delete;
@@ -28,14 +28,14 @@ struct winrt_context_binder_t : ::FredEmmott::bind::bindable_t {
   T mContext;
 };
 
-}// namespace FredEmmott::bind_detail
+}// namespace FredEmmott::composable_bind_detail
 
-namespace FredEmmott::bind {
+namespace FredEmmott::composable_bind {
 template <::FredEmmott::cppwinrt_detail::switchable_context T>
 [[nodiscard]]
 constexpr auto bind_winrt_context(T&& context) {
-  return ::FredEmmott::bind_detail::winrt_context_binder_t<std::decay_t<T>>(
-    std::forward<T>(context));
+  return ::FredEmmott::composable_bind_detail::winrt_context_binder_t<
+    std::decay_t<T>>(std::forward<T>(context));
 }
 
 template <class TFn, ::FredEmmott::cppwinrt_detail::switchable_context T>
@@ -45,4 +45,4 @@ constexpr auto bind_winrt_context(TFn&& fn, T&& context) {
   return binder.bind_to(std::forward<TFn>(fn));
 }
 
-}// namespace FredEmmott::bind
+}// namespace FredEmmott::composable_bind
