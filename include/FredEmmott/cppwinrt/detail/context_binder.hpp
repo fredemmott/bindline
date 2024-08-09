@@ -18,7 +18,7 @@ namespace FredEmmott::cppwinrt_detail {
 template <class A, class B>
 concept different_to = !std::same_as<A, B>;
 
-auto switch_context_awaitable(const winrt::apartment_context& ctx) {
+constexpr auto switch_context_awaitable(const winrt::apartment_context& ctx) {
   return ctx;
 }
 
