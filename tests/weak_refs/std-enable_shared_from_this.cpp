@@ -58,7 +58,7 @@ TEST_CASE("bind_front from a raw pointer") {
 
   size_t counter = 0;
 
-  auto f = [&counter](...) { ++counter; };
+  auto f = [&counter](auto...) { ++counter; };
 
   auto a = make_weak_ref(self);
   auto b = make_weak_ref(weak);
