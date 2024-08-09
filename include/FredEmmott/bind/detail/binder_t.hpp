@@ -7,15 +7,16 @@
 namespace FredEmmott::bind_detail {
 
 template <class bind_fn, class... Binds>
-  requires(sizeof...(Binds) >= 1)
 struct binder_t : public bind::bindable_t {
   binder_t() = delete;
 
-  binder_t(const Binds&... args) : mBound(static_cast<Binds>(args)...) {
+  template <class... TInitBinds>
+    requires(sizeof...(Binds) == sizeof...(TInitBinds))
+  binder_t(TInitBinds&&... args) : mBound(std::forward<TInitBinds>(args)...) {
   }
 
   template <class TFn>
-  constexpr auto bind_to(TFn&& fn) {
+  constexpr auto bind_to(TFn&& fn) const {
     return std::apply(
       [&](const Binds&... args) {
         return bind_fn::bind(std::forward<TFn>(fn), args...);

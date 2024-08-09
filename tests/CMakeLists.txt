@@ -20,7 +20,7 @@ endmacro()
 
 function(add_test_executable SOURCE)
     set(options CPPWINRT_MAIN WIN32)
-    set(valueArgs TEST_NAME ENABLED_FLAG)
+    set(valueArgs TEST_NAME REQUIRED_FLAGS)
     set(multiValueArgs SOURCES LINK_LIBRARIES CXX_COMPILE_FEATURES)
 
     cmake_parse_arguments(
@@ -31,7 +31,7 @@ function(add_test_executable SOURCE)
         ${ARGN})
 
     if (TEST_ARG_WIN32)
-        list(APPEND TEST_ARG_ENABLED_FLAG "WIN32")
+        list(APPEND TEST_ARG_REQUIRED_FLAGS "WIN32")
     endif ()
 
     set(TARGET "${SOURCE}")
@@ -49,13 +49,13 @@ function(add_test_executable SOURCE)
     string(REPLACE "/" "📂" TEST_PREFIX "${TEST_PREFIX}")
     string(APPEND TEST_PREFIX "📂${TEST_NAME}➡️")
 
-    if(TEST_ARG_ENABLED_FLAG AND NOT "${${TEST_ARG_ENABLED_FLAG}}")
-        if(TEST_ARG_ENABLED_FLAG STREQUAL "WIN32")
+    if(TEST_ARG_REQUIRED_FLAGS AND NOT "${${TEST_ARG_REQUIRED_FLAGS}}")
+        if(TEST_ARG_REQUIRED_FLAGS STREQUAL "WIN32")
             # No point warning on 'requires Windows' things.
             return()
         endif()
-        set(DISABLED_BECAUSE_FLAG ${TEST_ARG_ENABLED_FLAG})
-        WARN("Skipping test ${SOURCE} because ${TEST_ARG_ENABLED_FLAG} is not set")
+        set(DISABLED_BECAUSE_FLAG ${TEST_ARG_REQUIRED_FLAGS})
+        WARN("Skipping test ${SOURCE} because ${TEST_ARG_REQUIRED_FLAGS} is not set")
         set(SOURCE "cmake/skip-stub.cpp")
     endif()
 
@@ -72,7 +72,7 @@ function(add_test_executable SOURCE)
     add_executable(${TARGET} ${TARGET_ARGS})
 
     if(DISABLED_BECAUSE_FLAG)
-        target_compile_definitions(${TARGET} PRIVATE "FEATURE_TEST_VARIABLE_NAME=${TEST_ARG_ENABLED_FLAG}")
+        target_compile_definitions(${TARGET} PRIVATE "FEATURE_TEST_VARIABLE_NAME=${TEST_ARG_REQUIRED_FLAGS}")
     endif()
 
     catch_discover_tests(
@@ -117,9 +117,10 @@ try_compile(
 
 ##### bind #####
 
-add_test_executable("bind/bind_back.cpp" ENABLED_FLAG HAVE_STD_BIND_BACK)
+add_test_executable("bind/bind_back.cpp" REQUIRED_FLAGS HAVE_STD_BIND_BACK)
 add_test_executable("bind/bind_front.cpp")
 add_test_executable("bind/bind_tap.cpp")
+add_test_executable("bind/direct invocation.cpp")
 
 ##### cppwinrt #####
 

@@ -12,7 +12,7 @@ struct bind_tap : public bindable_t {
   bind_tap(TTap tap) : mTap(std::forward<TTap>(tap)) {
   }
 
-  auto bind_to(auto&& f) {
+  auto bind_to(auto&& f) const {
     return [f, tap = mTap]<class... Args>(Args&&... args) {
       tap(std::add_const_t<std::add_rvalue_reference_t<std::decay_t<Args>>>(
         args)...);

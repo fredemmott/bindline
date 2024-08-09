@@ -11,7 +11,7 @@
 namespace FredEmmott::bind {
 
 struct bindable_t {
-  constexpr auto bind_to(const auto& fn) = delete;
+  constexpr auto bind_to(const auto& fn) const = delete;
 };
 
 template <class TFunction, std::derived_from<bindable_t> TComponent>
