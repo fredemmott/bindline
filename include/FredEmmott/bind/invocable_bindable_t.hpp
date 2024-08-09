@@ -24,10 +24,7 @@ struct invocable_bindable_t : bindable_t {
   }
 
   template <class TFn>
-    requires std::invocable<
-      decltype(std::declval<bindable_t>().bind_to(std::declval<TFn>())),
-      TFirst,
-      TRest...>
+    requires requires(bindable_t bindable, TFn fn) { bindable.bind_to(fn); }
   constexpr auto bind_to(const TFn& fn) const {
     const auto next = std::apply(
       []<class... NextArgs>(NextArgs&&... nextArgs) {
