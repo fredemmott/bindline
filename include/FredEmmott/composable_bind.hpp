@@ -21,3 +21,7 @@
 #if FREDEMMOTT_COMPOSABLE_BINDENABLE_CPPWINRT
 #include "composable_bind/cppwinrt.hpp"
 #endif
+
+#if __has_include(<FredEmmott.composable_bind.footer-tweaks.hpp>)
+#include <FredEmmott.composable_bind.footer-tweaks.hpp>
+#endif

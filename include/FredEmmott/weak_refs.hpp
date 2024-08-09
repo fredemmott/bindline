@@ -19,3 +19,7 @@
 #if FREDEMMOTT_WEAK_REFS_ENABLE_WEAK_FROM_THIS
 #include "weak_refs/weak_from_this.hpp"
 #endif
+
+#if __has_include(<FredEmmott.weak_refs.footer-tweaks.hpp>)
+#include <FredEmmott.weak_refs.footer-tweaks.hpp>
+#endif
