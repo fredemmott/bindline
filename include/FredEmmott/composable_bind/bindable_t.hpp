@@ -6,8 +6,6 @@
 #include <functional>
 #include <tuple>
 
-#include <catch2/catch_test_macros.hpp>
-
 namespace FredEmmott::composable_bind_detail {
 template <template <class...> class T, class TProjection, class... TArgs>
 struct bindable_factory_t;
