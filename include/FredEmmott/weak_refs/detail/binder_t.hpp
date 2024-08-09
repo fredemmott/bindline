@@ -21,14 +21,14 @@ struct binder_t {
 
   binder_t() = delete;
   template <class TInitFn, class... TInitBinds>
-  binder_t(TInitFn&& fn, TInitBinds... binds)
+  constexpr binder_t(TInitFn&& fn, TInitBinds... binds)
     : mFn(std::forward<TInitFn>(fn)),
       mBinds(
         std::make_tuple(make_weak_ref(std::forward<TInitBinds>(binds))...)) {
   }
 
   template <class... UnboundArgs>
-  void operator()(UnboundArgs&&... unboundArgs) const {
+  constexpr void operator()(UnboundArgs&&... unboundArgs) const {
     auto strong_binds = std::apply(
       [](const auto&... binds) {
         return std::make_tuple(lock_weak_ref(binds)...);

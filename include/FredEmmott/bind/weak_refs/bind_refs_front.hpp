@@ -10,6 +10,7 @@ namespace FredEmmott::bind_detail {
 
 struct bind_refs_front_fn {
   template <class... Args>
+  [[nodiscard]]
   static constexpr auto bind(Args&&... args) {
     return ::FredEmmott::weak_refs::bind_refs_front(
       std::forward<Args>(args)...);

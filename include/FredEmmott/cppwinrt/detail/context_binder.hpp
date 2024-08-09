@@ -51,7 +51,7 @@ struct context_binder {
 
   context_binder() = delete;
   template <std::convertible_to<TContext> InitContext, class InitFn>
-  context_binder(InitFn&& fn, InitContext&& context)
+  constexpr context_binder(InitFn&& fn, InitContext&& context)
     : mContext(std::forward<InitContext>(context)),
       mFn(std::forward<InitFn>(fn)) {
   }

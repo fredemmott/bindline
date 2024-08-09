@@ -19,6 +19,7 @@ template <std_shared_ptr T>
 struct make_weak_ref_fn<T> {
   template <class TValue>
     requires std::same_as<std::decay_t<T>, std::decay_t<TValue>>
+  [[nodiscard]]
   static constexpr auto make(TValue&& value) {
     return std::weak_ptr<std::decay_t<typename T::element_type>> {
       std::forward<TValue>(value)};
@@ -27,6 +28,7 @@ struct make_weak_ref_fn<T> {
 
 template <std_weak_ptr T>
 struct lock_weak_ref_fn<T> {
+  [[nodiscard]]
   static constexpr auto lock(auto&& value) {
     return value.lock();
   }

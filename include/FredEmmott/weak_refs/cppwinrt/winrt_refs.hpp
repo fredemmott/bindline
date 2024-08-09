@@ -15,6 +15,7 @@ concept winrt_strong_ref_with_weak_ref = winrt_strong_ref<T>
 template <winrt_strong_ref_with_weak_ref T>
 struct make_weak_ref_fn<T> {
   template <class TValue>
+  [[nodiscard]]
   static constexpr auto make(TValue&& value) {
     return winrt::make_weak(std::forward<TValue>(value));
   }
@@ -22,6 +23,7 @@ struct make_weak_ref_fn<T> {
 
 template <winrt_weak_ref T>
 struct lock_weak_ref_fn<T> {
+  [[nodiscard]]
   static constexpr auto lock(auto&& value) {
     return value.get();
   }

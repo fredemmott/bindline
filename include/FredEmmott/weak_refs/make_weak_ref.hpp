@@ -20,11 +20,13 @@
 namespace FredEmmott::weak_refs_detail {
 struct make_weak_ref_fn {
   template <weak_refs::weak_ref T>
+  [[nodiscard]]
   constexpr auto operator()(const T& weak) const {
     return weak;
   }
 
   template <weak_refs::convertible_to_weak_ref T>
+  [[nodiscard]]
   constexpr auto operator()(T&& strong) const {
     return weak_refs_extensions::make_weak_ref_fn<std::decay_t<T>>::make(
       std::forward<T>(strong));

@@ -15,6 +15,7 @@ concept winrt_raw_pointer_with_weak_ref = winrt_raw_pointer<T>
 
 template <winrt_raw_pointer_with_weak_ref T>
 struct make_weak_ref_fn<T> {
+  [[nodiscard]]
   static constexpr auto make(auto&& value) {
     return value->get_weak();
   }

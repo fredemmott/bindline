@@ -22,6 +22,7 @@
 namespace FredEmmott::weak_refs_detail {
 struct lock_weak_ref_fn {
   template <weak_refs::weak_ref T>
+  [[nodiscard]]
   constexpr auto operator()(T&& weak) const {
     return weak_refs_extensions::lock_weak_ref_fn<std::decay_t<T>>::lock(
       std::forward<T>(weak));

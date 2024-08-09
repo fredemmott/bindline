@@ -12,11 +12,12 @@ struct argument_binder_t : public bind::bindable_t {
 
   template <class... TInitBinds>
     requires(sizeof...(Binds) == sizeof...(TInitBinds))
-  argument_binder_t(TInitBinds&&... args)
+  constexpr argument_binder_t(TInitBinds&&... args)
     : mBound(std::forward<TInitBinds>(args)...) {
   }
 
   template <class TFn>
+  [[nodiscard]]
   constexpr auto bind_to(TFn&& fn) const {
     return std::apply(
       [&](const Binds&... args) {

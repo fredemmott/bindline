@@ -12,7 +12,8 @@ namespace FredEmmott::weak_refs {
 
 template <class F, convertible_to_weak_ref... Binds>
   requires(sizeof...(Binds) >= 1)
-auto bind_refs_back(F&& f, Binds&&... binds) {
+[[nodiscard]]
+constexpr auto bind_refs_back(F&& f, Binds&&... binds) {
   using namespace weak_refs_detail;
   return binder_t<
     bind_back_traits,

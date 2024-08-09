@@ -8,6 +8,7 @@
 namespace FredEmmott::cppwinrt {
 
 template <class F, cppwinrt_detail::switchable_context Context>
+[[nodiscard]]
 auto bind_context(F&& f, Context&& context) {
   return cppwinrt_detail::
     context_binder<std::decay_t<F>, std::decay_t<Context>> {

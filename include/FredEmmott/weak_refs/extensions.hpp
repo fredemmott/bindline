@@ -37,6 +37,7 @@ template <class T>
     { lock_weak_ref_fn<T>::lock(v) } -> std::copyable;
   }
 struct make_weak_ref_fn<T> {
+  [[nodiscard]]
   static constexpr auto make(T&& value) {
     return std::forward<T>(value);
   }

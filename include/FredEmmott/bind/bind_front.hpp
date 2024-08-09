@@ -9,6 +9,7 @@ namespace FredEmmott::bind_detail {
 
 struct bind_front_fn {
   template <class... Args>
+  [[nodiscard]]
   static constexpr auto bind(Args&&... args) {
     return std::bind_front(std::forward<Args>(args)...);
   }
@@ -27,7 +28,7 @@ namespace FredEmmott::bind {
 
 template <class... Args>
 [[nodiscard]]
-auto bind_front(Args&&... args) {
+constexpr auto bind_front(Args&&... args) {
   return bindable_t::make<::FredEmmott::bind_detail::front_binder_t>(
     std::forward<Args>(args)...);
 }

@@ -29,6 +29,7 @@ struct invocable_bindable_t : ::FredEmmott::bind::bindable_t {
 
   template <class TFn>
     requires requires(bindable_t bindable, TFn fn) { bindable.bind_to(fn); }
+  [[nodiscard]]
   constexpr auto bind_to(const TFn& fn) const {
     const auto next = std::apply(
       []<class... NextArgs>(NextArgs&&... nextArgs) {
@@ -43,6 +44,7 @@ struct invocable_bindable_t : ::FredEmmott::bind::bindable_t {
     requires std::invocable<
       decltype(std::declval<invocable_t>().bind_to(std::declval<TFirst>())),
       Unbound...>
+  [[nodiscard]]
   constexpr auto operator()(Unbound&&... unbound) const {
     const auto next = std::apply(
       []<class... NextArgs>(auto, NextArgs&&... nextArgs) {

@@ -16,6 +16,7 @@ static_assert(!with_weak_from_this<std::shared_ptr<int>>);
 
 template <with_weak_from_this T>
 struct make_weak_ref_fn<T> {
+  [[nodiscard]]
   static constexpr auto make(auto&& value) {
     return value->weak_from_this();
   }

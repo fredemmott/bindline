@@ -9,10 +9,11 @@ namespace FredEmmott::bind_detail {
 template <class TTap>
 struct bind_tap_t : public ::FredEmmott::bind::bindable_t {
   bind_tap_t() = delete;
-  bind_tap_t(TTap tap) : mTap(std::forward<TTap>(tap)) {
+  constexpr bind_tap_t(TTap tap) : mTap(std::forward<TTap>(tap)) {
   }
 
-  auto bind_to(auto&& f) const {
+  [[nodiscard]]
+  constexpr auto bind_to(auto&& f) const {
     return [f, tap = mTap]<class... Args>(Args&&... args) {
       tap(std::add_const_t<std::add_rvalue_reference_t<std::decay_t<Args>>>(
         args)...);
@@ -29,7 +30,7 @@ struct bind_tap_t : public ::FredEmmott::bind::bindable_t {
 namespace FredEmmott::bind {
 template <class... Args>
 [[nodiscard]]
-auto bind_tap(Args&&... args) {
+constexpr auto bind_tap(Args&&... args) {
   return bindable_t::make<::FredEmmott::bind_detail::bind_tap_t>(
     std::forward<Args>(args)...);
 }
