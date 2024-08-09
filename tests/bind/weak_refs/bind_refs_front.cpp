@@ -7,7 +7,17 @@
 
 using namespace FredEmmott::bind;
 
+#define COMMON_BIND_TEST_PREFIX "invoking: "
 #define bind_function_under_test ::FredEmmott::bind::bind_refs_front
+
+#include "../../weak_refs/common/bind.hpp"
+#undef COMMON_BIND_TEST_PREFIX
+#undef bind_function_under_test
+#define COMMON_BIND_TEST_PREFIX "pipeline: "
+template <class... Args>
+auto bind_function_under_test(const auto& fn, Args&&... args) {
+  return fn | ::FredEmmott::bind::bind_refs_front(std::forward<Args>(args)...);
+}
 
 #include "../../weak_refs/common/bind.hpp"
 

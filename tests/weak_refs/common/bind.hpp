@@ -4,9 +4,13 @@
 
 #include <catch2/catch_test_macros.hpp>
 
+#ifndef COMMON_BIND_TEST_PREFIX
+#define COMMON_BIND_TEST_PREFIX
+#endif
+
 using namespace FredEmmott::weak_refs;
 
-TEST_CASE("with a single shared_ptr") {
+TEST_CASE(COMMON_BIND_TEST_PREFIX "with a single shared_ptr") {
   auto a = std::make_shared<int>(123);
 
   bool invoked = false;
@@ -22,7 +26,7 @@ TEST_CASE("with a single shared_ptr") {
   CHECK(invoked);
 }
 
-TEST_CASE("with two shared_ptrs") {
+TEST_CASE(COMMON_BIND_TEST_PREFIX "with two shared_ptrs") {
   auto a = std::make_shared<int>(123);
   auto b = std::make_shared<int>(456);
 
@@ -42,7 +46,7 @@ TEST_CASE("with two shared_ptrs") {
   CHECK(invoked);
 }
 
-TEST_CASE("unseating the first shared_ptr") {
+TEST_CASE(COMMON_BIND_TEST_PREFIX "unseating the first shared_ptr") {
   auto a = std::make_shared<int>(123);
   auto b = std::make_shared<int>(456);
 
@@ -60,7 +64,7 @@ TEST_CASE("unseating the first shared_ptr") {
   CHECK(!invoked);
 }
 
-TEST_CASE("unseating the second shared_ptr") {
+TEST_CASE(COMMON_BIND_TEST_PREFIX "unseating the second shared_ptr") {
   auto a = std::make_shared<int>(123);
   auto b = std::make_shared<int>(456);
   a = std::make_shared<int>(123);
@@ -78,7 +82,7 @@ TEST_CASE("unseating the second shared_ptr") {
   CHECK(!invoked);
 }
 
-TEST_CASE("promoting weak_ptrs") {
+TEST_CASE(COMMON_BIND_TEST_PREFIX "promoting weak_ptrs") {
   auto strong = std::make_shared<int>(123);
 
   bool invoked = false;
@@ -92,7 +96,7 @@ TEST_CASE("promoting weak_ptrs") {
   CHECK(invoked);
 }
 
-TEST_CASE("stale weak_ptrs") {
+TEST_CASE(COMMON_BIND_TEST_PREFIX "stale weak_ptrs") {
   auto strong = std::make_shared<int>(123);
 
   bool invoked = false;
@@ -108,6 +112,7 @@ TEST_CASE("stale weak_ptrs") {
   CHECK(!invoked);
 }
 
+#ifndef COMMON_BIND_HAVE_INCLUDED
 struct TestClass {
   size_t count = 0;
   void increment() {
@@ -118,8 +123,9 @@ struct TestClass {
     CHECK(false);
   }
 };
+#endif
 
-TEST_CASE("Member function pointer with a shared_ptr") {
+TEST_CASE(COMMON_BIND_TEST_PREFIX "Member function pointer with a shared_ptr") {
   auto counter = std::make_shared<TestClass>();
 
   bind_function_under_test(&TestClass::increment, counter)();
@@ -133,10 +139,13 @@ TEST_CASE("Member function pointer with a shared_ptr") {
   f();
 }
 
+#ifndef COMMON_BIND_HAVE_INCLUDED
 struct TestClassESFT : public TestClass,
                        public std::enable_shared_from_this<TestClassESFT> {};
+#endif
 
-TEST_CASE("Member function pointer with std::enable_shared_from_this") {
+TEST_CASE(COMMON_BIND_TEST_PREFIX
+          "Member function pointer with std::enable_shared_from_this") {
   auto counter = std::make_shared<TestClassESFT>();
   bind_function_under_test(&TestClass::increment, counter)();
   CHECK(counter->count == 1);
@@ -148,3 +157,5 @@ TEST_CASE("Member function pointer with std::enable_shared_from_this") {
   counter = nullptr;
   f();
 }
+
+#define COMMON_BIND_HAVE_INCLUDED
