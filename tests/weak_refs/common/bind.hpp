@@ -26,6 +26,24 @@ TEST_CASE(COMMON_BIND_TEST_PREFIX "with a single shared_ptr") {
   CHECK(invoked);
 }
 
+TEST_CASE(COMMON_BIND_TEST_PREFIX "std::invocable") {
+  auto a = std::make_shared<int>(1);
+  auto b = std::make_shared<int>(2);
+
+  auto f = bind_function_under_test(
+    [](auto a, auto b) {
+      // Require pointers
+      CHECK(*a + *b == 3);
+    },
+    a);
+
+  using TFn = decltype(f);
+  using TArg = decltype(a);
+  STATIC_CHECK_FALSE(std::invocable<TFn>);
+  STATIC_CHECK(std::invocable<TFn, TArg>);
+  STATIC_CHECK_FALSE(std::invocable<TFn, TArg, TArg>);
+}
+
 TEST_CASE(COMMON_BIND_TEST_PREFIX "with two shared_ptrs") {
   auto a = std::make_shared<int>(123);
   auto b = std::make_shared<int>(456);
