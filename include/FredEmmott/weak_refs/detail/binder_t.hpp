@@ -21,7 +21,7 @@ struct binder_t {
   static_assert((std::same_as<TBinds, std::decay_t<TBinds>> && ...));
 
   binder_t() = delete;
-  template <class TInitFn, class... TInitBinds>
+  template <std::convertible_to<TFn> TInitFn, class... TInitBinds>
   constexpr binder_t(TInitFn&& fn, TInitBinds... binds)
     : mFn(std::forward<TInitFn>(fn)),
       mBinds(make_weak_ref(std::forward<TInitBinds>(binds))...) {
