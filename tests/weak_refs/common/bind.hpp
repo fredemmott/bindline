@@ -42,6 +42,11 @@ TEST_CASE(COMMON_BIND_TEST_PREFIX "std::invocable") {
   STATIC_CHECK_FALSE(std::invocable<TFn>);
   STATIC_CHECK(std::invocable<TFn, TArg>);
   STATIC_CHECK_FALSE(std::invocable<TFn, TArg, TArg>);
+
+  auto f2 = bind_function_under_test(f, b);
+  using TFn2 = decltype(f2);
+  STATIC_CHECK(std::invocable<TFn2>);
+  STATIC_CHECK_FALSE(std::invocable<TFn2, TArg>);
 }
 
 TEST_CASE(COMMON_BIND_TEST_PREFIX "with two shared_ptrs") {
