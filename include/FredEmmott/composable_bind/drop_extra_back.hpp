@@ -17,13 +17,6 @@ struct drop_any_arg_traits {
 
 namespace FredEmmott::composable_bind {
 
-template <class TFn, class... TArgs>
-concept drop_extra_back_invocable
-  = ::FredEmmott::composable_bind_extension_api::drop_back_invocable<
-    ::FredEmmott::composable_bind_detail::drop_any_arg_traits,
-    TFn,
-    TArgs...>;
-
 [[nodiscard]]
 constexpr auto drop_extra_back() {
   return ::FredEmmott::composable_bind_extension_api::drop_back_bindable_t<
