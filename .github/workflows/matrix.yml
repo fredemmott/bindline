@@ -14,6 +14,7 @@ jobs:
             runs-on: windows-2022
             compiler: cl
             force-cxx-standard: 23
+            suffix: C++23
           - os: windows
             runs-on: windows-2022
             compiler: clang++
@@ -21,12 +22,29 @@ jobs:
             runs-on: windows-2022
             compiler: clang++
             force-cxx-standard: 23
+            suffix: C++23
           - os: windows
             runs-on: windows-2022
             compiler: clang-cl
           - os: linux
             runs-on: ubuntu-22.04
             compiler: clang++
+          - os: linux
+            runs-on: ubuntu-22.04
+            compiler: clang++
+            cxx-flags: -fsanitize=address
+            suffix: ASAN
+          - os: linux
+            runs-on: ubuntu-22.04
+            compiler: clang++
+            force-cxx-standard: 23
+            suffix: C++23
+          - os: linux
+            runs-on: ubuntu-22.04
+            compiler: clang++
+            force-cxx-standard: 23
+            cxx-flags: -fsanitize=address
+            suffix: C++23/ASAN
           - os: linux
             runs-on: ubuntu-22.04
             compiler: g++
@@ -39,6 +57,6 @@ jobs:
       runs-on: ${{matrix.runs-on}}
       compiler: ${{matrix.compiler}}
       experimental: ${{matrix.experimental || false }}
-      force-cxx-standard: ${{matrix.force-cxx-standard || 0}}
-      suffix: ${{matrix.force-cxx-standard && format('C++{0}', matrix.force-cxx-standard)}}
-      fs-suffix: ${{matrix.force-cxx-standard && format('cxx{0}', matrix.force-cxx-standard)}}
+      force-cxx-standard: ${{matrix.force-cxx-standard || 'OFF'}}
+      suffix: ${{matrix.suffix && matrix.suffix || ''}}
+      cxx-flags: ${{matrix.cxx-flags || ''}}

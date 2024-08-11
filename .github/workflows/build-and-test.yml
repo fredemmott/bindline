@@ -19,7 +19,7 @@ on:
         default: "OFF"
       suffix:
         type: string
-      fs-suffix:
+      cxx-flags:
         type: string
 jobs:
   build-and-test:
@@ -39,9 +39,16 @@ jobs:
           Expand-Archive ninja.zip -DestinationPath ${{runner.temp}}
       - name: Configure
         shell: pwsh
+        id: configure
         run: |
+          if ("$inputs.suffix" -eq "") {
+            Add-Content -Path $Env:GITHUB_OUTPUT -Value "fs-suffix="
+          } else {
+            $fs_suffix=("-" + "${{inputs.suffix}}" -replace '/', '-')
+            Add-Content -Path $Env:GITHUB_OUTPUT -Value "fs-suffix=${fs_suffix}"
+          }
           New-Item -ItemType directory build
-          $Args = @()
+          $Args = @("-DCMAKE_CXX_FLAGS=${{inputs.cxx-flags}}")
           if ("${{inputs.compiler}}" -eq "clang-cl") {
             $KitsRoot = Get-ItemPropertyValue `
               -Path "HKLM:\SOFTWARE\Microsoft\Windows Kits\Installed Roots" `
@@ -93,5 +100,5 @@ jobs:
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
         with:
-          name: ctest-logs-${{inputs.os}}-${{inputs.compiler}}${{inputs.fs-suffix && format('-{0}', inputs.fs-suffix)}}
+          name: ctest-logs-${{inputs.os}}-${{inputs.compiler}}${{steps.configure.outputs.fs-suffix}}
           path: "${{runner.temp}}/ctest.log"
