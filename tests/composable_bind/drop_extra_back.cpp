@@ -45,6 +45,6 @@ TEST_CASE("runtime evaluation") {
   const auto b = GENERATE(take(3, random(INT_MIN, INT_MAX)));
   const auto c = GENERATE(take(3, random(INT_MIN, INT_MAX)));
   CHECK((test_fn | drop_extra_back())(a, b, c) == a + b);
-  CHECK((test_fn | drop_extra_back())(a, b, c, a + b)) == a + b);
+  CHECK((test_fn | drop_extra_back())(a, b, c, a + b) == a + b);
   CHECK((test_fn | drop_extra_back() | bind_front(a))(a, b, c) == a + a);
 }
