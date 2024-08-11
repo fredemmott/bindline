@@ -7,12 +7,13 @@
 namespace FredEmmott::composable_bind_detail {
 
 template <class TDropCount, class TDropTraits, class TFn, class... TArgs>
-  requires drop_back_invocable_counted<TDropCount, TDropTraits, TFn, TArgs...>
 struct drop_back_invoke_counted_t {
   static_assert(std::same_as<
                 TDropCount,
                 std::integral_constant<size_t, TDropCount::value>>);
-  static constexpr decltype(auto) invoke(TFn&& fn, TArgs&&... args) {
+  static constexpr decltype(auto) invoke(TFn&& fn, TArgs&&... args)
+    requires drop_back_invocable_counted<TDropCount, TDropTraits, TFn, TArgs...>
+  {
     if constexpr (std::invocable<TFn, TArgs...>) {
       return std::invoke(std::forward<TFn>(fn), std::forward<TArgs>(args)...);
     } else if constexpr (sizeof...(TArgs) >= 1) {

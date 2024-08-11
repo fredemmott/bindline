@@ -13,8 +13,13 @@ struct drop_back_bindable_t : bindable_t {
   [[nodiscard]]
   constexpr auto bind_to(TBindFn&& fn) const {
     return std::bind_front(
-      []<class TCallFn, class... TArgs>(
-        TCallFn&& fn, TArgs&&... args) constexpr {
+      []<class TCallFn, class... TArgs>(TCallFn&& fn, TArgs&&... args) constexpr
+        requires FredEmmott::composable_bind_detail::
+                   drop_back_invocable_entrypoint<
+                     TDropTraits,
+                     TCallFn,
+                     TArgs...>
+      {
         return FredEmmott::composable_bind_detail::
           drop_back_invoke_entrypoint_t<TDropTraits, TCallFn, TArgs...>::invoke(
             std::forward<TCallFn>(fn), std::forward<TArgs>(args)...);
