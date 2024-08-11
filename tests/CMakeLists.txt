@@ -163,6 +163,7 @@ add_test_executable("composable_bind/bind_front.cpp")
 add_test_executable("composable_bind/bind_tap.cpp")
 add_test_executable("composable_bind/direct invocation.cpp")
 add_test_executable("composable_bind/drop_extra_back.cpp")
+add_test_executable("composable_bind/drop_n_back.cpp")
 
 add_test_executable("composable_bind/bind_back.cpp" REQUIRED_FLAGS HAVE_STD_BIND_BACK)
 

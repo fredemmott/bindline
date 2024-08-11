@@ -10,6 +10,7 @@
 #include "composable_bind/bind_tap.hpp"
 #include "composable_bind/bindable_t.hpp"
 #include "composable_bind/drop_extra_back.hpp"
+#include "composable_bind/drop_n_back.hpp"
 
 #if FREDEMMOTT_COMPOSABLE_BIND_ENABLE_BIND_BACK
 #include "composable_bind/bind_back.hpp"
