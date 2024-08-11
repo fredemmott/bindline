@@ -12,14 +12,16 @@ using namespace FredEmmott::composable_bind;
 constexpr auto test_fn = [](int a, int b) { return a + b; };
 using TFn = decltype(test_fn);
 
-TEST_CASE("drop_extra_back_invocable") {
-  STATIC_CHECK(drop_extra_back_invocable<TFn, int, int>);
-  STATIC_CHECK(drop_extra_back_invocable<TFn, int, int, int>);
-  STATIC_CHECK(drop_extra_back_invocable<TFn, int, int, int, int>);
-  STATIC_CHECK(drop_extra_back_invocable<TFn, int, int, void*>);
-  STATIC_CHECK(drop_extra_back_invocable<TFn, int, int, float*>);
-  STATIC_CHECK_FALSE(drop_extra_back_invocable<TFn, int>);
-  STATIC_CHECK_FALSE(drop_extra_back_invocable<TFn, int, float*>);
+TEST_CASE("std::invocable") {
+  auto dropping = drop_extra_back(test_fn);
+  using TDrop = decltype(dropping);
+  STATIC_CHECK(std::invocable<TDrop, int, int>);
+  STATIC_CHECK(std::invocable<TDrop, int, int, int>);
+  STATIC_CHECK(std::invocable<TDrop, int, int, int, int>);
+  STATIC_CHECK(std::invocable<TDrop, int, int, void*>);
+  STATIC_CHECK(std::invocable<TDrop, int, int, float*>);
+  STATIC_CHECK_FALSE(std::invocable<TDrop, int>);
+  STATIC_CHECK_FALSE(std::invocable<TDrop, int, float*>);
 }
 
 TEST_CASE("static evaluation") {
