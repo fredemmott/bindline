@@ -45,4 +45,8 @@ constexpr auto operator|(TFunction&& lhs, TBindable&& rhs) {
 
 }// namespace FredEmmott::composable_bind
 
+namespace FredEmmott::composable_bind_extension_api {
+using ::FredEmmott::composable_bind::bindable_t;
+}
+
 #include "detail/bindable_factory_t.hpp"
