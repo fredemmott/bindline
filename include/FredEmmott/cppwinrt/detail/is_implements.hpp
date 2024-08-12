@@ -5,6 +5,9 @@
 
 #include <winrt/base.h>
 
+#include "../concepts/winrt_implementation.hpp"
+#include "../concepts/winrt_interface.hpp"
+
 namespace FredEmmott::cppwinrt_detail {
 
 template <class T, class Find, class...>
@@ -28,20 +31,14 @@ struct is_implements_t<T, Find, winrt::implements<Derived, First, Rest...>> {
   }
 };
 
-template <class T>
-concept has_implements_type = requires { typename T::implements_type; };
-
-template <class T>
-concept winrt_interface = /* winrt_type<T> && */ !has_implements_type<T>;
-
-template <has_implements_type T, class Find>
+template <FredEmmott::cppwinrt::winrt_implementation T, class Find>
 struct is_implements_t<T, Find> {
   static consteval bool test() {
     return is_implements_t<T, Find, typename T::implements_type>::test();
   }
 };
 
-template <winrt_interface T, class Find>
+template <FredEmmott::cppwinrt::winrt_interface T, class Find>
 struct is_implements_t<T, Find> {
   static consteval bool test() {
     return std::convertible_to<T, Find>;

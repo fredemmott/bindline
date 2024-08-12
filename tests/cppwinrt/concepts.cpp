@@ -55,6 +55,18 @@ TEST_CASE("winrt_type<T>") {
     winrt_type<decltype(winrt::make_weak(winrt::IInspectable {nullptr}))>);
 }
 
+TEST_CASE("winrt_interface") {
+  STATIC_CHECK(winrt_interface<winrt::IStringable>);
+  STATIC_CHECK_FALSE(winrt_interface<TestClass>);
+  STATIC_CHECK_FALSE(winrt_interface<void*>);
+}
+
+TEST_CASE("winrt_implementation") {
+  STATIC_CHECK_FALSE(winrt_implementation<winrt::IStringable>);
+  STATIC_CHECK(winrt_implementation<TestClass>);
+  STATIC_CHECK_FALSE(winrt_implementation<void*>);
+}
+
 TEST_CASE("winrt_implements") {
   STATIC_CHECK(winrt_implements<TestClass, winrt::IStringable>);
   STATIC_CHECK(

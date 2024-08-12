@@ -5,13 +5,12 @@
 #include <winrt/Windows.Foundation.h>
 #include <winrt/base.h>
 
+#include "concepts/winrt_implementation.hpp"
+#include "concepts/winrt_interface.hpp"
+#include "concepts/winrt_type.hpp"
 #include "detail/is_implements.hpp"
 
 namespace FredEmmott::cppwinrt::inline cppwinrt_concepts {
-
-template <class T>
-concept winrt_type = std::
-  convertible_to<std::decay_t<T>, winrt::Windows::Foundation::IInspectable>;
 
 // This uses the `cppwinrt_` prefix instead of `winrt_` as it does not require
 // that `T` is a Windows Runtime tpye.
