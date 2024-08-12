@@ -102,7 +102,7 @@ function(add_test_executable SOURCE)
         target_compile_definitions(
             "${TARGET}"
             PRIVATE
-            "FREDEMMOTT_COMPOSABLE_BIND_ENABLE_CPPWINRT=false"
+            "FREDEMMOTT_BINDLINE_ENABLE_CPPWINRT=false"
             "FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT=false"
         )
     endif()
@@ -159,24 +159,24 @@ add_test_executable(
 
 ##### bind #####
 
-add_test_executable("composable_bind/bind_front.cpp")
-add_test_executable("composable_bind/bind_tap.cpp")
-add_test_executable("composable_bind/direct invocation.cpp")
-add_test_executable("composable_bind/drop_extra_back.cpp")
-add_test_executable("composable_bind/drop_n_back.cpp")
+add_test_executable("bindline/bind_front.cpp")
+add_test_executable("bindline/bind_tap.cpp")
+add_test_executable("bindline/direct invocation.cpp")
+add_test_executable("bindline/drop_extra_back.cpp")
+add_test_executable("bindline/drop_n_back.cpp")
 
-add_test_executable("composable_bind/bind_back.cpp" REQUIRED_FLAGS HAVE_STD_BIND_BACK)
+add_test_executable("bindline/bind_back.cpp" REQUIRED_FLAGS HAVE_STD_BIND_BACK)
 
-add_test_executable("composable_bind/weak_refs/bind_refs_back.cpp")
-add_test_executable("composable_bind/weak_refs/bind_refs_front.cpp")
+add_test_executable("bindline/weak_refs/bind_refs_back.cpp")
+add_test_executable("bindline/weak_refs/bind_refs_front.cpp")
 
 add_test_executable(
-    "composable_bind/cppwinrt/bind_winrt_context.cpp"
+    "bindline/cppwinrt/bind_winrt_context.cpp"
     WIN32 CPPWINRT_MAIN
     LINK_LIBRARIES cppwinrt::windows-sdk
 )
 add_test_executable(
-    "composable_bind/cppwinrt/drop_winrt_event_args.cpp"
+    "bindline/cppwinrt/drop_winrt_event_args.cpp"
     WIN32 CPPWINRT_MAIN
     LINK_LIBRARIES cppwinrt::windows-sdk
 )
