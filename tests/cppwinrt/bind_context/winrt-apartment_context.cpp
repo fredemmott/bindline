@@ -22,9 +22,9 @@ static_assert(
 using namespace FredEmmott::cppwinrt;
 using namespace winrt::Windows::System;
 
+#include "../../common/test_invocable_two_args.hpp"
 #include "common/always_suspends.hpp"
 #include "common/check_forwards_arguments.hpp"
-#include "common/test_invocable_int_int.hpp"
 
 template <class T>
 concept valid_context = requires(T ctx) { bind_context([]() {}, ctx); };
@@ -42,7 +42,7 @@ concurrency::task<winrt::apartment_context> get_background_context(auto dq) {
 TEST_CASE("std::invocable") {
   auto add = [](int a, int b) { return a + b; };
   using TBound = decltype(bind_context(add, winrt::apartment_context {}));
-  test_invocable_int_int<TBound>();
+  test_invocable_two_args<TBound, int>();
 }
 
 TEST_CASE("switch to given winrt::apartment_context") {

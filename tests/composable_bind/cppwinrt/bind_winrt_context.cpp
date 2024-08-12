@@ -25,9 +25,9 @@ auto bind_context(TFn&& fn, TContext&& context) {
     std::forward<TFn>(fn), std::forward<TContext>(context));
 }
 
+#include "../../common/test_invocable_two_args.hpp"
 #include "../../cppwinrt/bind_context/common/test_dq_always_suspends.hpp"
 #include "../../cppwinrt/bind_context/common/test_dq_forwards_arguments.hpp"
-#include "../../cppwinrt/bind_context/common/test_invocable_int_int.hpp"
 #include "../../cppwinrt/bind_context/common/test_invoked_even_if_destroyed.hpp"
 #include "../../cppwinrt/bind_context/common/test_switch_to_dispatcherqueue.hpp"
 
@@ -48,11 +48,11 @@ TEST_CASE("std::invocable") {
   auto f = [](int a, int b) { return a + b; };
 
   using TBind = decltype(bind_winrt_context(f, winrt::apartment_context {}));
-  test_invocable_int_int<TBind>();
+  test_invocable_two_args<TBind, int>();
 
   using TPipeline
     = decltype(f | bind_winrt_context(winrt::apartment_context {}));
-  test_invocable_int_int<TPipeline>();
+  test_invocable_two_args<TPipeline, int>();
 }
 
 TEST_CASE("invokes callback, even if functor destroyed while waiting") {
