@@ -2,14 +2,17 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include <concepts>
 #include <memory>
 
+#include "../concepts.hpp"
+#include "../extensions.hpp"
+
 namespace FredEmmott::weak_refs_extensions {
-namespace weak_refs = ::FredEmmott::weak_refs;
 
 template <class T>
 concept with_weak_from_this = std::is_pointer_v<T> && requires(T x) {
-  { x->weak_from_this() } -> weak_refs::weak_ref;
+  { x->weak_from_this() } -> ::FredEmmott::weak_refs::weak_ref;
 };
 
 static_assert(!with_weak_from_this<std::shared_ptr<int>>);

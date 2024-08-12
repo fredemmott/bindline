@@ -9,15 +9,15 @@
 #include "weak_refs/concepts.hpp"
 
 #if FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT
-#include "weak_refs/cppwinrt.hpp"
+#include "weak_refs/extensions/cppwinrt.hpp"
 #endif
 
 #if FREDEMMOTT_WEAK_REFS_ENABLE_STD_SHARED_PTR
-#include "weak_refs/std_shared_ptr.hpp"
+#include "weak_refs/extensions/std_shared_ptr.hpp"
 #endif
 
 #if FREDEMMOTT_WEAK_REFS_ENABLE_WEAK_FROM_THIS
-#include "weak_refs/weak_from_this.hpp"
+#include "weak_refs/extensions/weak_from_this.hpp"
 #endif
 
 #if __has_include(<FredEmmott.weak_refs.footer-tweaks.hpp>)

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "config.hpp"
+#include "../config.hpp"
 
 #include "cppwinrt/winrt_refs.hpp"
 

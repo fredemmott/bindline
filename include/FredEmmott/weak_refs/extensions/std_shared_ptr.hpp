@@ -2,7 +2,10 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include <concepts>
 #include <memory>
+
+#include "../extensions.hpp"
 
 namespace FredEmmott::weak_refs_extensions {
 template <class T>

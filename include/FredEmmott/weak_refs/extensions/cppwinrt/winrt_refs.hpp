@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "../../cppwinrt/concepts.hpp"
+#include "../../../cppwinrt/concepts.hpp"
+#include "../../extensions.hpp"
 
 namespace FredEmmott::weak_refs_extensions {
 
