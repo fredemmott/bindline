@@ -10,6 +10,13 @@
 
 namespace FredEmmott::weak_refs {
 
+/** Like `std::bind_front()`, but stores weak references and invokes with strong
+ * references.
+ *
+ * If the resulting strong references are invalid, `f` will not be invoked.
+ *
+ * The returned callable returns `void`, as the function might not be invoked.
+ */
 template <class F, convertible_to_weak_ref... Binds>
   requires(sizeof...(Binds) >= 1)
 [[nodiscard]]

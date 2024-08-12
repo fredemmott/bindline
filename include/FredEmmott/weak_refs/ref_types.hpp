@@ -6,12 +6,19 @@
 
 namespace FredEmmott::weak_refs::inline weak_refs_ref_types {
 
-/// e.g. `std::weak_ptr<T>`
+/** The corresponding weak ref type for a given strong ref type
+ *
+ * For example, `weak_ref_t<std::shared_ptr<T>>` is `std::weak_ptr<T>`
+ */
 template <class TStrong>
 using weak_ref_t
   = decltype(weak_refs_extensions::make_weak_ref_fn<
              std::decay_t<TStrong>>::make(std::declval<TStrong>()));
-/// e.g. `std::strong_ptr<T>`
+
+/** The corresponding strong ref type for a given weakref type
+ *
+ * For example, `strong_ref_t<std::weak_ptr<T>>` is `std::shared_ptr<T>`
+ */
 template <class TWeak>
 using strong_ref_t
   = decltype(weak_refs_extensions::lock_weak_ref_fn<std::decay_t<TWeak>>::lock(
