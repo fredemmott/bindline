@@ -19,8 +19,16 @@ struct bind_tap_t : public ::FredEmmott::composable_bind::bindable_t {
   [[nodiscard]]
   constexpr auto bind_to(TFn&& f) const {
     return std::bind_front(
-      []<class... Args>(Args&&... args) {
-        return bind_tap_t<TTap>::invoke(std::forward<Args>(args)...);
+      []<class TInvokeFn, class TInvokeTap, class... TInvokeArgs>(
+        TInvokeFn&& fn, TInvokeTap&& tap, TInvokeArgs&&... args)
+        requires std::invocable<TInvokeFn, TInvokeArgs...>
+                   && std::invocable<TInvokeTap, TInvokeArgs...>
+      {
+        std::invoke(
+          std::forward<TInvokeTap>(tap),
+          static_cast<const TInvokeArgs&>(args)...);
+        return std::invoke(
+          std::forward<TInvokeFn>(fn), std::forward<TInvokeArgs>(args)...);
       },
       std::forward<TFn>(f),
       mTap);
@@ -28,20 +36,6 @@ struct bind_tap_t : public ::FredEmmott::composable_bind::bindable_t {
 
  private:
   TTap mTap;
-  template <class TFn, class TInvokeTap, class... TUnbound>
-  constexpr static auto
-  invoke(TFn&& fn, TInvokeTap&& tap, TUnbound&&... unbound) {
-    static_assert(
-      std::invocable<TFn, TUnbound...>,
-      "The function is not invocable with the provided arguments");
-    static_assert(
-      std::invocable<TInvokeTap, TUnbound...>,
-      "The tap is not invocable with the provided arguments");
-
-    std::invoke(tap, static_cast<const TUnbound&>(unbound)...);
-    return std::invoke(
-      std::forward<TFn>(fn), std::forward<TUnbound>(unbound)...);
-  }
 };
 template <class T>
 bind_tap_t(T) -> bind_tap_t<std::decay_t<T>>;
