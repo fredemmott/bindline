@@ -30,9 +30,17 @@ struct drop_back_invoke_counted_t {
       static_assert(std::tuple_size_v<decltype(next_args)> == sizeof...(TArgs));
 
       return std::apply(&next_t::invoke, std::move(next_args));
-    } else {
-      static_assert(false, "Should be statically unreachable due to concept");
     }
+    // `static_assert(false)` should be fine since C++17 and as a defect report
+    // on C++11 (CWG2518); unfortunately for now we're testing on G++ 11.4
+    // (Ubuntu 22.04), which does not permit it.
+#ifdef __cpp_lib_unreachable
+    std::unreachable();
+#elif defined(_MSC_VER) && !defined(__clang__)
+    __assume(false);
+#else
+    __builtin_unreachable();
+#endif
   }
 };
 
