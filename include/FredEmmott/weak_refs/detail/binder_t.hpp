@@ -2,12 +2,13 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include <FredEmmott/weak_refs/concepts.hpp>
+#include <FredEmmott/weak_refs/lock_weak_ref.hpp>
+#include <FredEmmott/weak_refs/make_weak_ref.hpp>
+
 #include <tuple>
 #include <utility>
 
-#include "../concepts.hpp"
-#include "../lock_weak_ref.hpp"
-#include "../make_weak_ref.hpp"
 #include "static_const.hpp"
 
 namespace FredEmmott::weak_refs_detail {
@@ -21,6 +22,12 @@ struct binder_t {
   static_assert((std::same_as<TBinds, std::decay_t<TBinds>> && ...));
 
   binder_t() = delete;
+  binder_t(const binder_t&) = default;
+  binder_t(binder_t&&) = default;
+
+  binder_t& operator=(const binder_t&) = delete;
+  binder_t& operator=(binder_t&&) = delete;
+
   template <std::convertible_to<TFn> TInitFn, class... TInitBinds>
   constexpr binder_t(TInitFn&& fn, TInitBinds... binds)
     : mFn(std::forward<TInitFn>(fn)),

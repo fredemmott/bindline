@@ -7,6 +7,40 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(IS_GITHUB_ACTIONS "Use github-action-specific output syntax etc" OFF)
+option(ENABLE_ALL_WARNINGS "Enable all compiler warnings" ON)
+option(ENABLE_WARNINGS_AS_ERRORS "All compiler warnings are errors" ON)
+
+if(ENABLE_ALL_WARNINGS)
+    # We need to find the Windows SDK so we don't turn on /Wall /Werror there
+    GET_FILENAME_COMPONENT(
+        WINDOWS_KITS_ROOT
+        "[HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots;KitsRoot10]"
+        ABSOLUTE CACHE
+    )
+endif()
+
+if(MSVC)
+    set(
+        WALL_FLAG
+        /Wall
+        # C4514: unreferenced inline function was removed
+        #
+        # Expected as we don't test every function in every file
+        /wd4514
+        # Bytes of padding added after struct member in test
+        /wd4820
+    )
+    # Clang-Cl maps `/Wall` to `-Weverything` instead of `-Wall`; the problem is
+    # that this means your C++20 project will get all of the 'this feature is
+    # not compatible with C++98' warnings.
+    if(${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang")
+        list(REMOVE_ITEM WALL_FLAG /Wall)
+        list(APPEND WALL_FLAG /clang:-Wall)
+    endif()
+else()
+    set(WALL_FLAG -Wall)
+    set(WERROR_FLAG -Werror)
+endif()
 
 macro(WARN MESSAGE_TEXT)
     message(WARNING "⚠️ ${MESSAGE_TEXT}")
@@ -88,6 +122,34 @@ function(add_test_executable SOURCE)
         "${PROJECT_NAME}"
         ${TEST_ARG_LINK_LIBRARIES}
     )
+    # Allow `#include <tests/...>`
+    target_include_directories(${TARGET} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..")
+
+    if(ENABLE_ALL_WARNINGS)
+        set(WALL_THIS_TEST ${WALL_FLAG})
+        if(MSVC AND ENABLE_ALL_WARNINGS)
+            string(FIND "${SOURCE}" "context" OFFSET)
+            if(${OFFSET} GREATER_EQUAL 0)
+                list(REMOVE_ITEM WALL_THIS_TEST "/Wall")
+                list(APPEND WALL_THIS_TEST "/W4")
+                # https://developercommunity.visualstudio.com/t/Spurious-Error:-The-JSON-value-could-no/10715303
+                WARN("${SOURCE}: downgrading /Wall to /W4 due to MSVC bug expected to be fixed in VS 2022 17.11. This notice was last updated 2024-08-12")
+            endif()
+        endif()
+        target_compile_options(${TARGET} PRIVATE ${WALL_THIS_TEST})
+        # We don't actually want to include anything from these directory, but we do want to flag them as 'external'
+        # so -Wall -Werror don't apply to them
+        target_include_directories(
+            ${TARGET}
+            SYSTEM
+            PRIVATE
+            ${FETCHCONTENT_BASE_DIR}
+            ${WINDOWS_KITS_ROOT}
+        )
+    endif()
+    if(ENABLE_WARNINGS_AS_ERRORS)
+        target_compile_options(${TARGET} PRIVATE ${WERROR_FLAG})
+    endif()
 
     if(TEST_ARG_CXX_COMPILE_FEATURES)
         target_compile_features(${TARGET} PRIVATE "${TEST_ARG_CXX_COMPILE_FEATURES}")

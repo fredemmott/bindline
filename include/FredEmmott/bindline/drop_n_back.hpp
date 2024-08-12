@@ -5,6 +5,15 @@
 #include "extension_api/drop_back_bindable_t.hpp"
 namespace FredEmmott::bindline_detail {
 
+#if defined(_MSVC_LANG) && !defined(__clang__)
+// C4296: expression is always false
+//
+// As of 2024-08-12, MSVC 2022 checks this per instantiation - so, it raises
+// this warning for `can_drop_v` if you use drop_n_args<2>() and then invoke
+// with two extra arguments
+#pragma warning(push)
+#pragma warning(disable : 4296)
+#endif
 /// Drop exactly <N> arguments
 template <size_t N>
 struct drop_n_traits {
@@ -12,6 +21,9 @@ struct drop_n_traits {
   static constexpr bool can_drop_v = DropCount < N;
   static constexpr size_t minimum_dropped_v = N;
 };
+#if defined(_MSVC_LANG) && !defined(__clang__)
+#pragma warning(pop)
+#endif
 }// namespace FredEmmott::bindline_detail
 
 namespace FredEmmott::bindline {

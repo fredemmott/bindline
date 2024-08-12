@@ -22,6 +22,16 @@ namespace ABI {
 using namespace Windows::Foundation;
 }
 
+#if defined(_MSVC_LANG) && !defined(__clang__)
+// These are warnings about various constructors and assignment operators being
+// implicitly defined as deleted, which are C++/WinRT's responsibility
+#pragma warning(push)
+#pragma warning(disable : 4625)
+#pragma warning(disable : 4626)
+#pragma warning(disable : 5026)
+#pragma warning(disable : 5027)
+#endif
+
 struct TestClass : winrt::implements<TestClass, IStringable> {
   virtual winrt::hstring ToString() const noexcept {
     return L"Hello, world";
@@ -41,6 +51,10 @@ struct TestClassNoWeakRefTrailingMarker : winrt::implements<
                                             winrt::no_weak_ref> {
   virtual winrt::hstring ToString() const noexcept = 0;
 };
+
+#if defined(_MSVC_LANG) && !defined(__clang__)
+#pragma warning(pop)
+#endif
 
 TEST_CASE("winrt_type<T>") {
   STATIC_CHECK(winrt_type<winrt::IInspectable>);

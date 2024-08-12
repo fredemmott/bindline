@@ -12,7 +12,7 @@ inline void check_forwards_arguments(auto context) {
 
   auto fn = [&](auto a, auto b, auto c, auto line) {
     CHECK(std::vector<int> {a, b, c} == std::vector {123, 456, 789});
-    last_line = line;
+    last_line = static_cast<size_t>(line);
     promise.set_value();
   };
 

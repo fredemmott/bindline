@@ -38,11 +38,32 @@ TEST_CASE("a WinRT interface") {
   STATIC_CHECK(convertible_to_weak_ref<decltype(strong)>);
 }
 
+#if defined(_MSVC_LANG) && !defined(__clang__)
+// These are warnings about various constructors and assignment operators being
+// implicitly defined as deleted, which are C++/WinRT's responsibility
+#pragma warning(push)
+#pragma warning(disable : 4625)
+#pragma warning(disable : 4626)
+#pragma warning(disable : 5026)
+#pragma warning(disable : 5027)
+#endif
+
 struct TestClass : winrt::implements<TestClass, IStringable> {
   winrt::hstring ToString() const noexcept {
     return winrt::to_hstring("Hello, "s + __FILE__);
   }
 };
+
+struct TestNoWeakRef
+  : winrt::implements<TestNoWeakRef, IStringable, winrt::no_weak_ref> {
+  winrt::hstring ToString() const noexcept {
+    return winrt::to_hstring("Hello, "s + __FILE__);
+  }
+};
+
+#if defined(_MSVC_LANG) && !defined(__clang__)
+#pragma warning(pop)
+#endif
 
 TEST_CASE("a WinRT implementation") {
   // make sure we're not accidentally testing the pointer path
@@ -65,13 +86,6 @@ TEST_CASE("a WinRT implementation") {
 
   CHECK(winrt::to_string(strong.ToString()) == "Hello, "s + __FILE__);
 }
-
-struct TestNoWeakRef
-  : winrt::implements<TestNoWeakRef, IStringable, winrt::no_weak_ref> {
-  winrt::hstring ToString() const noexcept {
-    return winrt::to_hstring("Hello, "s + __FILE__);
-  }
-};
 
 TEST_CASE("a class that implements winrt::no_weak_ref") {
   STATIC_CHECK_FALSE(convertible_to_weak_ref<TestNoWeakRef>);

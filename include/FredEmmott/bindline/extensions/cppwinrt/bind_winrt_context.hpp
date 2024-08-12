@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "../../../cppwinrt/bind_context.hpp"
+#include <FredEmmott/cppwinrt/bind_context.hpp>
 
 namespace FredEmmott::bindline_detail {
 

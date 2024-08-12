@@ -1,8 +1,8 @@
 // Copyright (C) 2024 Fred Emmott <fred@fredemmott.com>
 // SPDX-License-Identifier: MIT
 #include <FredEmmott/weak_refs.hpp>
+#include <tests/common/test_invocable_two_args.hpp>
 
-#include "../../common/test_invocable_two_args.hpp"
 #include <catch2/catch_test_macros.hpp>
 
 #ifndef COMMON_BIND_TEST_PREFIX

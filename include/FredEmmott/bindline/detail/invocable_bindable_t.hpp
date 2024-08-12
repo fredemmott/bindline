@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include <FredEmmott/bindline/bindable_t.hpp>
+
 #include <atomic>
 #include <concepts>
-
-#include "../bindable_t.hpp"
 
 namespace FredEmmott::bindline_detail {
 
@@ -19,6 +19,11 @@ struct invocable_bindable_t : ::FredEmmott::bindline::bindable_t {
   using invocable_t = TNext<TRest...>;
 
   invocable_bindable_t() = delete;
+  invocable_bindable_t(const invocable_bindable_t&) = default;
+  invocable_bindable_t(invocable_bindable_t&&) = default;
+
+  invocable_bindable_t& operator=(const invocable_bindable_t&) = delete;
+  invocable_bindable_t& operator=(invocable_bindable_t&&) = delete;
 
   template <class... TInit>
     requires std::constructible_from<TNext<TFirst, TRest...>, TFirst, TRest...>

@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "bindable_t.hpp"
+#include <FredEmmott/bindline/bindable_t.hpp>
+
 #include "detail/byval_binder_t.hpp"
 
 namespace FredEmmott::bindline_detail {

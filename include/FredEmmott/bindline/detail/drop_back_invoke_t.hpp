@@ -34,10 +34,12 @@ struct drop_back_invoke_counted_t {
     // `static_assert(false)` should be fine since C++17 and as a defect report
     // on C++11 (CWG2518); unfortunately for now we're testing on G++ 11.4
     // (Ubuntu 22.04), which does not permit it.
-#ifdef __cpp_lib_unreachable
-    std::unreachable();
-#elif defined(_MSC_VER) && !defined(__clang__)
+#if defined(_MSC_VER) && !defined(__clang__)
+    // Giving this priority over `std::unreachable()` because MSVC will raise an
+    // 'unreachable code' warning for `std::unreachable`
     __assume(false);
+#elif defined(__cpp_lib_unreachable)
+    std::unreachable();
 #else
     __builtin_unreachable();
 #endif

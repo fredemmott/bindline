@@ -22,7 +22,8 @@ static_assert(
 using namespace FredEmmott::cppwinrt;
 using namespace winrt::Windows::System;
 
-#include "../../common/test_invocable_two_args.hpp"
+#include <tests/common/test_invocable_two_args.hpp>
+
 #include "common/always_suspends.hpp"
 #include "common/check_forwards_arguments.hpp"
 

@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "../../../cppwinrt/concepts.hpp"
-#include "../../extension_api/drop_back_bindable_t.hpp"
+#include <FredEmmott/bindline/extension_api/drop_back_bindable_t.hpp>
+#include <FredEmmott/cppwinrt/concepts.hpp>
 
 namespace FredEmmott::bindline_detail {
 

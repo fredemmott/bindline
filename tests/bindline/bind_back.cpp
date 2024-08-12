@@ -5,13 +5,13 @@
 
 #include <string>
 
-#include "../common/test_invocable_two_args.hpp"
+#include "tests/common/test_invocable_two_args.hpp"
 #include <catch2/catch_test_macros.hpp>
 
 using namespace FredEmmott::bindline;
 
 TEST_CASE("std::invocable") {
-  auto impl = [](int a, int b, int c) {};
+  auto impl = [](int, int, int) {};
   auto bound = bind_back(impl, 123);
   test_invocable_two_args<decltype(bound), int>();
   auto pipeline = impl | bind_back(123);

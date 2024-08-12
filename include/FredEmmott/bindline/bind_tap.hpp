@@ -11,6 +11,13 @@ struct bind_tap_t : public ::FredEmmott::bindline::bindable_t {
   static_assert(std::same_as<TTap, std::decay_t<TTap>>);
 
   bind_tap_t() = delete;
+
+  bind_tap_t(const bind_tap_t&) = default;
+  bind_tap_t(bind_tap_t&&) = default;
+
+  bind_tap_t& operator=(const bind_tap_t&) = delete;
+  bind_tap_t& operator=(bind_tap_t&&) = delete;
+
   template <class TInit>
   constexpr bind_tap_t(TInit&& tap) : mTap(std::forward<TTap>(tap)) {
   }
@@ -54,7 +61,6 @@ namespace FredEmmott::bindline {
 template <class T>
 [[nodiscard]]
 constexpr auto bind_tap(T&& tap) {
-  auto x = std::bind_front(std::forward<T>(tap));
   return bindline_detail::bind_tap_t(std::forward<T>(tap));
 }
 

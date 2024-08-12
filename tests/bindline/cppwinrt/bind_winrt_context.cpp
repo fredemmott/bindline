@@ -25,11 +25,11 @@ auto bind_context(TFn&& fn, TContext&& context) {
     std::forward<TFn>(fn), std::forward<TContext>(context));
 }
 
-#include "../../common/test_invocable_two_args.hpp"
-#include "../../cppwinrt/bind_context/common/test_dq_always_suspends.hpp"
-#include "../../cppwinrt/bind_context/common/test_dq_forwards_arguments.hpp"
-#include "../../cppwinrt/bind_context/common/test_invoked_even_if_destroyed.hpp"
-#include "../../cppwinrt/bind_context/common/test_switch_to_dispatcherqueue.hpp"
+#include <tests/common/test_invocable_two_args.hpp>
+#include <tests/cppwinrt/bind_context/common/test_dq_always_suspends.hpp>
+#include <tests/cppwinrt/bind_context/common/test_dq_forwards_arguments.hpp>
+#include <tests/cppwinrt/bind_context/common/test_invoked_even_if_destroyed.hpp>
+#include <tests/cppwinrt/bind_context/common/test_switch_to_dispatcherqueue.hpp>
 
 TEST_CASE("switch to DispatcherQueue thread") {
   STATIC_CHECK_FALSE(

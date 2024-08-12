@@ -1,9 +1,9 @@
 // Copyright (C) 2024 Fred Emmott <fred@fredemmott.com>
 // SPDX-License-Identifier: MIT
 #pragma once
-#include "../config.hpp"
-
 #include <winrt/base.h>
+
+#include <FredEmmott/cppwinrt/config.hpp>
 
 #if FREDEMMOTT_CPPWINRT_ENABLE_WIL
 #include <wil/cppwinrt_helpers.h>
@@ -50,6 +50,12 @@ struct context_binder {
     = dispatcher_queue<TContext> && !awaitable_context<TContext>;
 
   context_binder() = delete;
+  context_binder(const context_binder&) = default;
+  context_binder(context_binder&&) = default;
+
+  context_binder& operator=(const context_binder&) = delete;
+  context_binder& operator=(context_binder&&) = delete;
+
   template <std::convertible_to<TContext> InitContext, class InitFn>
   constexpr context_binder(InitFn&& fn, InitContext&& context)
     : mContext(std::forward<InitContext>(context)),

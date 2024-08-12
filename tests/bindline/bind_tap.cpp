@@ -3,10 +3,10 @@
 // SPDX-License-Identifier: MIT
 
 #include <FredEmmott/bindline.hpp>
+#include <tests/common/test_invocable_two_args.hpp>
 
 #include <string_view>
 
-#include "../common/test_invocable_two_args.hpp"
 #include <catch2/catch_test_macros.hpp>
 
 using namespace FredEmmott::bindline;

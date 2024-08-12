@@ -5,8 +5,8 @@
 
 #include <winrt/base.h>
 
-#include "../concepts/winrt_implementation.hpp"
-#include "../concepts/winrt_interface.hpp"
+#include <FredEmmott/cppwinrt/concepts/winrt_implementation.hpp>
+#include <FredEmmott/cppwinrt/concepts/winrt_interface.hpp>
 
 namespace FredEmmott::cppwinrt_detail {
 

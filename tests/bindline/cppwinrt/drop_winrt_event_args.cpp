@@ -50,6 +50,5 @@ TEST_CASE("pipeline static evaluation") {
 TEST_CASE("runtime evaluation") {
   const auto a = GENERATE(take(3, random(INT_MIN, INT_MAX)));
   const auto b = GENERATE(take(3, random(INT_MIN, INT_MAX)));
-  const auto c = GENERATE(take(3, random(INT_MIN, INT_MAX)));
   CHECK((test_fn | drop_winrt_event_args())(a, b, Sender, Args) == a + b);
 }

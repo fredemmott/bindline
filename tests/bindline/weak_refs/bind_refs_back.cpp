@@ -10,7 +10,7 @@ using namespace FredEmmott::bindline;
 #define COMMON_BIND_TEST_PREFIX "invoking: "
 #define bind_function_under_test ::FredEmmott::bindline::bind_refs_back
 
-#include "../../weak_refs/common/bind.hpp"
+#include <tests/weak_refs/common/bind.hpp>
 #undef COMMON_BIND_TEST_PREFIX
 #undef bind_function_under_test
 #define COMMON_BIND_TEST_PREFIX "pipeline: "
@@ -20,7 +20,7 @@ auto bind_function_under_test(const auto& fn, Args&&... args) {
     | ::FredEmmott::bindline::bind_refs_back(std::forward<Args>(args)...);
 }
 
-#include "../../weak_refs/common/bind.hpp"
+#include <tests/weak_refs/common/bind.hpp>
 
 TEST_CASE("partial application") {
   auto strong = std::make_shared<int>(123);

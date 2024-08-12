@@ -4,11 +4,12 @@
 
 #include "bindline/config.hpp"
 
+#include <FredEmmott/bindline/bindable_t.hpp>
+
 #include <functional>
 
 #include "bindline/bind_front.hpp"
 #include "bindline/bind_tap.hpp"
-#include "bindline/bindable_t.hpp"
 #include "bindline/drop_extra_back.hpp"
 #include "bindline/drop_n_back.hpp"
 
