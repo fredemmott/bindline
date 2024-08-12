@@ -28,6 +28,17 @@ struct bind_refs_front_t
 
 namespace FredEmmott::bindline {
 
+/** Bind weak references as leading arguments, but invoke with strong
+ * references.
+ *
+ * The callable will not be invoked if the strong references are invalid/stale.
+ *
+ * See `::FredEmmott::weak_refs::bind_refs_back()`
+ *
+ * Usage:
+ * - `callable | bind_refs_back(ref, ...)`
+ * - `bind_refs_back(f, ref, ...)`
+ */
 template <class... TArgs>
 [[nodiscard]]
 constexpr auto bind_refs_front(TArgs&&... args) {

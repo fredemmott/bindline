@@ -7,6 +7,32 @@
 
 namespace FredEmmott::bindline_extension_api {
 
+/** A bindable that drops arguments from the end of the list.
+ *
+ * `TDropTraits` must be a struct with the following members:
+ * ```c++
+ * template<size_t DropCount, class T>
+ * static constexpr bool can_drop_v;
+ *
+ * static constexpr size_t minimum_dropped_v
+ * ```
+ *
+ * An argument will be dropped from the back if and only if:
+ *  - all later arguments have already been dropped
+ *  - the wrapped function is not invocable with fewer dropped arguments, unless
+ *    fewer than `minimum_dropped_v` arguments have already been dropped
+ *  - `can_drop_v<DropCount, T>` is true.
+ *   - `DropCount` is how many arguments have already been dropped
+ *   - `T` is the type of the argument
+ *
+ * This is valid if and only if at least `minimum_dropped_v` arguments are
+ * dropped from the back.
+ *
+ * For examples, see:
+ * - `FredEmmott::bindline_detail::drop_any_arg_traits`
+ * - `FredEmmott::bindline_detail::drop_n_traits`
+ * - `FredEmmott::bindline_detail::drop_winrt_event_args_traits`
+ */
 template <class TDropTraits>
 struct drop_back_bindable_t : bindable_t {
   template <class TBindFn>

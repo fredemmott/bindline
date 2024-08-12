@@ -23,6 +23,14 @@ struct back_binder_t : byval_binder_t<bind_back_fn, std::decay_t<Args>...> {
 
 namespace FredEmmott::bindline {
 
+/** Bind trailing arguments.
+ *
+ * This is a wrapper around C++23's `std::bind_back()`
+ *
+ * Usage:
+ * - `bind_back(callable, args...)`
+ * - `callable | bind_back(args...)`
+ */
 template <class... Args>
 [[nodiscard]]
 constexpr auto bind_back(Args&&... args) {

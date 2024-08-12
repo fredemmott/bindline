@@ -24,6 +24,14 @@ struct front_binder_t : byval_binder_t<bind_front_fn, std::decay_t<Args>...> {
 
 namespace FredEmmott::bindline {
 
+/** Bind leading arguments.
+ *
+ * This is a wrapper around C++20's `std::bind_front()`
+ *
+ * Usage:
+ * - `bind_front(callable, args...)`
+ * - `callable | bind_front(args...)`
+ */
 template <class... Args>
 [[nodiscard]]
 constexpr auto bind_front(Args&&... args) {

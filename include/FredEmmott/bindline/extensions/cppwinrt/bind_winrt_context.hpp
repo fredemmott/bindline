@@ -31,6 +31,11 @@ struct winrt_context_binder_t : ::FredEmmott::bindline::bindable_t {
 }// namespace FredEmmott::bindline_detail
 
 namespace FredEmmott::bindline {
+
+/** Bind execution to a given `winrt::apartment_context` or `DispatcherQueue`.
+ *
+ * Usage: `(f | bind_context(dispatcherQueue))`
+ */
 template <::FredEmmott::cppwinrt_detail::switchable_context T>
 [[nodiscard]]
 constexpr auto bind_winrt_context(T&& context) {
@@ -38,6 +43,10 @@ constexpr auto bind_winrt_context(T&& context) {
     std::forward<T>(context));
 }
 
+/** Bind execuction to a given `winrt::apartment_context` or `DispatcherQueue`.
+ *
+ * Usage: `bind_context(f, dispatcherQueue)`
+ */
 template <class TFn, ::FredEmmott::cppwinrt_detail::switchable_context T>
 [[nodiscard]]
 constexpr auto bind_winrt_context(TFn&& fn, T&& context) {

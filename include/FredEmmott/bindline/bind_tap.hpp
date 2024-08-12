@@ -43,6 +43,14 @@ bind_tap_t(T) -> bind_tap_t<std::decay_t<T>>;
 }// namespace FredEmmott::bindline_detail
 
 namespace FredEmmott::bindline {
+/** Invoke an additional function before executing the original.
+ *
+ * The tap function does not affect execution of the original, or return value.
+ *
+ * This is primarily useful for debugging or logging.
+ *
+ * Usage: `wrapped_function | bind_tap(tap_function)`
+ */
 template <class T>
 [[nodiscard]]
 constexpr auto bind_tap(T&& tap) {
@@ -50,6 +58,14 @@ constexpr auto bind_tap(T&& tap) {
   return bindline_detail::bind_tap_t(std::forward<T>(tap));
 }
 
+/** Invoke an additional function before executing the original.
+ *
+ * The tap function does not affect execution of the original, or return value.
+ *
+ * This is primarily useful for debugging or logging.
+ *
+ * Usage: `bind_tap(wrapped_function, tap_function)`
+ */
 template <class TFn, class TTap>
 [[nodiscard]]
 constexpr auto bind_tap(TFn&& fn, TTap&& tap) {

@@ -26,6 +26,17 @@ struct bind_refs_back_t
 
 namespace FredEmmott::bindline {
 
+/** Bind weak references as trailing arguments, but invoke with strong
+ * references.
+ *
+ * The callable will not be invoked if the strong references are invalid/stale.
+ *
+ * See `::FredEmmott::weak_refs::bind_refs_back()`
+ *
+ * Usage:
+ * - `callable | bind_refs_back(ref, ...)`
+ * - `bind_refs_back(callable, ref, ...)`
+ */
 template <class... TArgs>
 [[nodiscard]]
 constexpr auto bind_refs_back(TArgs&&... args) {
