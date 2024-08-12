@@ -11,9 +11,9 @@ using namespace FredEmmott::composable_bind;
 TEST_CASE("std::invocable") {
   auto impl = [](int a, int b, int c) {};
   auto bound = bind_front(impl, 123);
-  STATIC_CHECK(test_invocable_two_args<decltype(bound), int>);
+  test_invocable_two_args<decltype(bound), int>();
   auto pipeline = impl | bind_front(123);
-  STATIC_CHECK(test_invocable_two_args<decltype(pipeline), int>);
+  test_invocable_two_args<decltype(pipeline), int>();
 }
 
 TEST_CASE("all args at once") {
