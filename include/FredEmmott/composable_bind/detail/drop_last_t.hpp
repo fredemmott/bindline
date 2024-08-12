@@ -38,13 +38,13 @@ struct drop_last_seq_t {
 
 struct drop_last_t {
   template <class... TArgs>
-  using seq_t = drop_last_seq_t<TArgs...>::type;
+  using seq_t = typename drop_last_seq_t<TArgs...>::type;
 
   template <class... TArgs>
   using impl_t = decltype(drop_last_impl_t(seq_t<TArgs...> {}));
 
   template <template <class...> class T, class... TArgs>
-  using next_t = impl_t<TArgs...>::template next_t<T, TArgs...>;
+  using next_t = typename impl_t<TArgs...>::template next_t<T, TArgs...>;
 
   template <size_t ToDrop = 1, class... TArgs>
   static constexpr decltype(auto) next_tuple(std::tuple<TArgs...>&& args) {

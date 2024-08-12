@@ -33,7 +33,7 @@ TEST_CASE("pipeline static evaluation") {
 TEST_CASE("std::invocable") {
   auto drop0 = drop_n_back<0>(test_fn);
   STATIC_CHECK(std::invocable<decltype(drop0), int, int>);
-  STATIC_CHECK_FALSE(std::invocable<decltype(drop0), int, nullptr_t>);
+  STATIC_CHECK_FALSE(std::invocable<decltype(drop0), int, std::nullptr_t>);
   STATIC_CHECK_FALSE(std::invocable<decltype(drop0), int>);
   STATIC_CHECK_FALSE(std::invocable<decltype(drop0), int, int, int>);
 

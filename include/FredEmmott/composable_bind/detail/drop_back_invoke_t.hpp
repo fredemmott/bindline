@@ -17,7 +17,7 @@ struct drop_back_invoke_counted_t {
     if constexpr (std::invocable<TFn, TArgs...>) {
       return std::invoke(std::forward<TFn>(fn), std::forward<TArgs>(args)...);
     } else if constexpr (sizeof...(TArgs) >= 1) {
-      using next_t = drop_last_t::next_t<
+      using next_t = drop_last_t::template next_t<
         drop_back_invoke_counted_t,
         std::integral_constant<size_t, TDropCount::value + 1>,
         TDropTraits,
