@@ -22,6 +22,7 @@
 
 #if FREDEMMOTT_COMPOSABLE_BIND_ENABLE_CPPWINRT
 #include "composable_bind/cppwinrt.hpp"
+#include "composable_bind/cppwinrt/drop_winrt_event_args.hpp"
 #endif
 
 #if __has_include(<FredEmmott.composable_bind.footer-tweaks.hpp>)

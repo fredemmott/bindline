@@ -175,3 +175,8 @@ add_test_executable(
     WIN32 CPPWINRT_MAIN
     LINK_LIBRARIES cppwinrt::windows-sdk
 )
+add_test_executable(
+    "composable_bind/cppwinrt/drop_winrt_event_args.cpp"
+    WIN32 CPPWINRT_MAIN
+    LINK_LIBRARIES cppwinrt::windows-sdk
+)
