@@ -10,7 +10,7 @@ namespace FredEmmott::bindline_detail {
 struct drop_winrt_event_args_trait {
   template <size_t DropCount, class T>
   static constexpr bool can_drop_v
-    = DropCount <= 2 && ::FredEmmott::cppwinrt::winrt_type<T>;
+    = DropCount < 2 && ::FredEmmott::cppwinrt::winrt_type<T>;
   static constexpr size_t minimum_dropped_v = 2;
 };
 }// namespace FredEmmott::bindline_detail

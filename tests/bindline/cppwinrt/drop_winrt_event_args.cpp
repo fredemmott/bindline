@@ -22,6 +22,7 @@ using TArgs = decltype(Args);
 template <class TFn>
 void test_static_invocable() {
   STATIC_CHECK(std::invocable<TFn, int, int, TSender, TArgs>);
+  STATIC_CHECK_FALSE(std::invocable<TFn, int, int, TSender, TArgs, TSender>);
   STATIC_CHECK_FALSE(std::invocable<TFn, int, int>);
   STATIC_CHECK_FALSE(std::invocable<TFn, int, int, int, TSender, TArgs>);
   STATIC_CHECK_FALSE(std::invocable<TFn, int, int, TSender, TArgs, int>);
