@@ -6,6 +6,7 @@
 
 namespace FredEmmott::cppwinrt::inline cppwinrt_concepts {
 
+/// A WinRT implementation type, as opposed to a `winrt_interface
 template <class T>
 concept winrt_implementation
   = winrt_type<T> && requires { typename T::implements_type; };
