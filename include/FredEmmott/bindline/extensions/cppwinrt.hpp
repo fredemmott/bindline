@@ -3,3 +3,4 @@
 #pragma once
 
 #include "cppwinrt/bind_winrt_context.hpp"
+#include "cppwinrt/drop_winrt_event_args.hpp"

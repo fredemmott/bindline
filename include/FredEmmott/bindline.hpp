@@ -16,13 +16,12 @@
 #include "bindline/bind_back.hpp"
 #endif
 
-#if FREDEMMOTT_BINDLINE_ENABLE_WEAK_REFS
-#include "bindline/weak_refs.hpp"
+#if FREDEMMOTT_BINDLINE_ENABLE_CPPWINRT
+#include "bindline/extensions/cppwinrt.hpp"
 #endif
 
-#if FREDEMMOTT_BINDLINE_ENABLE_CPPWINRT
-#include "bindline/cppwinrt.hpp"
-#include "bindline/cppwinrt/drop_winrt_event_args.hpp"
+#if FREDEMMOTT_BINDLINE_ENABLE_WEAK_REFS
+#include "bindline/extensions/weak_refs.hpp"
 #endif
 
 #if __has_include(<FredEmmott.bindline.footer-tweaks.hpp>)
