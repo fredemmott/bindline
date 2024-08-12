@@ -4,11 +4,30 @@
 
 #include <FredEmmott/composable_bind.hpp>
 
+#include <string_view>
+
+#include "../common/test_invocable_two_args.hpp"
 #include <catch2/catch_test_macros.hpp>
 
 using namespace FredEmmott::composable_bind;
 
-// This whole file is a good test of mixed pipelines too
+// This file is a good test of mixed pipelines too
+
+TEST_CASE("std::invocable") {
+  auto f = [](int, int) -> std::string_view { return "hello"; };
+  auto tap = [](int, int) -> void {};
+
+  auto bound = bind_tap(f, tap);
+  auto pipeline = f | bind_tap(tap);
+  STATIC_CHECK(std::is_invocable_v<decltype(bound), int, int>);
+  STATIC_CHECK(std::is_invocable_v<decltype(pipeline), int, int>);
+
+  test_invocable_two_args<decltype(bound), int>();
+  test_invocable_two_args<decltype(bound), int>();
+
+  STATIC_CHECK(
+    std::is_invocable_r_v<std::string_view, decltype(bound), int, int>);
+}
 
 TEST_CASE("at start of pipeline") {
   bool invoked = false;
