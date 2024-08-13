@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include <FredEmmott/weak_refs.hpp>
+
 #include <tuple>
 #include <utility>
 

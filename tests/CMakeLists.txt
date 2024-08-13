@@ -216,7 +216,7 @@ add_test_executable("bindline/detail-meta.cpp")
 add_test_executable("bindline/direct invocation.cpp")
 add_test_executable("bindline/drop_extra_back.cpp")
 add_test_executable("bindline/drop_n_back.cpp")
-add_test_executable("bindline/ordering_requirements.cpp")
+add_test_executable("bindline/ordering requirements.cpp")
 
 add_test_executable("bindline/bind_back.cpp" REQUIRED_FLAGS HAVE_STD_BIND_BACK)
 
@@ -230,6 +230,12 @@ add_test_executable(
 )
 add_test_executable(
     "bindline/cppwinrt/drop_winrt_event_args.cpp"
+    WIN32 CPPWINRT_MAIN
+    LINK_LIBRARIES cppwinrt::windows-sdk
+)
+
+add_test_executable(
+    "bindline/cppwinrt/ordering requirements.cpp"
     WIN32 CPPWINRT_MAIN
     LINK_LIBRARIES cppwinrt::windows-sdk
 )

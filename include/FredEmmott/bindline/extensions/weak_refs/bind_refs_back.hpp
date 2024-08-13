@@ -18,6 +18,11 @@ struct bind_refs_back_fn {
 template <class... Args>
 struct bind_refs_back_t
   : byval_binder_t<bind_refs_back_fn, std::decay_t<Args>...> {
+  using ordering_t
+    = ::FredEmmott::bindline_extension_api::ordering_requirements_t;
+  static constexpr ordering_t ordering_requirements_v
+    = ordering_t::invoke_after_context_switch;
+
   using byval_binder_t<bind_refs_back_fn, std::decay_t<Args>...>::
     byval_binder_t;
 };

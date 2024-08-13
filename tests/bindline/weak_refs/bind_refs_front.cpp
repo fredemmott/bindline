@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <FredEmmott/bindline.hpp>
+#include <FredEmmott/weak_refs.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 

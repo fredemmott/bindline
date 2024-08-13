@@ -3,8 +3,6 @@
 
 #include <FredEmmott/bindline.hpp>
 
-#include <source_location>
-
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/catch_tostring.hpp>
 #include <catch2/matchers/catch_matchers_string.hpp>
@@ -81,19 +79,4 @@ TEST_CASE("suppression") {
     (f | bind_suppress_validation(before_context_switch_t {})
      | context_switch_t {})(1, 2)
     == 3);
-}
-
-TEST_CASE("bind_winrt_context()") {
-#if !FREDEMMOTT_BINDLINE_ENABLE_CPPWINRT
-  SKIP("FREDEMMOTT_BINDLINE_ENABLE_CPPWINRT is false");
-#else
-  auto context = bind_winrt_context(winrt::apartment_context {nullptr});
-  using TContext = std::decay_t<decltype(context)>;
-  STATIC_CHECK(can_concat_pipelines<
-               after_context_switch_t,
-               TContext,
-               before_context_switch_t>);
-  STATIC_CHECK_FALSE(can_concat_pipelines<before_context_switch_t, TContext>);
-  STATIC_CHECK_FALSE(can_concat_pipelines<TContext, after_context_switch_t>);
-#endif
 }
