@@ -18,7 +18,7 @@ template <ordering_requirements_t Order>
 struct constrained_t : bindable_t {
   static constexpr auto ordering_requirements_v = Order;
 
-  constexpr decltype(auto) bind_to(auto&& f) {
+  constexpr auto bind_to(auto&& f) const {
     return std::forward<decltype(f)>(f);
   }
 };
@@ -72,12 +72,23 @@ TEST_CASE("failing validation") {
     can_concat_pipelines<before_context_switch_t, context_switch_t>);
 }
 
+TEST_CASE("suppression") {
+  auto f = [&](int a, int b) { return a + b; };
+  STATIC_CHECK_FALSE(
+    can_concat_pipelines<before_context_switch_t, context_switch_t>);
+
+  CHECK(
+    (f | bind_suppress_validation(before_context_switch_t {})
+     | context_switch_t {})(1, 2)
+    == 3);
+}
+
 TEST_CASE("bind_winrt_context()") {
 #if !FREDEMMOTT_BINDLINE_ENABLE_CPPWINRT
   SKIP("FREDEMMOTT_BINDLINE_ENABLE_CPPWINRT is false");
 #else
   auto context = bind_winrt_context(winrt::apartment_context {nullptr});
-  using TContext = decltype(context);
+  using TContext = std::decay_t<decltype(context)>;
   STATIC_CHECK(can_concat_pipelines<
                after_context_switch_t,
                TContext,
