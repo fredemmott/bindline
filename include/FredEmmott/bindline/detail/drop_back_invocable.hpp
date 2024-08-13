@@ -5,7 +5,7 @@
 #include <cstddef>
 #include <utility>
 
-#include "drop_last_t.hpp"
+#include "meta/parameter_pack_slice.hpp"
 
 namespace FredEmmott::bindline_detail {
 
@@ -28,7 +28,9 @@ struct drop_back_invocable_counted_t {
         std::tuple_element_t<sizeof...(TArgs) - 1, std::tuple<TArgs...>>>) {
       return false;
     } else {
-      using next_t = drop_last_t::template next_t<
+      using next_t = instantiate_from_parameter_pack_slice_t<
+        0,
+        sizeof...(TArgs) + 2,// + TDropCount + TDropTraits + TFn + TArgs - 1
         drop_back_invocable_counted_t,
         std::integral_constant<size_t, TDropCount::value + 1>,
         TDropTraits,
@@ -36,13 +38,6 @@ struct drop_back_invocable_counted_t {
         TArgs...>;
       return next_t::value();
     }
-#ifdef __cpp_lib_unreachable
-    std::unreachable();
-#elif defined(_MSC_VER) && !defined(__clang__)
-    __assume(false);
-#else
-    __builtin_unreachable();
-#endif
   }
 };
 

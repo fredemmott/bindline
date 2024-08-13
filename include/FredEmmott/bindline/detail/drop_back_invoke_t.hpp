@@ -17,17 +17,18 @@ struct drop_back_invoke_counted_t {
     if constexpr (std::invocable<TFn, TArgs...>) {
       return std::invoke(std::forward<TFn>(fn), std::forward<TArgs>(args)...);
     } else if constexpr (sizeof...(TArgs) >= 1) {
-      using next_t = drop_last_t::template next_t<
+      using next_t = instantiate_from_parameter_pack_slice_t<
+        0,
+        sizeof...(TArgs) + 2,// DropCount + TDropTraits + TFn + TArgs - 1
         drop_back_invoke_counted_t,
         std::integral_constant<size_t, TDropCount::value + 1>,
         TDropTraits,
         TFn,
         TArgs...>;
 
-      auto next_args = drop_last_t::make_tuple(
-        std::forward<TFn>(fn), std::forward<TArgs>(args)...);
       // no `- 1` as `args` excludes TFn, `next-args` includes it
-      static_assert(std::tuple_size_v<decltype(next_args)> == sizeof...(TArgs));
+      auto next_args = parameter_pack_slice<0, sizeof...(TArgs)>(
+        std::forward<TFn>(fn), std::forward<TArgs>(args)...);
 
       return std::apply(&next_t::invoke, std::move(next_args));
     }

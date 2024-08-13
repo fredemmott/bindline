@@ -219,10 +219,11 @@ add_test_executable(
     LINK_LIBRARIES cppwinrt::windows-sdk
 )
 
-##### bind #####
+##### bindline #####
 
 add_test_executable("bindline/bind_front.cpp")
 add_test_executable("bindline/bind_tap.cpp")
+add_test_executable("bindline/detail-meta.cpp")
 add_test_executable("bindline/direct invocation.cpp")
 add_test_executable("bindline/drop_extra_back.cpp")
 add_test_executable("bindline/drop_n_back.cpp")
