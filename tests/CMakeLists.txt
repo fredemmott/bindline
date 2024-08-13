@@ -22,13 +22,12 @@ endif()
 if(MSVC)
     set(
         WALL_FLAG
-        /Wall
+        # /Wall includes style choices; let's start here and opt-in to more
+        /W4
         # C4514: unreferenced inline function was removed
         #
         # Expected as we don't test every function in every file
         /wd4514
-        # Bytes of padding added after struct member in test
-        /wd4820
     )
     # Clang-Cl maps `/Wall` to `-Weverything` instead of `-Wall`; the problem is
     # that this means your C++20 project will get all of the 'this feature is
@@ -126,17 +125,7 @@ function(add_test_executable SOURCE)
     target_include_directories(${TARGET} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/..")
 
     if(ENABLE_ALL_WARNINGS)
-        set(WALL_THIS_TEST ${WALL_FLAG})
-        if(MSVC AND ENABLE_ALL_WARNINGS)
-            string(FIND "${SOURCE}" "context" OFFSET)
-            if(${OFFSET} GREATER_EQUAL 0)
-                list(REMOVE_ITEM WALL_THIS_TEST "/Wall")
-                list(APPEND WALL_THIS_TEST "/W4")
-                # https://developercommunity.visualstudio.com/t/Spurious-Error:-The-JSON-value-could-no/10715303
-                WARN("${SOURCE}: downgrading /Wall to /W4 due to MSVC bug expected to be fixed in VS 2022 17.11. This notice was last updated 2024-08-12")
-            endif()
-        endif()
-        target_compile_options(${TARGET} PRIVATE ${WALL_THIS_TEST})
+        target_compile_options(${TARGET} PRIVATE ${WALL_FLAG})
         # We don't actually want to include anything from these directory, but we do want to flag them as 'external'
         # so -Wall -Werror don't apply to them
         target_include_directories(
@@ -227,6 +216,7 @@ add_test_executable("bindline/detail-meta.cpp")
 add_test_executable("bindline/direct invocation.cpp")
 add_test_executable("bindline/drop_extra_back.cpp")
 add_test_executable("bindline/drop_n_back.cpp")
+add_test_executable("bindline/ordering_requirements.cpp")
 
 add_test_executable("bindline/bind_back.cpp" REQUIRED_FLAGS HAVE_STD_BIND_BACK)
 
