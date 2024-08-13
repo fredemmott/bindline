@@ -71,3 +71,18 @@ TEST_CASE("failing validation") {
   STATIC_CHECK_FALSE(
     can_concat_pipelines<before_context_switch_t, context_switch_t>);
 }
+
+TEST_CASE("bind_winrt_context()") {
+#if !FREDEMMOTT_BINDLINE_ENABLE_CPPWINRT
+  SKIP("FREDEMMOTT_BINDLINE_ENABLE_CPPWINRT is false");
+#else
+  auto context = bind_winrt_context(winrt::apartment_context {nullptr});
+  using TContext = decltype(context);
+  STATIC_CHECK(can_concat_pipelines<
+               after_context_switch_t,
+               TContext,
+               before_context_switch_t>);
+  STATIC_CHECK_FALSE(can_concat_pipelines<before_context_switch_t, TContext>);
+  STATIC_CHECK_FALSE(can_concat_pipelines<TContext, after_context_switch_t>);
+#endif
+}

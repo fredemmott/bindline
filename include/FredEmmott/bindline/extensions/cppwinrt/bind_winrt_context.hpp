@@ -11,6 +11,11 @@ struct winrt_context_binder_t
   : ::FredEmmott::bindline_extension_api::bindable_t {
   static_assert(std::same_as<T, std::decay_t<T>>);
 
+  using ordering_t
+    = ::FredEmmott::bindline_extension_api::ordering_requirements_t;
+  static constexpr ordering_t ordering_requirements_v
+    = ordering_t::is_context_switch;
+
   winrt_context_binder_t() = delete;
 
   template <std::convertible_to<T> TInit>
