@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include <FredEmmott/bindline/bindable_t.hpp>
+#include <FredEmmott/bindline/extension_api/bindable_t.hpp>
 
 namespace FredEmmott::bindline_detail {
 
 template <class bind_fn, class... Binds>
-struct byval_binder_t : public bindline::bindable_t {
+struct byval_binder_t : public bindline_extension_api::bindable_t {
   static_assert((std::same_as<Binds, std::decay_t<Binds>> && ...));
   byval_binder_t() = delete;
 

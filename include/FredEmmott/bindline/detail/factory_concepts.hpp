@@ -13,7 +13,8 @@ template <template <class...> class T, class... TArgs>
 concept bindable_constructible_from
   = template_instantiable_from<T, std::decay_t<TArgs>...>
   && std::constructible_from<T<std::decay_t<TArgs>...>, TArgs...>
-  && std::derived_from<T<TArgs...>, ::FredEmmott::bindline::bindable_t>;
+  && std::
+    derived_from<T<TArgs...>, ::FredEmmott::bindline_extension_api::bindable_t>;
 
 template <class T, class TOther>
 concept decays_to = std::same_as<std::decay_t<T>, std::decay_t<TOther>>;

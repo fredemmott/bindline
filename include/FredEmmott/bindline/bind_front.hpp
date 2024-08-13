@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include <FredEmmott/bindline/bindable_t.hpp>
+#include <FredEmmott/bindline/extension_api/bindable_t.hpp>
 
 #include "detail/byval_binder_t.hpp"
 
@@ -36,8 +36,8 @@ namespace FredEmmott::bindline {
 template <class... Args>
 [[nodiscard]]
 constexpr auto bind_front(Args&&... args) {
-  return bindable_t::make<::FredEmmott::bindline_detail::front_binder_t>(
-    std::forward<Args>(args)...);
+  return ::FredEmmott::bindline_extension_api::bindable_t::make<
+    ::FredEmmott::bindline_detail::front_binder_t>(std::forward<Args>(args)...);
 }
 
 }// namespace FredEmmott::bindline

@@ -7,7 +7,8 @@
 namespace FredEmmott::bindline_detail {
 
 template <class T>
-struct winrt_context_binder_t : ::FredEmmott::bindline::bindable_t {
+struct winrt_context_binder_t
+  : ::FredEmmott::bindline_extension_api::bindable_t {
   static_assert(std::same_as<T, std::decay_t<T>>);
 
   winrt_context_binder_t() = delete;

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include <FredEmmott/bindline/bindable_t.hpp>
+#include <FredEmmott/bindline/extension_api/bindable_t.hpp>
 
 #include <atomic>
 #include <concepts>
@@ -10,7 +10,7 @@
 namespace FredEmmott::bindline_detail {
 
 template <template <class...> class TNext, class TFirst, class... TRest>
-struct invocable_bindable_t : ::FredEmmott::bindline::bindable_t {
+struct invocable_bindable_t : ::FredEmmott::bindline_extension_api::bindable_t {
   static_assert(
     std::same_as<TFirst, std::decay_t<TFirst>>
     && (std::same_as<TRest, std::decay_t<TRest>> && ...));

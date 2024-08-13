@@ -4,7 +4,7 @@
 
 #include "bindline/config.hpp"
 
-#include <FredEmmott/bindline/bindable_t.hpp>
+#include <FredEmmott/bindline/extension_api/bindable_t.hpp>
 
 #include <functional>
 

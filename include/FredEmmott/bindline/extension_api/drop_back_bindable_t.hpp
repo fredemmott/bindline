@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include <FredEmmott/bindline/bindable_t.hpp>
 #include <FredEmmott/bindline/detail/drop_back_invoke_t.hpp>
+#include <FredEmmott/bindline/extension_api/bindable_t.hpp>
 
 namespace FredEmmott::bindline_extension_api {
 

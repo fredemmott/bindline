@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "bindable_t.hpp"
+#include <FredEmmott/bindline/extension_api/bindable_t.hpp>
 
 namespace FredEmmott::bindline_detail {
 
 template <class TTap>
-struct bind_tap_t : public ::FredEmmott::bindline::bindable_t {
+struct bind_tap_t : public ::FredEmmott::bindline_extension_api::bindable_t {
   static_assert(std::same_as<TTap, std::decay_t<TTap>>);
 
   bind_tap_t() = delete;
