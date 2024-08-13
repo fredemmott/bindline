@@ -55,7 +55,7 @@ TEST_CASE("trace") {
                  .trace_as_string();
   CHECK_THAT(
     trace,
-    Matches(".*after_context_switch_t.*\\bcontext_switch_t.*before_context_"
+    Matches(".*after_context_switch_t.*[^a-z_]context_switch_t.*before_context_"
             "switch_t.*"));
 }
 

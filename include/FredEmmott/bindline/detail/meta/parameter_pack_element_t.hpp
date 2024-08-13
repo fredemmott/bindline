@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include <cstddef>
 #include <tuple>
 
 namespace FredEmmott::bindline_detail::inline meta {

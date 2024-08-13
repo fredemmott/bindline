@@ -43,6 +43,19 @@ struct instantiate_from_parameter_pack_slice_inner_t {
   using next_t = T<std::tuple_element_t<First + I, std::tuple<TArgs...>>...>;
 };
 
+template <
+  size_t First,
+  size_t Count,
+  template <class...>
+  class T,
+  class... TArgs>
+struct instantiate_from_parameter_pack_slice_outer_t {
+  using inner_t = decltype(instantiate_from_parameter_pack_slice_inner_t {
+    std::make_index_sequence<Count> {}});
+
+  using next_t = typename inner_t::template next_t<First, Count, T, TArgs...>;
+};
+
 /// Typename T<TArgs[First], ..., TArgs...[First + Count]>
 template <
   size_t First,
@@ -50,9 +63,11 @@ template <
   template <class...>
   class T,
   class... TArgs>
-using instantiate_from_parameter_pack_slice_t
-  = decltype(instantiate_from_parameter_pack_slice_inner_t {
-    std::make_index_sequence<
-      Count> {}})::template next_t<First, Count, T, TArgs...>;
+using instantiate_from_parameter_pack_slice_t =
+  typename instantiate_from_parameter_pack_slice_outer_t<
+    First,
+    Count,
+    T,
+    TArgs...>::next_t;
 
 }// namespace FredEmmott::bindline_detail::inline meta

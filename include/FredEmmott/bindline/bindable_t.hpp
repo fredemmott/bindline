@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
+#include <FredEmmott/bindline/config.hpp>
 #include <FredEmmott/bindline/detail/is_valid_ordering.hpp>
 #include <FredEmmott/bindline/extension_api/ordering_requirements_t.hpp>
 
 #include <array>
 #include <concepts>
-#include <format>
 #include <functional>
+#include <string>
 #include <tuple>
 #include <utility>
 
@@ -96,10 +97,14 @@ struct instantiate_from_tuple_inner_t {
     requires(sizeof...(I) == std::tuple_size_v<TTuple>)
   using type = T<std::tuple_element_t<I, TTuple>...>;
 };
+
+template <class TTuple>
+using inner_t = decltype(instantiate_from_tuple_inner_t {
+  std::make_index_sequence<std::tuple_size_v<TTuple>> {}});
+
 template <template <class...> class T, class TTuple>
-using instantiate_from_tuple_t
-  = decltype(instantiate_from_tuple_inner_t {std::make_index_sequence<
-    std::tuple_size_v<TTuple>> {}})::template type<T, TTuple>;
+using instantiate_from_tuple_t =
+  typename inner_t<TTuple>::template type<T, TTuple>;
 
 template <class TFn, std::derived_from<bindable_t>... TTrace>
   requires std::same_as<TFn, std::decay_t<TFn>> && (sizeof...(TTrace) >= 1)
@@ -112,12 +117,16 @@ struct traced_bindline : traced_bindline_marker_t {
 
   template <std::derived_from<bindable_t> T>
   static constexpr std::tuple<T> rhs_tuple_fn() {
+#if FREDEMMOTT_BINDLINE_CAN_STATIC_ASSERT_FALSE
     static_assert(false);
+#endif
   };
 
   template <std::derived_from<traced_bindline_marker_t> T>
-  static constexpr T::trace_tuple_t rhs_tuple_fn() {
+  static constexpr typename T::trace_tuple_t rhs_tuple_fn() {
+#if FREDEMMOTT_BINDLINE_CAN_STATIC_ASSERT_FALSE
     static_assert(false);
+#endif
   };
 
   template <class T>
@@ -167,8 +176,9 @@ struct traced_bindline : traced_bindline_marker_t {
 
     std::string buffer;
     buffer.resize(total_bytes + separator_bytes);
+    buffer[0] = '[';
 
-    size_t offset = 0;
+    size_t offset = 1;
     for (auto part: parts) {
       std::copy(part.begin(), part.end(), buffer.begin() + offset);
       offset += part.size();
@@ -176,14 +186,18 @@ struct traced_bindline : traced_bindline_marker_t {
       offset += separator.size();
     }
 
-    return std::format("[{}]", std::string_view {buffer.data(), total_bytes});
+    // not using std::format to support older G++ versions (e.g. GCC 11.4 in
+    // Ubuntu 22.04
+    buffer.resize(buffer.size() - separator.size());
+    buffer.push_back(']');
+    return buffer;
   };
 };
 
 template <class TLeft, class TBindable, class TBound>
 constexpr auto wrap_with_trace(TBound&& bound) {
   if constexpr (std::derived_from<TLeft, traced_bindline_marker_t>) {
-    using next_t = TLeft::template next_t<TBound, TBindable>;
+    using next_t = typename TLeft::template next_t<TBound, TBindable>;
     return next_t {.fn = std::forward<TBound>(bound)};
   } else {
     return traced_bindline<std::decay_t<TBound>, TBindable> {
