@@ -3,11 +3,8 @@
 #pragma once
 #include <concepts>
 
+#include "impossible_class.hpp"
 #include <catch2/catch_test_macros.hpp>
-
-struct impossible_class {
-  impossible_class() = delete;
-};
 
 template <class TFn, class TArg>
 void test_invocable_two_args() {

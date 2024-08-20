@@ -11,11 +11,19 @@
 using namespace FredEmmott::bindline;
 
 TEST_CASE("std::invocable") {
-  auto impl = [](int, int, int) {};
-  auto bound = bind_back(impl, 123);
-  test_invocable_two_args<decltype(bound), int>();
-  auto pipeline = impl | bind_back(123);
-  test_invocable_two_args<decltype(pipeline), int>();
+  auto impl = [](int, int, int, int) {};
+  {
+    auto bound = bind_back(impl, 123);
+    test_invocable_three_args<decltype(bound), int>();
+    auto pipeline = impl | bind_back(123, 456);
+    test_invocable_three_args<decltype(pipeline), int>();
+  }
+  {
+    auto bound = bind_back(impl, 123, 456);
+    test_invocable_two_args<decltype(bound), int>();
+    auto pipeline = impl | bind_back(123, 456);
+    test_invocable_two_args<decltype(pipeline), int>();
+  }
 }
 
 TEST_CASE("all args at once") {

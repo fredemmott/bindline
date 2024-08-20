@@ -33,7 +33,7 @@ struct bindable_factory_t {
   make(TProjection projection, TFirst&& first, TRest&&... rest) {
     return invocable_bindable_t<T, projected_t<TProjection, TArgs>...> {
       std::invoke(projection, std::forward<TFirst>(first)),
-      std::invoke(projection, std::forward<TRest>(rest)...),
+      std::invoke(projection, std::forward<TRest>(rest))...,
     };
   }
 
