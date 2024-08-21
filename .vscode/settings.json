@@ -84,7 +84,8 @@
         "xstring": "cpp",
         "xtr1common": "cpp",
         "xtree": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "latch": "cpp"
     },
     "C_Cpp.default.cppStandard": "c++20"
 }

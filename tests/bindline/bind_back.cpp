@@ -5,6 +5,7 @@
 
 #include <string>
 
+#include "tests/common/test_invocable_three_args.hpp"
 #include "tests/common/test_invocable_two_args.hpp"
 #include <catch2/catch_test_macros.hpp>
 
@@ -15,7 +16,7 @@ TEST_CASE("std::invocable") {
   {
     auto bound = bind_back(impl, 123);
     test_invocable_three_args<decltype(bound), int>();
-    auto pipeline = impl | bind_back(123, 456);
+    auto pipeline = impl | bind_back(123);
     test_invocable_three_args<decltype(pipeline), int>();
   }
   {
