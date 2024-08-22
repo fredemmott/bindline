@@ -1,6 +1,6 @@
 # Bindline
 
-WORK IN PROGRESS, along with these docs. Do not use or ask for help.
+WORK IN PROGRESS, along with these docs. Do not use and do not ask for help.
 
 Bindline is a suite of several *header-only libraries* which are designed to avoid common mistakes with asynchronous code, e.g. event handlers and coroutines.
 
