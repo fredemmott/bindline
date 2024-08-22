@@ -129,28 +129,31 @@ To make `ex2()` safe with `std::bind_front()`:
 
 ```c++
 void ex3() {
-  auto f = [](auto weakSelf, auto weakOtherThing]) -> MyCoro {
-    auto self = weakSelf.lock();
-    auto otherThing = weakOtherThing.lock();
-    if (!(self && otherThing)) {
-        co_return;
-    }
-    
-    self->foo();
-    otherThing->bar();
+  auto f = std::bind_front(
+    [](auto weakSelf, auto weakOtherThing]) -> MyCoro {
+      auto self = weakSelf.lock();
+      auto otherThing = weakOtherThing.lock();
+      if (!(self && otherThing)) {
+          co_return;
+      }
 
-    self.reset();
-    otherThing.reset();
-    co_await do_other_stuff();
-    auto self = weakSelf.lock();
-    auto otherThing = weakOtherThing.lock();
-    if (!(self && otherThing)) {
-        co_return;
-    }
+      self->foo();
+      otherThing->bar();
 
-    self->foo();
-    otherThing->bar();
-  };
+      self.reset();
+      otherThing.reset();
+      co_await do_other_stuff();
+      auto self = weakSelf.lock();
+      auto otherThing = weakOtherThing.lock();
+      if (!(self && otherThing)) {
+          co_return;
+      }
+
+      self->foo();
+      otherThing->bar();
+    },
+    weak_from_this(),
+    otherThing->weak_from_this());
 }
 ```
 
@@ -172,6 +175,6 @@ void ex4() {
 
         self->foo();
         otherThing->bar();
-    };
+    } | bind_refs_front(this, otherThing);
 }
 ``
