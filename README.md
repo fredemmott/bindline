@@ -41,7 +41,7 @@ f | bind_refs_front(this) | bind_winrt_context(ctx);
 f | bind_winrt_context(ctx) | bind_refs_front(this);
 
 // Nope, I know what I'm doing:
-f | bind_winrt_context(ctx) | bind_suppress_validation(this);
+f | bind_winrt_context(ctx) | bind_suppress_validation(bind_refs_front(this));
 ```
 
 These libraries are designed to be cleanly usable via `use namespace`, but this is not required.
