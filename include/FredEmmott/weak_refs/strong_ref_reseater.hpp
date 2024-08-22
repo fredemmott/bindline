@@ -28,7 +28,7 @@ struct strong_ref_reseater {
   }
 
  private:
-  template <size_t... I>
+  template <std::size_t... I>
   bool reseat(std::index_sequence<I...>) {
     return (reseat(get<I>(mStrongs), get<I>(mWeaks)) && ...);
   }
