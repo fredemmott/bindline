@@ -7,6 +7,7 @@
 #include "weak_refs/bind_refs_back.hpp"
 #include "weak_refs/bind_refs_front.hpp"
 #include "weak_refs/concepts.hpp"
+#include "weak_refs/strong_ref_reseater.hpp"
 
 #if FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT
 #include "weak_refs/extensions/cppwinrt.hpp"
