@@ -7,7 +7,7 @@
 #include "lock_weak_ref.hpp"
 #include "make_weak_ref.hpp"
 
-namespace FredEmmott::weak_refs {
+namespace FredEmmott::weak_refs::inline weak_refs_reseaters {
 
 template <strong_ref... Ts>
 struct strong_ref_reseater {
