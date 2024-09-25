@@ -47,4 +47,4 @@ You can override the defaults by creating the following header files anywhere in
 
 The libraries are designed to be used cleanly via `use namespace`, though this is optional. The libraries can also be used with fully-qualified names, or they define sub-namespaces if you just want to `use` a subset of the functionality.
 
-Most uses will just want `use namespace FredEmmott::bindline;`
+Most users will just want `use namespace FredEmmott::bindline;`
