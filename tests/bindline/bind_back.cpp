@@ -55,7 +55,7 @@ TEST_CASE("pipeline") {
   CHECK(invoked);
 }
 
-TEST_CASE("partial") {
+TEST_CASE("partially bound") {
   bool invoked = false;
   auto impl = [&invoked](auto a, auto b) {
     CHECK(!invoked);
@@ -66,6 +66,21 @@ TEST_CASE("partial") {
   auto bound = impl | bind_back(456);
   CHECK(!invoked);
   bound(123);
+  CHECK(invoked);
+}
+
+TEST_CASE("non-temporary partial pipeline") {
+  bool invoked = false;
+  auto impl = [&invoked](std::string a, std::string b) {
+    CHECK(!invoked);
+    CHECK(a == "front");
+    CHECK(b == "back");
+    invoked = true;
+  };
+  auto partial = impl | bind_back("back");
+  auto full = partial | bind_back("front");
+  CHECK(!invoked);
+  full();
   CHECK(invoked);
 }
 
