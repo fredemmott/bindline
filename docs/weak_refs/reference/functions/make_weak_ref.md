@@ -1,5 +1,6 @@
 ---
 parent: Functions
+ancestor: weak_refs
 ---
 
 # `make_weak_ref()`

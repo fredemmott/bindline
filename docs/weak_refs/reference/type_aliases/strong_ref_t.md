@@ -1,5 +1,6 @@
 ---
 parent: Type Aliases
+ancestor: weak_refs
 ---
 
 # `strong_ref_t`

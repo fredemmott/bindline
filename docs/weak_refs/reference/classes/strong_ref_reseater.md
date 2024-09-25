@@ -1,5 +1,6 @@
 ---
 parent: Classes
+ancestor: weak_refs
 ---
 
 # `strong_ref_reseater`

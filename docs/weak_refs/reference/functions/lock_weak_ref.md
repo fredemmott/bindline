@@ -1,5 +1,6 @@
 ---
 parent: Functions
+ancestor: weak_refs
 ---
 
 # `lock_weak_ref()`

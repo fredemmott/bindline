@@ -1,6 +1,7 @@
 ---
 title: Functions
 parent: API Reference
+ancestor: weak_refs
 ---
 
 # Function Reference

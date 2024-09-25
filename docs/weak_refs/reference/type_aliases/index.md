@@ -1,6 +1,7 @@
 ---
 title: Type Aliases
 parent: API Reference
+ancestor: weak_refs
 ---
 
 # Type Alias Reference
