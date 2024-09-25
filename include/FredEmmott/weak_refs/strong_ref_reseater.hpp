@@ -9,31 +9,39 @@
 
 namespace FredEmmott::weak_refs::inline weak_refs_reseaters {
 
+/// Utility for weakening strong_refs within a scope
 template <strong_ref... Ts>
 struct strong_ref_reseater {
   strong_ref_reseater(const strong_ref_reseater&) = delete;
   strong_ref_reseater& operator=(const strong_ref_reseater&) = delete;
 
-  strong_ref_reseater(Ts*... init)
+  /// Store weak references, and assign `nullptr` to all the strong refs
+  explicit strong_ref_reseater(Ts*... init)
     : mStrongs(init...), mWeaks(make_weak_ref(*init)...) {
     ((*init = {nullptr}), ...);
   }
 
   ~strong_ref_reseater() {
-    reseat();
+    [[maybe_unused]] auto throwaway = reseat();
   }
 
-  bool reseat() {
+  /** Lock the weak refs, and assign back to the strong refs.
+   *
+   * @returns false unless all the strong refs are live (truthy)
+   */
+  [[nodiscard]] bool reseat() {
     return this->reseat(std::make_index_sequence<sizeof...(Ts)>());
   }
 
  private:
   template <std::size_t... I>
-  bool reseat(std::index_sequence<I...>) {
+  [[nodiscard]] bool reseat(std::index_sequence<I...>) {
     return (reseat(get<I>(mStrongs), get<I>(mWeaks)) && ...);
   }
 
-  bool reseat(strong_ref auto* strong, weak_ref auto& weak) {
+  [[nodiscard]] static bool reseat(
+    strong_ref auto* strong,
+    weak_ref auto& weak) {
     if (*strong) {
       return true;
     }
@@ -45,4 +53,4 @@ struct strong_ref_reseater {
   std::tuple<weak_ref_t<std::decay_t<Ts>>...> mWeaks;
 };
 
-}// namespace FredEmmott::weak_refs
+}// namespace FredEmmott::weak_refs::inline weak_refs_reseaters
