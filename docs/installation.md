@@ -11,6 +11,8 @@ Bindline, cppwinrt, and weak_refs are intended to be added directly to your proj
 
 The projects have no dependencies; however, if your project uses a custom version of C++/WinRT (e.g. from nuget, instead of the version included in the Windows SDK), you may want to make sure that any parts of your project that use bindline also use the correct version of C++/WinRT.
 
+Your project must build with C++20 or C++23.
+
 ## Adding the header files to your project
 
 There are several options:
