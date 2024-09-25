@@ -196,6 +196,7 @@ add_test_executable("weak_refs/std-shared_ptr.cpp")
 add_test_executable("weak_refs/bind_refs_back.cpp")
 add_test_executable("weak_refs/bind_refs_front.cpp")
 add_test_executable("weak_refs/strong_ref_reseater.cpp")
+add_test_executable("weak_refs/adl.cpp")
 
 add_test_executable(
     "weak_refs/cppwinrt/winrt refs.cpp"

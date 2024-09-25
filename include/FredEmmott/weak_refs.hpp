@@ -9,6 +9,8 @@
 #include "weak_refs/concepts.hpp"
 #include "weak_refs/strong_ref_reseater.hpp"
 
+#include "weak_refs/extensions/adl.hpp"
+
 #if FREDEMMOTT_WEAK_REFS_ENABLE_CPPWINRT
 #include "weak_refs/extensions/cppwinrt.hpp"
 #endif

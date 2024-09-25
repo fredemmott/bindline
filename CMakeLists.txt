@@ -26,7 +26,8 @@ message(STATUS "Required compile features: ${REQUIRED_COMPILE_FEATURES}")
 
 include(GNUInstallDirs)
 
-add_library(bindline INTERFACE)
+add_library(bindline INTERFACE
+        tests/weak_refs/adl.cpp)
 target_include_directories(bindline INTERFACE
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>")
