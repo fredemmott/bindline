@@ -3,7 +3,7 @@ title: Type Aliases
 parent: API Reference
 ---
 
-# Type Aliases
+# Type Alias Reference
 
 These type aliases are defined in the `FredEmmott::weak_refs::weak_refs_ref_types` namespace, which is inlined into the `FredEmmott::weak_refs` namespace. This means that they are available with either:
 
