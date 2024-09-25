@@ -1,5 +1,16 @@
 name: CI Matrix
-on: [push, pull_request]
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - 'include/**'
+      - 'tests/**'
+      - '**/CMakeLists.txt'
+  pull_request:
+    paths:
+      - 'include/**'
+      - 'tests/**'
+      - '**/CMakeLists.txt'
 jobs:
   call-build-and-test:
     name: ${{matrix.os}}/${{matrix.compiler}}
