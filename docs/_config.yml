@@ -3,7 +3,6 @@ title: Bindline
 description: C++ function composition through pipelines
 theme: just-the-docs
 permalink: pretty
-color_scheme: dark
 gh_edit_link: true
 gh_edit_link_text: "Edit this page on GitHub"
 gh_edit_repository: https://github.com/fredemmott/bindline
