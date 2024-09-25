@@ -3,3 +3,4 @@ build/
 build-*/
 cmake-build-*/
 .idea/
+docs/_site/
