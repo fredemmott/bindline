@@ -17,6 +17,7 @@ Bindline is a suite of several *header-only libraries* which are designed to avo
 - C++20 is required
 - additional features are available with C++23
 - these libraries are tested with recent versions of Clang, Visual Studio, and G++
+- these libraries are tested on 64-bit Windows, Linux, and macOS
 
 This project only aims to support recent compilers and standards; in particular, it is only tested with the versions of compilers that are available in GitHub's runners.
 
