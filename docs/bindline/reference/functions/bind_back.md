@@ -6,6 +6,7 @@ ancestor: bindline
 # `bind_back()`
 
 ```c++
+// Returns object that is both a functor and a bindline
 template<class... Args>
 [[nodiscard]]
 constexpr auto bind_back(Args&&...);
@@ -15,7 +16,7 @@ This function wraps `std::bind_back()`, and can optionally be composed into a bi
 
 As this function wraps `std::bind_back()`, this function is only available when building with C++23 or newer.
 
-## Usage
+## Example
 
 ```c++
 // Option 1: use similarly to `std::bind_back()`

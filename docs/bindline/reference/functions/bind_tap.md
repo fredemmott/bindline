@@ -6,9 +6,10 @@ ancestor: bindline
 # `bind_tap()`
 
 ```c++
-// Returns bindline (bind pipeline)
+// Returns bindline
 [[nodiscard]]
 constexpr auto bind_tap(auto&& tap);
+
 // Returns functor
 [[nodiscard]]
 constexpr auto bind_tap(auto&& f, auto&& tap);

@@ -6,22 +6,20 @@ ancestor: bindline
 # `drop_n_back()`
 
 ```c++
+// Returns bindline
 template<size_t N>
 [[nodiscard]]
 constexpr auto drop_n_back();
-```
 
-Returns a bind pipeline (bindline) that ignores the last `N` parameters.
-
-```c++
+// Returns functor
 template<size_t N, class TFn>
 [[nodiscard]]
 constexpr auto drop_n_back(TFn&& f);
 ```
 
-Returns a functor that invokes `f`, with the last `N` parameters ignored.
+Returns a bindline or functor that calls the original function, but without the last `N` parameters when invoked.
 
-## Usage
+## Example
 
 ```c++
 auto fn1 = drop_n_back<2>(f);

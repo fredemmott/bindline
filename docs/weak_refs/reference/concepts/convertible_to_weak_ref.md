@@ -10,7 +10,7 @@ A `convertible_to_weak_ref` is anything that can be converted to a `weak_ref`; t
 - a [`strong_ref`](strong_ref.md)
 - `T*` if `T` extends `std::enable_shared_from_this<T>`
 
-## Usage
+## Example
 
 ```c++
 #include <FredEmmott/weak_refs.hpp>

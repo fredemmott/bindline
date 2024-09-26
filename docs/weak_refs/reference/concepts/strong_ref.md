@@ -19,7 +19,7 @@ For example:
 | `std::weak_ptr<T>`   | ❌                  |
 
 
-## Usage
+## Example
 
 ```c++
 #include <FredEmmott/weak_refs.hpp>

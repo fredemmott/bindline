@@ -6,6 +6,7 @@ ancestor: bindline
 # `bind_front()`
 
 ```c++
+// Returns object that is both a functor and a bindline
 template<class... Args>
 [[nodiscard]]
 constexpr auto bind_front(Args&&...);
@@ -13,7 +14,7 @@ constexpr auto bind_front(Args&&...);
 
 This function wraps `std::bind_front()`, and can optionally be composed into a bind pipeline (bindline).
 
-## Usage
+## Example
 
 ```c++
 // Option 1: use similarly to `std::bind_front()`
