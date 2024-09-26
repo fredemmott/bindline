@@ -12,6 +12,8 @@ Bindline is a suite of several *header-only libraries* which are designed to avo
 - `FredEmmott::weak_refs`: concepts and functional helpers for working with strong and weak references, e.g. `std::shared_ptr()` and `std::weak_ptr()`
 - `FredEmmott::cppwinrt`: concepts and functional helpers for working with [C++/WinRT](https://aka.ms/cppwinrt)
 
+These libraries were originally an internal implementation detail of [OpenKneeboard](https://openkneeboard.com), which uses them heavily.
+
 ## Requirements
 
 - C++20 is required
