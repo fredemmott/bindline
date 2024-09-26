@@ -61,6 +61,8 @@ self->bar();
 - releases each `strong_ref` (by assigning `nullptr`)
 - stores both the `weak_ref` and the pointer
 
+If multiple `Ts` are passed, they do not need to be similar types; they just need to all be pointers to `strong_ref` types.
+
 ### `strong_ref_reseater::~strong_ref_reseater()`
 
 Calls [`reseat()`](#strong_ref_reseaterrelease) if it has not already been called. Some of the `strong_ref`s may be

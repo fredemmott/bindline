@@ -15,3 +15,5 @@ This function is similar to `std::bind_back()`, however:
 - it calls [`lock_weak_ref()`](lock_weak_ref.md) on the stored arguments before invoking `Fn`
 - it does not call `Fn` unless all the strong references are truthy
 - it passes the live strong references to `Fn`, along with any other arguments at runtime
+
+If multiple references are bound, they do not need to be similar types; they just need to all be `convertible_to_weak_ref`.
