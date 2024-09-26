@@ -65,7 +65,7 @@ If multiple `Ts` are passed, they do not need to be similar types; they just nee
 
 ### `strong_ref_reseater::~strong_ref_reseater()`
 
-Calls [`reseat()`](#strong_ref_reseaterrelease) if it has not already been called. Some of the `strong_ref`s may be
+Calls [`reseat()`](#strong_ref_reseaterreseat) if it has not already been called. Some of the `strong_ref`s may be
 invalid after, if the stored `weak_ref`s expired during the reseater's lifetime.
 
 ### `strong_ref_reseater::reseat()`
