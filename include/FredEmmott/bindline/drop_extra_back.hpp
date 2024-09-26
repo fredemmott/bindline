@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "extension_api/drop_back_bindable_t.hpp"
+#include "detail/drop_back_bindable_t.hpp"
 
 namespace FredEmmott::bindline_detail {
 
@@ -26,7 +26,7 @@ namespace FredEmmott::bindline {
  */
 [[nodiscard]]
 constexpr auto drop_extra_back() {
-  return ::FredEmmott::bindline_extension_api::drop_back_bindable_t<
+  return ::FredEmmott::bindline_detail::drop_back_bindable_t<
     ::FredEmmott::bindline_detail::drop_any_arg_traits> {};
 }
 

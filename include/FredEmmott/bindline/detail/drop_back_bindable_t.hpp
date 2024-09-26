@@ -5,7 +5,7 @@
 #include <FredEmmott/bindline/detail/drop_back_invoke_t.hpp>
 #include <FredEmmott/bindline/extension_api/bindable_t.hpp>
 
-namespace FredEmmott::bindline_extension_api {
+namespace FredEmmott::bindline_detail {
 
 /** A bindable that drops arguments from the end of the list.
  *
@@ -34,7 +34,7 @@ namespace FredEmmott::bindline_extension_api {
  * - `FredEmmott::bindline_detail::drop_winrt_event_args_traits`
  */
 template <class TDropTraits>
-struct drop_back_bindable_t : bindable_t {
+struct drop_back_bindable_t : FredEmmott::bindline_extension_api::bindable_t {
   template <class TBindFn>
   [[nodiscard]]
   constexpr auto bind_to(TBindFn&& fn) const {

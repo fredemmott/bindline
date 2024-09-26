@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 #pragma once
 
-#include "extension_api/drop_back_bindable_t.hpp"
+#include "detail/drop_back_bindable_t.hpp"
 namespace FredEmmott::bindline_detail {
 
 #if defined(_MSVC_LANG) && !defined(__clang__)
@@ -37,7 +37,7 @@ namespace FredEmmott::bindline {
 template <size_t N>
 [[nodiscard]]
 constexpr auto drop_n_back() {
-  return ::FredEmmott::bindline_extension_api::drop_back_bindable_t<
+  return ::FredEmmott::bindline_detail::drop_back_bindable_t<
     ::FredEmmott::bindline_detail::drop_n_traits<N>> {};
 }
 
