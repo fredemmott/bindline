@@ -14,7 +14,7 @@ Bindline is a suite of several *header-only libraries* which are designed to avo
   - creating functors that store a weak reference, but invoke with a valid strong reference
 - `FredEmmott::cppwinrt` - concepts and functional helpers for working with [C++/WinRT](https://aka.ms/cppwinrt)
 
-`FredEmmott::bindline` wraps the other libraries and is intended as the primary interface to them, but they can be used by themselves.
+`FredEmmott::bindline` wraps the other libraries and is intended as the primary interface to them, but they can be used separately, or in any combination.
 
 These libraries were originally an internal implementation detail of [OpenKneeboard](https://openkneeboard.com), which uses them heavily.
 

@@ -5,7 +5,7 @@ nav_order: 4
 
 # `FredEmmott::weak_refs`
 
-A header-only library for:
+`FredEmmott::weak_refs` is a header-only library for:
 - writing code that transparently supports multiple kinds of strong/weak refs
 - creating functors that store a weak reference, but invoke with a valid strong reference
 
