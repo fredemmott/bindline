@@ -5,11 +5,26 @@ nav_order: 4
 
 # `FredEmmott::weak_refs`
 
-## Using with `FredEmmott::bindline`
+## Terminology
+
+- a [`strong_ref`](reference/concepts/strong_ref.md) is an owning-reference
+- a [`weak_ref`](reference/concepts/weak_ref.md) is a non-owning reference that can be converted to a `strong_ref`
+- *locking* a `weak_ref` produces a `strong_ref`
+- an invalid `weak_ref` or `strong_ref` is *expired*
+
+A *expired* ref can usually be produced by:
+- locking an expired `weak_ref`
+- making a `weak_ref` from an expired `strong_ref`
+- explicit initialization from `nullptr`
+- holding an unexpired `weak_ref`, and destroying all the corresponding `strong_ref`s
+
+For example, an `std::shared_ptr<T>` is a `strong_ref`, and an `std::weak_ptr<T>` is a `weak_ref`.
+
+## Using `FredEmmott::weak_refs` with `FredEmmott::bindline`
 
 If you are using `FredEmmott::bindline`, you probably want to start with [bindline's weak_refs integration](../bindline/weak_refs.md) instead of using weak_refs directly; keep reading this page if you want to use weak_ref without bindline, or if you want to extend weak_refs.
 
-## Without `FredEmmott::bindline`
+## Using `FredEmmott::weak_refs` without `FredEmmott::bindline`
 
 ### Basic Usage
 

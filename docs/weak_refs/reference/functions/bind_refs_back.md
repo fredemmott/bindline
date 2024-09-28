@@ -17,3 +17,17 @@ This function is similar to `std::bind_back()`, however:
 - it passes the live strong references to `Fn`, along with any other arguments at runtime
 
 If multiple references are bound, they do not need to be similar types; they just need to all be `convertible_to_weak_ref`.
+
+# Example
+
+```c++
+auto foo = std::make_shared<std::string_view>("foo");
+auto bound = bind_refs_back(fn, foo);
+bound(123); // invokes `fn(123, foo)`
+
+// As `bound` stores a `weak_ref`, this sets the `shared_ptr`'s reference count
+// to 0...
+foo.reset(nullptr);
+// ... and as the weak_refs are now expired, this *does not* call `fn`:
+bound(123);
+```
