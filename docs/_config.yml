@@ -1,4 +1,4 @@
-repository: OpenKneeboard/OpenKneeboard
+repository: fredemmott/bindline
 title: Bindline
 description: C++ function composition through pipelines
 theme: just-the-docs
