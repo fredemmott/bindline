@@ -2,7 +2,7 @@
 
 Bindline is a suite of C++20/23 header-only libraries for safer asynchronous code, such as event handlers, other callbacks, and coroutines.
 
-- `FredEmmott::bindline`: a function composition library
+- `FredEmmott::bindline`: a library for composing functions
 - `FredEmmott::weak_refs`: concepts and functional helpers for working with strong and weak references, e.g. `std::shared_ptr()` and `std::weak_ptr()`
 - `FredEmmott::cppwinrt`: concepts and functional helpers for working with [C++/WinRT](https://aka.ms/cppwinrt)
 

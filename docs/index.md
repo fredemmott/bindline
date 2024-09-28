@@ -8,7 +8,7 @@ layout: home
 
 Bindline is a suite of several *header-only libraries* which are designed to avoid common mistakes with asynchronous code, e.g. event handlers and coroutines:
 
-- `FredEmmott::bindline` - a function composition library
+- `FredEmmott::bindline` - a library for composing functions
 - `FredEmmott::weak_refs`- concepts and functional helpers for:
   - writing code that transparently supports different implementations of strong/weak refs
   - creating functors that store a weak reference, but invoke with a valid strong reference
