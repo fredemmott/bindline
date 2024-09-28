@@ -218,6 +218,7 @@ add_test_executable("bindline/detail-meta.cpp")
 add_test_executable("bindline/direct invocation.cpp")
 add_test_executable("bindline/drop_extra_back.cpp")
 add_test_executable("bindline/drop_n_back.cpp")
+add_test_executable("bindline/extension_api.cpp")
 add_test_executable("bindline/ordering requirements.cpp")
 
 add_test_executable("bindline/bind_back.cpp" REQUIRED_FLAGS HAVE_STD_BIND_BACK)
