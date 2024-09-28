@@ -23,9 +23,11 @@ There are several options:
 
 You can copy the source tree into your project, use a git submodule, or any other method of adding the files to the tree; once you've done this,  just add the `include` subfolder to your build system.
 
+You should use [the latest release].
+
 ### CMake (FetchContent)
 
-Once you have added the project via [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html), the following header-only CMake targets are defined:
+Use [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html) to add [the latest release] to your project; the following header-only CMake targets are defined:
 
 - `FredEmmott::bindline`
 - `FredEmmott::cppwinrt`
@@ -59,3 +61,5 @@ using namespace FredEmmott::weak_refs::weak_refs_concepts;
 using namespace FredEmmott::weak_refs::weak_refs_ref_types;
 using namespace FredEmmott::weak_refs::weak_refs_reseaters;
 ```
+
+[the latest release]: https://go.fredemmott.com/bindline/releases/latest
