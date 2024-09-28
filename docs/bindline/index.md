@@ -42,7 +42,7 @@ f | bind_refs_front(this) | bind_winrt_context(ctx);
 f | bind_winrt_context(ctx) | bind_refs_front(this);
 ```
 
-For details, see [documentation for validation](validation.md).
+To bypass validation, use [`bind_suppress_validation()`](reference/functions/bind_suppress_validation.md).
 
 ## Terminology
 

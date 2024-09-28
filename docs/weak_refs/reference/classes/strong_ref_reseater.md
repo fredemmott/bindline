@@ -36,7 +36,7 @@ is destroyed.
 **WARNING**: if any of the stored `weak_ref`s expired before `reseat()` or destruction, the `strong_refs` will be
 invalid after `reseat()` and destruction.
 
-## Example usage
+## Example
 
 ```c++
 auto self = shared_from_this();

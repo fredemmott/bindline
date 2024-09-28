@@ -19,7 +19,7 @@ the `std::shared_ptr<T>`/`std::weak_ptr<T>` combination, and the `winrt::com_ptr
 - *locking* a `weak_ref` produces a `strong_ref`
 - an invalid `weak_ref` or `strong_ref` is *expired*
 
-A *expired* ref can usually be produced by:
+An *expired* ref can usually be produced by:
 - locking an expired `weak_ref`
 - making a `weak_ref` from an expired `strong_ref`
 - explicit initialization from `nullptr`
