@@ -46,8 +46,16 @@ You can override the defaults by creating the following header files anywhere in
 - `FredEmmott.cppwinrt.config-tweaks.hpp`
 - `FredEmmott.weak_refs.config-tweaks.hpp`
 
-## `use namespace`
+## `using namespace`
 
-The libraries are designed to be used cleanly via `use namespace`, though this is optional. The libraries can also be used with fully-qualified names, or they define sub-namespaces if you just want to `use` a subset of the functionality.
+The libraries are designed to be used cleanly via `using namespace`, though this is optional. The libraries can also be used with fully-qualified names, or they define sub-namespaces if you just want to `use` a subset of the functionality.
 
-Most users will just want `use namespace FredEmmott::bindline;`
+Most users will just want `using namespace FredEmmott::bindline;`; if you want to pull in everything, use:
+
+```c++
+using namespace FredEmmott::bindline;
+using namespace FredEmmott::cppwinrt::cppwinrt_concepts;
+using namespace FredEmmott::weak_refs::weak_refs_concepts;
+using namespace FredEmmott::weak_refs::weak_refs_ref_types;
+using namespace FredEmmott::weak_refs::weak_refs_reseaters;
+```
