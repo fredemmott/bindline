@@ -33,7 +33,7 @@ Event handlers, callbacks, and asynchronously-called code often have repetitive 
 
 ```c++
 auto f = &MyClass::some_func
-  // Store an `std::shared_ptr` or `winrt::weak_ref`, but when invoking:
+  // Store an `std::weak_ptr` or `winrt::weak_ref`, but when invoking:
   // 1. convert back to a strong ref
   // 2. return without invoking if the ref is stale (i.e. `nullptr`)
   | bind_refs_front(this)
