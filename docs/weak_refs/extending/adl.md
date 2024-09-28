@@ -1,6 +1,7 @@
 ---
-parent: Extending
 title: ADL
+parent: Extending
+ancestor: weak_refs
 ---
 
 # Argument-Dependent Lookup (ADL)
