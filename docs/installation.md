@@ -35,6 +35,30 @@ Use [FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html)
 
 You can use these in your targets with [`target_link_libraries()`](https://cmake.org/cmake/help/latest/command/target_link_libraries.html).
 
+For example, to use version 0.1:
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(
+    bindline
+    URL "https://github.com/fredemmott/bindline/archive/refs/tags/v0.1.zip"
+    URL_HASH "SHA256=765a1a5251d7901a99cc6663fe08cb751c09deca6740ed99b2d964d0af8ccbc6"
+    EXCLUDE_FROM_ALL
+)
+FetchContent_MakeAvailable(bindline)
+
+target_link_libraries(
+    MyTarget
+    PRIVATE
+    FredEmmott::bindline
+    FredEmmott::cppwinrt
+    FredEmmott::weak_refs
+)
+```
+
+Make sure to use [the latest release] instead if there is a newer version than v0.1.
+
 ## Customizing the libraries
 
 The default configuration is specified in:
