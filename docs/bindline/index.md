@@ -13,7 +13,7 @@ This library was originally an internal implementation detail of [OpenKneeboard]
 
 ## Examples
 
-```C++
+```c++
 auto f = &MyClass::some_func
   // Store an `std::weak_ptr` or `winrt::weak_ref`, but when invoking:
   // 1. convert back to a strong ref
