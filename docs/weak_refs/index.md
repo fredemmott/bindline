@@ -5,6 +5,13 @@ nav_order: 4
 
 # `FredEmmott::weak_refs`
 
+A header-only library for:
+- writing code that transparently supports multiple kinds of strong/weak refs
+- creating functors that store a weak reference, but invoke with a valid strong reference
+
+For example, code using `FredEmmott::weak_refs` can write code that transparently supports both 
+the `std::shared_ptr<T>`/`std::weak_ptr<T>` combination, and the `winrt::com_ptr<T>`/`winrt::weak_ref<T>` combination.
+
 ## Terminology
 
 - a [`strong_ref`](reference/concepts/strong_ref.md) is an owning-reference
