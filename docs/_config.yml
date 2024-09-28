@@ -10,6 +10,8 @@ gh_edit_branch: master
 gh_edit_source: docs
 gh_edit_view_mode: edit
 aux_links:
+  "Download":
+    - "https://go.fredemmott.com/bindline/releases/latest"
   "Discord":
     - "https://go.fredemmott.com/bindline/discord"
   "GitHub":
