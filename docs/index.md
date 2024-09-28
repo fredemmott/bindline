@@ -6,11 +6,11 @@ layout: home
 
 # Introduction
 
-Bindline is a suite of several *header-only libraries* which are designed to avoid common mistakes with asynchronous code, e.g. event handlers and coroutines.
+Bindline is a suite of several *header-only libraries* which are designed to avoid common mistakes with asynchronous code, e.g. event handlers and coroutines:
 
-- `FredEmmott::bindline`: a function composition library
-- `FredEmmott::weak_refs`: concepts and functional helpers for working with strong and weak references, e.g. `std::shared_ptr()` and `std::weak_ptr()`
-- `FredEmmott::cppwinrt`: concepts and functional helpers for working with [C++/WinRT](https://aka.ms/cppwinrt)
+- `FredEmmott::bindline` - a function composition library
+- `FredEmmott::weak_refs`- concepts and functional helpers for working with strong and weak references, e.g. `std::shared_ptr()` and `std::weak_ptr()`
+- `FredEmmott::cppwinrt` - concepts and functional helpers for working with [C++/WinRT](https://aka.ms/cppwinrt)
 
 These libraries were originally an internal implementation detail of [OpenKneeboard](https://openkneeboard.com), which uses them heavily.
 
