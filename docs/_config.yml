@@ -11,6 +11,6 @@ gh_edit_source: docs
 gh_edit_view_mode: edit
 aux_links:
   "Discord":
-    - "https://go.fredemmott.com/discord"
+    - "https://go.fredemmott.com/bindline/discord"
   "GitHub":
-    - "https://github.com/fredemmott/bindline"
+    - "https://go.fredemmott.com/bindline/github"
