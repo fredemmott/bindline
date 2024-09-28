@@ -8,7 +8,7 @@ title: Rationale
 - `FredEmmott::cppwinrt` solves common needs with C++/WinRT, especially event handlers
 - `FredEmmott::bindline` makes combining the two - along with other functional needs - concise and convenient
 
-This is unsafe if `this` can be destroyed between enqueing the event and it executing:
+This is unsafe if `this` can be destroyed between enqueuing the event and the handler executing:
 
 ```c++
 // UNSAFE:

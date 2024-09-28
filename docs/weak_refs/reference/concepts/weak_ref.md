@@ -7,7 +7,7 @@ ancestor: weak_refs
 
 A `weak_ref`:
 
-- is an non-owning-reference, i.e. a live `weak_ref` *can* become a non-live `weak_ref` due to action at a distance
+- is a non-owning-reference, i.e. a live `weak_ref` *can* become an expired `weak_ref` due to action at a distance
 - can be converted to an owning `strong_ref`.
 
 For example:
